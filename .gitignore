@@ -1,0 +1,20 @@
+# Database & API Keys 
+assets/js/config.js
+
+# Editor Settings
+.vscode/
+.idea/
+
+# OS Junk Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Log files
+*.log
+
+
+node_modules/
+dist/
+build/
+admin/

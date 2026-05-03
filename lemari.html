@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lemari Saya - Capsule Wardrobe</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        background: '#FAF9F7',
+                        surface: '#FFFFFF',
+                        primary: '#9D8371',
+                        primaryHover: '#8A7363',
+                        textDark: '#1C1C1C',
+                        textMuted: '#7A7A7A',
+                        borderLight: '#F0EBE6',
+                        bgSoft: '#FBFBFA'
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'system-ui', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .transition-all {
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 300ms;
+        }
+
+        .page-transition {
+            animation: fadeInView 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeInView {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .blend-darken {
+            mix-blend-mode: darken;
+        }
+
+        .blend-multiply {
+            mix-blend-mode: multiply;
+        }
+
+        @keyframes slideUpFade {
+            from {
+                opacity: 0;
+                transform: translateY(20px) translateX(-50%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) translateX(-50%);
+            }
+        }
+
+        .toast-enter {
+            animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+    </style>
+</head>
+
+<body class="bg-background text-textDark font-sans h-[100dvh] flex overflow-hidden">
+
+    <!-- Toast Notification -->
+    <div id="toast-container" class="fixed top-5 right-5 z-[300] flex flex-col gap-3 pointer-events-none w-max"></div>
+
+    <!-- Sidebar Overlay -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden transition-opacity opacity-0">
+    </div>
+
+    <!-- Sidebar Desktop -->
+    <aside id="sidebar"
+        class="w-64 bg-surface border-r border-borderLight flex-col hidden lg:flex h-full z-50 shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.01)] transition-transform duration-300 -translate-x-full lg:translate-x-0">
+        <div class="p-8 flex items-center justify-between lg:justify-start gap-3">
+            <div class="flex items-center gap-2 group cursor-pointer" onclick="window.location.href='dashboard.html'">
+                <i class="ph ph-coat-hanger text-4xl text-primary group-hover:text-primaryHover transition-colors"></i>
+                <div class="leading-tight text-left">
+                    <h1 class="font-semibold text-xl tracking-tight text-textDark">Capsule</h1>
+                    <p class="text-[10px] text-textMuted uppercase tracking-widest font-medium">Wardrobe</p>
+                </div>
+            </div>
+            <button id="close-sidebar-btn" class="lg:hidden text-2xl text-textMuted hover:text-textDark"><i
+                    class="ph-bold ph-x text-xl"></i></button>
+        </div>
+
+        <nav class="flex-1 px-4 space-y-1 overflow-y-auto no-scrollbar pb-8">
+            <a href="dashboard.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-[#F8F7F4] hover:text-textDark rounded-xl font-medium transition-all"><i
+                    class="ph ph-house text-xl"></i> Beranda</a>
+
+            <a href="#"
+                class="nav-link flex items-center gap-3 px-4 py-3 bg-[#EAE6E1] text-textDark rounded-xl font-semibold transition-all shadow-sm"><i
+                    class="ph-fill ph-t-shirt text-xl text-primary"></i> Lemari Saya</a>
+
+            <a href="mix&match.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-[#F8F7F4] hover:text-textDark rounded-xl font-medium transition-all"><i
+                    class="ph ph-magic-wand text-xl"></i> Mix & Match</a>
+            <a href="kalender.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-[#F8F7F4] hover:text-textDark rounded-xl font-medium transition-all"><i
+                    class="ph ph-calendar text-xl"></i> Kalender Outfit</a>
+            <a href="inspirasi.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-[#F8F7F4] hover:text-textDark rounded-xl font-medium transition-all"><i
+                    class="ph ph-lightbulb text-xl"></i> Inspirasi</a>
+            <a href="statistik.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-[#F8F7F4] hover:text-textDark rounded-xl font-medium transition-all"><i
+                    class="ph ph-chart-bar text-xl"></i> Statistik</a>
+            <a href="wishlist.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-[#F8F7F4] hover:text-textDark rounded-xl font-medium transition-all"><i
+                    class="ph ph-heart text-xl"></i> Wishlist</a>
+            <a href="pengaturan.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-[#F8F7F4] hover:text-textDark rounded-xl font-medium transition-all mt-4"><i
+                    class="ph ph-gear text-xl"></i> Pengaturan</a>
+        </nav>
+
+        <div class="p-6 mt-auto">
+            <div
+                class="bg-[#F8F7F4] border border-borderLight p-5 rounded-2xl relative overflow-hidden group cursor-pointer hover:border-primary/40 transition-colors">
+                <i
+                    class="ph-fill ph-diamond text-[64px] text-primary/5 absolute -right-2 -bottom-2 group-hover:scale-110 transition-transform duration-500"></i>
+                <p class="text-[13px] font-light text-textDark mb-1 relative z-10"><span
+                        class="font-bold text-textDark">Minimal</span> items,</p>
+                <p class="text-[13px] font-light text-textDark mb-2 relative z-10"><span
+                        class="font-bold text-primary">maximum</span> style.</p>
+                <p class="text-[10px] text-textMuted relative z-10 leading-relaxed">Bangun gaya terbaikmu dengan koleksi
+                    yang bermakna.</p>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="lg:hidden fixed bottom-0 left-0 w-full bg-surface/90 backdrop-blur-lg border-t border-borderLight z-40 flex justify-around py-3 px-2 pb-6 md:pb-4 text-[10px] shadow-[0_-10px_40px_rgba(0,0,0,0.03)]"
+        id="mobile-nav">
+        <a href="dashboard.html"
+            class="mobile-nav-link flex flex-col items-center gap-1.5 text-textMuted hover:text-textDark transition-all relative font-medium"><i
+                class="ph ph-house text-xl md:text-2xl"></i>Beranda</a>
+        <a href="#"
+            class="mobile-nav-link flex flex-col items-center gap-1.5 text-primary transition-all relative font-semibold"><i
+                class="ph-fill ph-t-shirt text-xl md:text-2xl text-primary"></i>Lemari</a>
+        <a href="mix&match.html"
+            class="mobile-nav-link flex flex-col items-center gap-1.5 text-textMuted hover:text-textDark transition-all relative font-medium"><i
+                class="ph ph-magic-wand text-xl md:text-2xl"></i>Mix & Match</a>
+        <a href="kalender.html"
+            class="mobile-nav-link flex flex-col items-center gap-1.5 text-textMuted hover:text-textDark transition-all relative font-medium"><i
+                class="ph ph-calendar-blank text-xl md:text-2xl"></i>Kalender</a>
+        <button onclick="toggleMobileMore(event)"
+            class="mobile-nav-link flex flex-col items-center gap-1.5 text-textMuted hover:text-textDark transition-all relative font-medium focus:outline-none"><i
+                class="ph-fill ph-squares-four text-xl md:text-2xl"></i>Lainnya</button>
+    </nav>
+
+    <!-- Mobile Bottom Sheet Menu -->
+    <div id="mobile-more-menu"
+        class="fixed inset-0 bg-dark/60 backdrop-blur-sm z-[200] hidden flex-col justify-end opacity-0 transition-opacity duration-300 lg:hidden">
+        <div id="mobile-more-content"
+            class="bg-surface w-full rounded-t-[2rem] p-6 transform translate-y-full transition-transform duration-300 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] flex flex-col">
+            <div class="w-12 h-1.5 bg-borderLight rounded-full mx-auto mb-6"></div>
+            <h3 class="text-lg font-bold text-textDark mb-6 font-display">Menu Lainnya</h3>
+            <div class="grid grid-cols-4 gap-4 mb-2">
+                <a href="wishlist.html" class="flex flex-col items-center gap-2 group">
+                    <div
+                        class="w-14 h-14 rounded-[1.25rem] bg-bgSoft border border-borderLight flex items-center justify-center text-textMuted group-hover:text-primary group-hover:border-primary/30 transition-all shadow-sm">
+                        <i class="ph ph-heart text-2xl"></i>
+                    </div>
+                    <span class="text-[10px] font-medium text-textDark">Wishlist</span>
+                </a>
+                <a href="inspirasi.html" class="flex flex-col items-center gap-2 group">
+                    <div
+                        class="w-14 h-14 rounded-[1.25rem] bg-bgSoft border border-borderLight flex items-center justify-center text-textMuted group-hover:text-primary group-hover:border-primary/30 transition-all shadow-sm">
+                        <i class="ph ph-lightbulb text-2xl"></i>
+                    </div>
+                    <span class="text-[10px] font-medium text-textDark">Inspirasi</span>
+                </a>
+                <a href="statistik.html" class="flex flex-col items-center gap-2 group">
+                    <div
+                        class="w-14 h-14 rounded-[1.25rem] bg-bgSoft border border-borderLight flex items-center justify-center text-textMuted group-hover:text-primary group-hover:border-primary/30 transition-all shadow-sm">
+                        <i class="ph ph-chart-bar text-2xl"></i>
+                    </div>
+                    <span class="text-[10px] font-medium text-textDark">Statistik</span>
+                </a>
+                <a href="pengaturan.html" class="flex flex-col items-center gap-2 group">
+                    <div
+                        class="w-14 h-14 rounded-[1.25rem] bg-bgSoft border border-borderLight flex items-center justify-center text-textMuted group-hover:text-primary group-hover:border-primary/30 transition-all shadow-sm">
+                        <i class="ph ph-gear text-2xl"></i>
+                    </div>
+                    <span class="text-[10px] font-medium text-textDark">Pengaturan</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full relative overflow-hidden bg-background">
+        <header
+            class="bg-background/90 backdrop-blur-md sticky top-0 z-40 px-6 md:px-10 py-5 flex items-center justify-between border-b border-borderLight/50">
+            <div class="flex items-center gap-2 lg:hidden cursor-pointer"
+                onclick="window.location.href='dashboard.html'">
+                <i class="ph ph-coat-hanger text-3xl text-primary"></i>
+                <div class="leading-tight text-left">
+                    <h1 class="font-semibold text-lg tracking-tight text-textDark">Capsule</h1>
+                    <p class="text-[10px] text-textMuted uppercase tracking-widest font-medium">Wardrobe</p>
+                </div>
+            </div>
+
+            <!-- Live Search Bar -->
+            <div
+                class="hidden lg:flex flex-1 max-w-lg bg-surface border border-borderLight rounded-full px-5 py-2.5 items-center shadow-sm focus-within:border-primary/50 transition-all mr-auto ml-0 lg:mx-0">
+                <input type="text" id="search-input-desktop" placeholder="Cari pakaian atau outfit..."
+                    class="bg-transparent border-none outline-none text-xs w-full text-textDark placeholder:text-textMuted font-medium search-sync">
+                <i class="ph ph-magnifying-glass text-gray-400 text-lg ml-3"></i>
+            </div>
+
+            <div class="flex items-center gap-4 md:gap-6 ml-auto shrink-0">
+                <div class="relative">
+                    <button onclick="toggleNotifications(event)"
+                        class="p-2 text-textDark hover:bg-surface rounded-full transition-all relative border border-transparent hover:border-borderLight">
+                        <i class="ph ph-bell text-xl"></i>
+                        <span id="notif-badge-dot"
+                            class="hidden absolute top-1.5 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-background"></span>
+                    </button>
+                    <!-- Notif Dropdown -->
+                    <div id="notif-dropdown"
+                        class="hidden absolute right-[-40px] sm:right-0 mt-3 w-[300px] sm:w-[400px] bg-surface border border-borderLight rounded-2xl shadow-xl z-50 overflow-hidden transform opacity-0 scale-95 transition-all duration-200 origin-top-right flex flex-col">
+                        <div
+                            class="p-4 sm:p-5 border-b border-borderLight flex justify-between items-center bg-surface">
+                            <span class="font-bold text-sm sm:text-[15px] text-textDark font-display">Notifikasi</span>
+                            <span id="notif-count-badge"
+                                class="text-[10px] font-bold bg-[#F4EFEA] text-[#8A7363] px-3 py-1.5 rounded-lg tracking-wide">0
+                                BARU</span>
+                        </div>
+                        <div class="max-h-[350px] overflow-y-auto hide-scrollbar" id="notif-list-container">
+                            <div class="p-6 text-center text-sm text-textMuted">Memuat notifikasi...</div>
+                        </div>
+                        <div
+                            class="p-3 sm:p-4 border-t border-borderLight bg-surface flex justify-between items-center">
+                            <button onclick="markAllReadNotif()"
+                                class="text-xs sm:text-[13px] font-semibold text-[#8A7363] hover:text-[#9D8371] transition-colors">Tandai
+                                semua dibaca</button>
+                            <button onclick="deleteAllNotif(event)"
+                                class="text-xs sm:text-[13px] font-semibold text-red-500 hover:text-red-600 transition-colors">Hapus
+                                semua</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Profile Dropdown -->
+                <div class="relative" id="profile-dropdown-wrapper">
+                    <div onclick="toggleProfileDropdown(event)"
+                        class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity pl-2 sm:pl-4 border-l border-borderLight">
+                        <div
+                            class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gray-200 overflow-hidden shadow-sm shrink-0 border border-borderLight">
+                            <img src="" alt="Profile" id="header-avatar" class="w-full h-full object-cover">
+                        </div>
+                        <div class="text-sm font-medium hidden md:flex items-center gap-1 text-textDark">
+                            <span id="user-display-name">User</span>
+                            <i class="ph-bold ph-caret-down text-xs text-textMuted transition-transform duration-300"
+                                id="profile-chevron"></i>
+                        </div>
+                    </div>
+                    <div id="profile-menu"
+                        class="hidden absolute right-0 mt-3 w-52 bg-surface border border-borderLight rounded-2xl shadow-xl z-50 overflow-hidden opacity-0 transform scale-95 transition-all duration-200">
+                        <div class="p-4 border-b border-borderLight bg-bgSoft/30">
+                            <p class="text-[10px] text-textMuted uppercase tracking-widest font-bold">Akun Saya</p>
+                            <p class="text-xs text-textDark font-medium truncate mt-1" id="user-email-display">email</p>
+                        </div>
+                        <div class="p-2">
+                            <button onclick="window.location.href='pengaturan.html'"
+                                class="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-textDark hover:bg-bgSoft rounded-xl transition-colors text-left group">
+                                <i
+                                    class="ph-bold ph-gear text-base text-textMuted group-hover:text-primary transition-colors"></i><span>Pengaturan</span>
+                            </button>
+                            <div class="h-px bg-borderLight/50 my-1 mx-2"></div>
+                            <button onclick="logout()"
+                                class="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-red-500 hover:bg-red-50 rounded-xl transition-colors text-left group">
+                                <i
+                                    class="ph-bold ph-sign-out text-base text-red-400 group-hover:text-red-600 transition-colors"></i><span
+                                    class="font-semibold">Keluar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto no-scrollbar px-5 md:px-10 pb-28 md:pb-12 scroll-smooth"
+            id="main-scroll-area">
+            <div class="page-transition">
+
+                <!-- Mobile Search Bar -->
+                <div class="lg:hidden mt-4 mb-6">
+                    <div
+                        class="flex w-full bg-surface border border-borderLight rounded-full px-4 py-3 items-center shadow-sm focus-within:border-primary/50 transition-all">
+                        <input type="text" id="search-input-mobile" placeholder="Cari pakaian atau outfit..."
+                            class="bg-transparent border-none outline-none text-xs w-full text-textDark placeholder:text-textMuted font-medium search-sync">
+                        <i class="ph ph-magnifying-glass text-gray-400 text-lg ml-3"></i>
+                    </div>
+                </div>
+
+                <div class="mt-6 mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
+                    <div>
+                        <h2 class="text-2xl md:text-3xl font-display font-semibold mb-2 text-textDark">Lemari Saya <i
+                                class="ph-fill ph-t-shirt text-2xl text-primary"></i></h2>
+                        <p class="text-textMuted text-sm">Organisir koleksi pakaian dan setelan kombinasi Anda.</p>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row items-center gap-4">
+                        <div class="inline-flex bg-borderLight/40 p-1.5 rounded-full shadow-inner w-full sm:w-auto">
+                            <button id="tab-item" onclick="switchTab('item')"
+                                class="flex-1 sm:flex-none px-6 py-2 text-[13px] font-semibold rounded-full bg-white text-textDark shadow-sm transition-all flex items-center justify-center gap-2">
+                                <i class="ph-bold ph-coat-hanger"></i> Koleksi Item
+                            </button>
+                            <button id="tab-outfit" onclick="switchTab('outfit')"
+                                class="flex-1 sm:flex-none px-6 py-2 text-[13px] font-medium text-textMuted hover:text-textDark rounded-full transition-all flex items-center justify-center gap-2">
+                                <i class="ph-bold ph-magic-wand"></i> Kombinasi Outfit
+                            </button>
+                        </div>
+                        <button onclick="openUploadModal()"
+                            class="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#A28876] hover:bg-[#8e7464] text-white px-5 py-2.5 rounded-full text-xs font-medium transition-all shadow-sm active:scale-95">
+                            <i class="ph-bold ph-plus text-sm"></i> Tambah Item
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CONTENT 1: KOLEKSI ITEM -->
+                <div id="content-item" class="block animate-[fadeInView_0.3s_ease-out_forwards]">
+                    <div class="mb-6 flex gap-2 overflow-x-auto no-scrollbar pb-2" id="lemari-filter-container">
+                        <button onclick="filterLemari('Semua')"
+                            class="lemari-filter-btn px-4 py-2 bg-textDark text-white text-xs rounded-full font-medium shrink-0 shadow-sm transition-all"
+                            data-cat="Semua">Semua</button>
+                        <button onclick="filterLemari('Atasan')"
+                            class="lemari-filter-btn px-4 py-2 bg-surface border border-borderLight text-textMuted hover:text-textDark text-xs rounded-full font-medium shrink-0 transition-all"
+                            data-cat="Atasan">Atasan</button>
+                        <button onclick="filterLemari('Bawahan')"
+                            class="lemari-filter-btn px-4 py-2 bg-surface border border-borderLight text-textMuted hover:text-textDark text-xs rounded-full font-medium shrink-0 transition-all"
+                            data-cat="Bawahan">Bawahan</button>
+                        <button onclick="filterLemari('Outer')"
+                            class="lemari-filter-btn px-4 py-2 bg-surface border border-borderLight text-textMuted hover:text-textDark text-xs rounded-full font-medium shrink-0 transition-all"
+                            data-cat="Outer">Outer</button>
+                        <button onclick="filterLemari('Dresses')"
+                            class="lemari-filter-btn px-4 py-2 bg-surface border border-borderLight text-textMuted hover:text-textDark text-xs rounded-full font-medium shrink-0 transition-all"
+                            data-cat="Dresses">Dresses</button>
+                        <button onclick="filterLemari('Sepatu')"
+                            class="lemari-filter-btn px-4 py-2 bg-surface border border-borderLight text-textMuted hover:text-textDark text-xs rounded-full font-medium shrink-0 transition-all"
+                            data-cat="Sepatu">Sepatu</button>
+                        <button onclick="filterLemari('Tas')"
+                            class="lemari-filter-btn px-4 py-2 bg-surface border border-borderLight text-textMuted hover:text-textDark text-xs rounded-full font-medium shrink-0 transition-all"
+                            data-cat="Tas">Tas</button>
+                        <button onclick="filterLemari('Aksesoris')"
+                            class="lemari-filter-btn px-4 py-2 bg-surface border border-borderLight text-textMuted hover:text-textDark text-xs rounded-full font-medium shrink-0 transition-all"
+                            data-cat="Aksesoris">Aksesoris</button>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6"
+                        id="lemari-grid-container">
+                        <!-- JS Render Pakaian Satuan -->
+                    </div>
+                </div>
+
+                <!-- CONTENT 2: KOMBINASI OUTFIT -->
+                <div id="content-outfit" class="hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+                        id="outfit-grid-container">
+                        <!-- JS Render Outfit -->
+                    </div>
+                </div>
+
+            </div>
+
+            <footer
+                class="mt-16 pt-8 border-t border-borderLight flex flex-col md:flex-row justify-between items-center text-[11px] sm:text-xs text-textMuted gap-4 pb-4 px-2">
+                <p>&copy; <span id="footer-year">2026</span> Capsule Wardrobe. Didesain dengan presisi.</p>
+                <div class="flex flex-wrap justify-center gap-6">
+                    <a href="#" class="hover:text-textDark transition-colors">Kebijakan Privasi</a>
+                    <a href="#" class="hover:text-textDark transition-colors">Syarat Ketentuan</a>
+                    <a href="#" class="hover:text-textDark transition-colors">Bantuan</a>
+                </div>
+            </footer>
+        </div>
+    </main>
+
+    <!-- Modal Upload / Edit Item -->
+    <div id="upload-modal"
+        class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[120] hidden items-center justify-center opacity-0 transition-opacity duration-300 p-4 sm:p-0">
+        <div class="bg-surface w-full max-w-[420px] sm:rounded-[2rem] rounded-3xl shadow-2xl transform scale-95 transition-transform duration-300 relative overflow-hidden flex flex-col max-h-[90vh]"
+            id="upload-modal-content">
+            <div class="flex items-center px-6 py-5 border-b border-borderLight bg-surface sticky top-0 z-10">
+                <button onclick="closeUploadModal()"
+                    class="text-textDark hover:bg-bgSoft p-2 rounded-full transition-colors -ml-2">
+                    <i class="ph-bold ph-caret-left text-xl"></i>
+                </button>
+                <h3 class="flex-1 text-center text-base font-semibold text-textDark pr-8" id="modal-item-title">Tambah
+                    Item</h3>
+            </div>
+
+            <div class="p-6 overflow-y-auto no-scrollbar flex-1 space-y-7 bg-surface">
+                <div>
+                    <label
+                        class="block text-xs font-bold text-gray-800 uppercase tracking-wider mb-2.5">Kategori</label>
+                    <div class="flex gap-4 overflow-x-auto no-scrollbar pb-2 px-1 -mx-1" id="modal-category-list">
+                        <div class="flex flex-col items-center gap-2 cursor-pointer group shrink-0"
+                            onclick="selectModalCategory(this, 'Atasan')">
+                            <div
+                                class="modal-cat-btn w-12 h-12 rounded-[1rem] border border-borderLight bg-surface flex items-center justify-center transition-all shadow-sm">
+                                <i class="ph ph-t-shirt text-xl text-textDark"></i>
+                            </div>
+                            <span class="text-[10px] text-textMuted font-medium">Atasan</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 cursor-pointer group shrink-0"
+                            onclick="selectModalCategory(this, 'Bawahan')">
+                            <div
+                                class="modal-cat-btn w-12 h-12 rounded-[1rem] border border-borderLight bg-surface flex items-center justify-center transition-all shadow-sm">
+                                <i class="ph ph-pants text-xl text-textDark"></i>
+                            </div>
+                            <span class="text-[10px] text-textMuted font-medium">Bawahan</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 cursor-pointer group shrink-0"
+                            onclick="selectModalCategory(this, 'Outer')">
+                            <div
+                                class="modal-cat-btn w-12 h-12 rounded-[1rem] border border-borderLight bg-surface flex items-center justify-center transition-all shadow-sm">
+                                <i class="ph ph-coat-hanger text-xl text-textDark"></i>
+                            </div>
+                            <span class="text-[10px] text-textMuted font-medium">Outer</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 cursor-pointer group shrink-0"
+                            onclick="selectModalCategory(this, 'Dresses')">
+                            <div
+                                class="modal-cat-btn w-12 h-12 rounded-[1rem] border border-borderLight bg-surface flex items-center justify-center transition-all shadow-sm">
+                                <i class="ph ph-dress text-xl text-textDark"></i>
+                            </div>
+                            <span class="text-[10px] text-textMuted font-medium">Dresses</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 cursor-pointer group shrink-0"
+                            onclick="selectModalCategory(this, 'Sepatu')">
+                            <div
+                                class="modal-cat-btn w-12 h-12 rounded-[1rem] border border-borderLight bg-surface flex items-center justify-center transition-all shadow-sm">
+                                <i class="ph ph-sneaker text-xl text-textDark"></i>
+                            </div>
+                            <span class="text-[10px] text-textMuted font-medium">Sepatu</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 cursor-pointer group shrink-0"
+                            onclick="selectModalCategory(this, 'Tas')">
+                            <div
+                                class="modal-cat-btn w-12 h-12 rounded-[1rem] border border-borderLight bg-surface flex items-center justify-center transition-all shadow-sm">
+                                <i class="ph ph-handbag text-xl text-textDark"></i>
+                            </div>
+                            <span class="text-[10px] text-textMuted font-medium">Tas</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 cursor-pointer group shrink-0"
+                            onclick="selectModalCategory(this, 'Aksesoris')">
+                            <div
+                                class="modal-cat-btn w-12 h-12 rounded-[1rem] border border-borderLight bg-surface flex items-center justify-center transition-all shadow-sm">
+                                <i class="ph ph-watch text-xl text-textDark"></i>
+                            </div>
+                            <span class="text-[10px] text-textMuted font-medium">Aksesoris</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-800 uppercase tracking-wider mb-2.5">Nama
+                        Item</label>
+                    <input type="text" id="input-item-name" placeholder="Contoh: Kemeja Putih"
+                        class="w-full px-4 py-3.5 rounded-xl border border-borderLight bg-[#FBFBFA] text-[13px] text-textDark placeholder:text-textMuted focus:outline-none focus:border-primary transition-all shadow-sm">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-800 uppercase tracking-wider mb-2.5">Foto
+                        Item</label>
+                    <div class="border border-borderLight bg-[#FBFBFA] rounded-2xl p-6 text-center hover:bg-[#F8F7F4] hover:border-primary/30 transition-all cursor-pointer group"
+                        onclick="document.getElementById('file-upload').click()">
+                        <div
+                            class="w-12 h-12 mx-auto bg-surface rounded-full border border-borderLight flex items-center justify-center mb-3 group-hover:scale-110 transition-transform shadow-sm">
+                            <i
+                                class="ph ph-image text-xl text-textMuted group-hover:text-textDark transition-colors"></i>
+                        </div>
+                        <p class="text-xs font-medium text-textDark mb-1">Upload Foto</p>
+                        <p class="text-[10px] text-textMuted">atau ambil dari galeri</p>
+                        <input type="file" id="file-upload" class="hidden" accept="image/*"
+                            onchange="handleFileUpload(this)">
+                    </div>
+
+                    <div id="upload-preview-area"
+                        class="hidden mt-3 relative w-full h-32 bg-[#FBFBFA] rounded-2xl border border-borderLight overflow-hidden flex flex-col items-center justify-center">
+                        <img id="upload-preview-img" src=""
+                            class="max-w-full max-h-20 object-contain mix-blend-multiply" alt="Preview"
+                            crossorigin="anonymous">
+                        <div id="color-detected-badge"
+                            class="absolute bottom-2 left-2 flex items-center gap-1.5 bg-surface/90 backdrop-blur px-2 py-1.5 rounded-full border border-borderLight shadow-sm hidden">
+                        </div>
+                        <button onclick="removeUploadPreview(event)"
+                            class="absolute top-2 right-2 p-1.5 bg-surface/90 backdrop-blur-sm rounded-full shadow-sm text-textMuted hover:text-red-500 transition-colors">
+                            <i class="ph-bold ph-x text-sm"></i>
+                        </button>
+                    </div>
+
+                    <!-- AI Hapus BG -->
+                    <div
+                        class="mt-4 flex items-center justify-between bg-surface border border-borderLight p-3.5 rounded-xl shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center"><i
+                                    class="ph-fill ph-sparkle text-sm text-primary"></i></div>
+                            <div>
+                                <p class="text-[12px] font-semibold text-textDark">Hapus Background (AI)</p>
+                                <p class="text-[9px] text-textMuted mt-0.5">Otomatis buat transparan</p>
+                            </div>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="toggle-remove-bg" class="sr-only peer">
+                            <div
+                                class="w-9 h-5 bg-borderLight peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary shadow-inner">
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-5 border-t border-borderLight bg-surface sticky bottom-0 z-10">
+                <button onclick="saveNewItem()" id="btn-simpan-item"
+                    class="w-full bg-primary hover:bg-primaryHover text-white py-3.5 rounded-xl text-[13px] font-medium transition-all shadow-sm active:scale-95 flex justify-center items-center gap-2">
+                    Simpan Item
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit/Jadwalkan Outfit (Untuk Tab 2) -->
+    <div id="save-modal"
+        class="fixed inset-0 bg-black/50 z-[110] hidden items-center justify-center opacity-0 transition-opacity duration-300 p-4 sm:p-0">
+        <div class="bg-surface rounded-[2rem] p-6 md:p-8 w-full max-w-md shadow-2xl transform scale-95 transition-transform duration-300 relative"
+            id="save-modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-display font-bold text-textDark" id="modal-outfit-title">Edit Kombinasi</h3>
+                <button id="close-save-modal"
+                    class="text-textMuted hover:text-textDark transition-colors p-1 bg-bgSoft rounded-full hover:bg-borderLight"><i
+                        class="ph-bold ph-x text-lg"></i></button>
+            </div>
+            <div class="mb-5">
+                <label for="outfit-name" class="block text-sm font-medium text-textDark mb-2">Nama Outfit</label>
+                <input type="text" id="outfit-name" placeholder="Misal: Casual Weekend..."
+                    class="w-full bg-[#FBFBFA] border border-borderLight rounded-xl px-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all text-sm font-medium">
+            </div>
+            <div class="grid grid-cols-3 gap-3 mb-6">
+                <div>
+                    <label class="block text-[11px] font-medium text-textDark mb-1.5">Gaya</label>
+                    <select id="outfit-gaya"
+                        class="w-full bg-[#FBFBFA] border border-borderLight rounded-lg px-2 py-2 text-xs focus:outline-none focus:border-primary transition-all text-textDark">
+                        <option value="Casual">Casual</option>
+                        <option value="Smart Casual">Smart Casual</option>
+                        <option value="Streetwear">Streetwear</option>
+                        <option value="Minimalist">Minimalist</option>
+                        <option value="Chic">Chic</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-medium text-textDark mb-1.5">Acara</label>
+                    <select id="outfit-acara"
+                        class="w-full bg-[#FBFBFA] border border-borderLight rounded-lg px-2 py-2 text-xs focus:outline-none focus:border-primary transition-all text-textDark">
+                        <option value="Sehari-hari">Sehari-hari</option>
+                        <option value="Kerja">Kerja</option>
+                        <option value="Date Night">Date Night</option>
+                        <option value="Hangout">Hangout</option>
+                        <option value="Kampus">Kampus</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-medium text-textDark mb-1.5">Musim</label>
+                    <select id="outfit-musim"
+                        class="w-full bg-[#FBFBFA] border border-borderLight rounded-lg px-2 py-2 text-xs focus:outline-none focus:border-primary transition-all text-textDark">
+                        <option value="Semua Musim">Semua Musim</option>
+                        <option value="Panas / Kemarau">Kemarau</option>
+                        <option value="Hujan">Hujan</option>
+                    </select>
+                </div>
+            </div>
+            <div class="flex gap-3">
+                <button id="cancel-save"
+                    class="flex-1 py-3.5 rounded-xl border border-borderLight text-textMuted font-medium hover:bg-bgSoft transition-all text-sm">Batal</button>
+                <button id="confirm-save"
+                    class="flex-1 py-3.5 rounded-xl bg-primary text-white font-medium hover:bg-primaryHover transition-all text-sm shadow-md flex items-center justify-center gap-2">
+                    <span id="save-btn-text">Perbarui</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT SUPABASE & LOGIKA UI -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module">
+        import { CONFIG } from './assets/js/config.js';
+        const supabase = window.supabase.createClient(CONFIG.SB_URL, CONFIG.SB_KEY);
+
+        const REMOVE_BG_API_KEY = 'B76RhFUPFkoHzZnNYLCL9YdA';
+
+        let currentUser = null;
+        let wardrobeData = [];
+        let savedOutfitsData = [];
+        let currentTab = 'item';
+        let schedulesData = [];
+
+        let uploadFile = null;
+        let selectedUploadCat = '';
+        let detectedColorPalette = [];
+        let currentEditItemId = null;
+        let currentEditItemImg = null;
+        let currentEditOutfitId = null;
+
+        const colorThief = new ColorThief();
+        const rgbToHex = (r, g, b) => '#' + [r, g, b].map(x => { const hex = x.toString(16); return hex.length === 1 ? '0' + hex : hex; }).join('').toUpperCase();
+
+        let deletedNotifs = JSON.parse(localStorage.getItem('capsule_deleted_notifs') || '[]');
+        let readNotifs = JSON.parse(localStorage.getItem('capsule_read_notifs') || '[]');
+
+        function saveNotifState() {
+            localStorage.setItem('capsule_deleted_notifs', JSON.stringify(deletedNotifs));
+            localStorage.setItem('capsule_read_notifs', JSON.stringify(readNotifs));
+        }
+
+        /* ================= 1. TOAST UI (PUTIH DENGAN TEKS HITAM) ================= */
+        window.showToast = function (message, type = 'success') {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+
+                // Background PUTIH (bg-surface), border tipis, bayangan lembut
+                const bgColor = type === 'success' ? 'bg-surface border-borderLight' : 'bg-red-50 border-red-200';
+                const icon = type === 'success' ? 'ph-check-circle' : 'ph-warning-circle';
+
+                // Ikon warna cokelat utama (text-primary)
+                const iconColor = type === 'success' ? 'text-primary' : 'text-red-500';
+
+                // Menggunakan text-textDark (hitam) agar kontras dengan bg-surface (putih)
+                toast.className = `flex items-center gap-3 px-4 sm:px-5 py-3 sm:py-3.5 rounded-2xl border shadow-[0_10px_40px_rgba(0,0,0,0.08)] transform transition-all duration-300 translate-x-full text-textDark ${bgColor}`;
+
+                toast.innerHTML = `<i class="ph-fill ${icon} text-xl sm:text-2xl ${iconColor}"></i><p class="text-xs sm:text-[13px] font-semibold">${message}</p>`;
+
+                container.appendChild(toast);
+
+                setTimeout(() => toast.classList.remove('translate-x-full'), 10);
+                setTimeout(() => { toast.classList.add('translate-x-full'); setTimeout(() => toast.remove(), 300); }, 3000);
+            }
+
+
+        /* ================= 2. AUTH & INIT ================= */
+        document.addEventListener('DOMContentLoaded', async () => {
+            const footerYear = document.getElementById('footer-year');
+            if (footerYear) footerYear.innerText = new Date().getFullYear();
+
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) { window.location.href = 'auth.html'; return; }
+            currentUser = session.user;
+
+            const metadata = currentUser.user_metadata || {};
+            const fullName = metadata.full_name || "User";
+            const firstName = fullName.split(' ')[0];
+            const avatarUrl = metadata.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80';
+
+            // Universal Sync Profile
+            document.getElementById('user-display-name').innerText = firstName;
+            document.getElementById('user-email-display').innerText = currentUser.email;
+            document.getElementById('header-avatar').src = avatarUrl;
+
+            // Navigasi URL Tab
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('tab') === 'outfit') { switchTab('outfit'); }
+
+            await fetchWardrobe();
+            await fetchSavedOutfits();
+            await fetchSchedulesForNotif();
+            renderNotifications();
+
+            // Init Search Bar
+            const searchInputs = document.querySelectorAll('.search-sync');
+            searchInputs.forEach(input => {
+                input.addEventListener('input', (e) => {
+                    const query = e.target.value.toLowerCase();
+                    searchInputs.forEach(inp => { if (inp !== e.target) inp.value = e.target.value; });
+                    if (currentTab === 'item') renderLemariGrid(query);
+                    else renderOutfitsGrid(query);
+                });
+            });
+        });
+
+        /* ================= 3. NOTIFIKASI REMINDER ================= */
+        async function fetchSchedulesForNotif() {
+            const { data } = await supabase.from('schedules').select('id, date_str, event_name').eq('user_id', currentUser.id);
+            if (data) schedulesData = data;
+        }
+
+        window.renderNotifications = function () {
+            const container = document.getElementById('notif-list-container');
+            const countBadge = document.getElementById('notif-count-badge');
+            const dot = document.getElementById('notif-badge-dot');
+
+            const today = new Date();
+            const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
+            const formatDate = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+            const todayStr = formatDate(today);
+            const tomorrowStr = formatDate(tomorrow);
+
+            const reminders = schedulesData.filter(s => s.date_str === todayStr || s.date_str === tomorrowStr);
+            let notifs = reminders.map(s => ({
+                id: `schedule-${s.id}`,
+                title: `Jadwal ${s.date_str === tomorrowStr ? 'Besok' : 'Hari Ini'}!`,
+                desc: `Acara: ${s.event_name}. Jangan lupa siapkan outfit!`,
+                icon: 'ph-calendar-check',
+                iconBg: 'bg-blue-50 text-blue-500 border-blue-100'
+            }));
+
+            notifs.push({ id: 'static-ai-insp', title: 'Inspirasi Baru', desc: 'AI menemukan mix & match baru.', time: '09:15', timeAgo: 'Baru saja', icon: 'ph-magic-wand', iconBg: 'bg-primary/10 text-primary border-primary/20' });
+
+            let html = ''; let unreadCount = 0; let visibleCount = 0;
+            notifs.forEach(n => {
+                if (deletedNotifs.includes(n.id)) return;
+                visibleCount++;
+                const isRead = readNotifs.includes(n.id);
+                if (!isRead) unreadCount++;
+                const readClass = isRead ? "opacity-50 bg-gray-50" : "";
+
+                html += `
+                <div class="notif-item p-4 sm:p-5 border-b border-borderLight hover:bg-bgSoft transition-colors flex gap-3 sm:gap-4 relative group ${readClass}" id="${n.id}">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full ${n.iconBg} border flex items-center justify-center shrink-0 cursor-pointer" onclick="window.location.href='dashboard.html#kalender'">
+                        <i class="ph-bold ${n.icon} text-lg sm:text-xl"></i>
+                    </div>
+                    <div class="flex-1 cursor-pointer pr-2" onclick="window.location.href='dashboard.html#kalender'">
+                        <div class="flex justify-between items-start mb-1">
+                            <p class="text-sm sm:text-[15px] font-semibold text-textDark leading-tight">${n.title}</p>
+                            <div class="flex items-center gap-1.5 sm:gap-2">
+                                <span class="text-[9px] text-textMuted font-medium">${n.time}</span>
+                                <button onclick="removeNotif('${n.id}', event)" class="text-red-400 hover:text-red-600 transition-colors p-0.5"><i class="ph-bold ph-x text-sm"></i></button>
+                            </div>
+                        </div>
+                        <p class="text-xs sm:text-[13px] text-textMuted leading-relaxed">${n.desc}</p>
+                        <p class="text-[10px] text-textMuted/70 mt-1.5 font-medium">${n.timeAgo}</p>
+                    </div>
+                </div>`;
+            });
+
+            container.innerHTML = visibleCount === 0 ? '<div class="p-6 sm:p-8 text-center text-xs sm:text-sm text-textMuted">Tidak ada notifikasi baru.</div>' : html;
+            if (unreadCount > 0) { dot.classList.remove('hidden'); countBadge.innerText = `${unreadCount} BARU`; }
+            else { dot.classList.add('hidden'); countBadge.innerText = `0 BARU`; }
+        };
+
+        window.removeNotif = function (id, e) { e.stopPropagation(); if (!deletedNotifs.includes(id)) { deletedNotifs.push(id); saveNotifState(); renderNotifications(); } };
+        window.markAllReadNotif = function () { mockNotifs.forEach(n => { if (!readNotifs.includes(n.id)) readNotifs.push(n.id); }); saveNotifState(); renderNotifications(); showToast('Semua ditandai dibaca'); };
+        window.deleteAllNotif = function (e) { e.stopPropagation(); mockNotifs.forEach(n => { if (!deletedNotifs.includes(n.id)) deletedNotifs.push(n.id); }); saveNotifState(); renderNotifications(); showToast('Semua notifikasi dihapus'); };
+
+        /* ================= 4. TAB SWITCHER ================= */
+        window.switchTab = function (tab) {
+            currentTab = tab;
+            const tabItem = document.getElementById('tab-item');
+            const tabOutfit = document.getElementById('tab-outfit');
+            const contentItem = document.getElementById('content-item');
+            const contentOutfit = document.getElementById('content-outfit');
+
+            document.querySelectorAll('.search-sync').forEach(inp => inp.value = '');
+
+            if (tab === 'item') {
+                tabItem.className = "flex-1 sm:flex-none px-6 py-2 text-[13px] font-semibold rounded-full bg-white text-textDark shadow-sm transition-all flex items-center justify-center gap-2";
+                tabOutfit.className = "flex-1 sm:flex-none px-6 py-2 text-[13px] font-medium text-textMuted hover:text-textDark rounded-full transition-all flex items-center justify-center gap-2";
+                contentItem.classList.remove('hidden'); contentOutfit.classList.add('hidden');
+                renderLemariGrid();
+            } else {
+                tabOutfit.className = "flex-1 sm:flex-none px-6 py-2 text-[13px] font-semibold rounded-full bg-white text-textDark shadow-sm transition-all flex items-center justify-center gap-2";
+                tabItem.className = "flex-1 sm:flex-none px-6 py-2 text-[13px] font-medium text-textMuted hover:text-textDark rounded-full transition-all flex items-center justify-center gap-2";
+                contentOutfit.classList.remove('hidden'); contentItem.classList.add('hidden');
+                renderOutfitsGrid();
+            }
+        };
+
+        /* ================= 5. RENDER DATA (ITEM & OUTFIT) ================= */
+        async function fetchWardrobe() {
+            const { data } = await supabase.from('wardrobe').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
+            if (data) { wardrobeData = data; renderLemariGrid(); }
+        }
+
+        window.filterLemari = function (cat) {
+            document.querySelectorAll('.lemari-filter-btn').forEach(btn => {
+                if (btn.dataset.cat === cat) {
+                    btn.className = 'lemari-filter-btn px-4 py-2 bg-textDark text-white text-xs rounded-full font-medium shrink-0 shadow-sm transition-all';
+                } else {
+                    btn.className = 'lemari-filter-btn px-4 py-2 bg-surface border border-borderLight text-textMuted hover:text-textDark text-xs rounded-full font-medium shrink-0 transition-all';
+                }
+            });
+
+            document.querySelectorAll('.search-sync').forEach(inp => inp.value = '');
+            const filtered = cat === 'Semua' ? wardrobeData : wardrobeData.filter(i => i.category === cat);
+            renderGrid(filtered, 'lemari-grid-container', 'item');
+        };
+
+        window.renderLemariGrid = function (query = '') {
+            let filtered = wardrobeData;
+            if (query) filtered = wardrobeData.filter(i => i.name.toLowerCase().includes(query) || i.category.toLowerCase().includes(query));
+            renderGrid(filtered, 'lemari-grid-container', 'item');
+        };
+
+        async function fetchSavedOutfits() {
+            const { data } = await supabase.from('outfits').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
+            if (data) { savedOutfitsData = data; if (currentTab === 'outfit') renderOutfitsGrid(); }
+        }
+
+        window.renderOutfitsGrid = function (query = '') {
+            let filtered = savedOutfitsData;
+            if (query) filtered = savedOutfitsData.filter(o => o.name.toLowerCase().includes(query) || o.gaya.toLowerCase().includes(query));
+            renderGrid(filtered, 'outfit-grid-container', 'outfit');
+        };
+
+        function renderColorSwatches(colorString) {
+            if (!colorString) return '';
+            try {
+                let colors = colorString.startsWith('[') ? JSON.parse(colorString) : [colorString];
+                return `<div class="flex -space-x-1 items-center mt-1.5 px-1">${colors.map(c => `<div class="w-3 h-3 rounded-full border border-borderLight shadow-sm" style="background-color: ${c}" title="${c}"></div>`).join('')}</div>`;
+            } catch (e) { return ''; }
+        }
+
+        function generateMiniCollage(l) {
+            return `
+                ${l.dresses ? `<img src="${l.dresses}" class="absolute top-[6%] left-[22%] w-[55%] object-contain z-20 blend-multiply">` : ''}
+                ${l.atasan ? `<img src="${l.atasan}" class="absolute top-[6%] left-[10%] w-[55%] object-contain z-10 blend-multiply">` : ''}
+                ${l.bawahan ? `<img src="${l.bawahan}" class="absolute top-[28%] right-[8%] w-[45%] object-contain z-0 blend-multiply">` : ''}
+                ${l.outer ? `<img src="${l.outer}" class="absolute top-[2%] right-[5%] w-[55%] object-contain z-30 opacity-90 blend-multiply">` : ''}
+                ${l.tas ? `<img src="${l.tas}" class="absolute bottom-[6%] left-[4%] w-[32%] object-contain z-40 blend-multiply">` : ''}
+                ${l.aksesoris ? `<img src="${l.aksesoris}" class="absolute bottom-[4%] left-[38%] w-[25%] object-contain z-50 blend-multiply">` : ''}
+                ${l.sepatu ? `<img src="${l.sepatu}" class="absolute bottom-[6%] right-[12%] w-[38%] object-contain z-10 blend-multiply">` : ''}
+            `;
+        }
+
+        function renderGrid(data, containerId, type) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            if (data.length === 0) {
+                container.innerHTML = `<div class="col-span-full py-16 text-center text-textMuted text-sm border border-dashed border-borderLight rounded-3xl">Tidak ada ${type === 'item' ? 'pakaian' : 'kombinasi outfit'} yang ditemukan.</div>`;
+                return;
+            }
+
+            if (type === 'item') {
+                container.innerHTML = data.map(item => `
+                <div class="bg-surface border border-borderLight rounded-2xl p-3 flex flex-col hover:shadow-md hover:border-primary/30 transition-all relative group">
+                    <div class="h-36 w-full flex items-center justify-center mb-3 bg-[#FBFBFA] rounded-xl p-2 relative overflow-hidden border border-borderLight/30 cursor-pointer">
+                        <div class="absolute top-2 right-2 z-20 action-dropdown-container opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
+                            <button class="p-1.5 bg-white/90 backdrop-blur-sm rounded-full shadow-sm text-textMuted hover:text-textDark action-opts">
+                                <i class="ph-bold ph-dots-three text-sm pointer-events-none"></i>
+                            </button>
+                            <div class="dropdown-menu absolute right-0 top-8 w-32 bg-white rounded-xl shadow-float border border-borderLight py-2 hidden z-30 origin-top-right scale-95 opacity-0 transition-all duration-200">
+                                <button class="w-full text-left px-4 py-2 text-xs font-medium text-textDark hover:bg-bgSoft hover:text-primary flex items-center gap-2 btn-edit-item" data-item='${encodeURIComponent(JSON.stringify(item))}'><i class="ph-bold ph-pencil-simple text-sm"></i> Edit</button>
+                                <div class="h-px bg-borderLight/50 my-1"></div>
+                                <button class="w-full text-left px-4 py-2 text-xs font-medium text-red-500 hover:bg-red-50 flex items-center gap-2 btn-delete-item" data-id="${item.id}" data-url="${item.image_url}"><i class="ph-bold ph-trash text-sm"></i> Hapus</button>
+                            </div>
+                        </div>
+                        <img src="${item.image_url}" class="max-h-full max-w-full mix-blend-multiply object-contain group-hover:scale-105 transition-transform" crossorigin="anonymous">
+                    </div>
+                    <div class="text-[13px] font-semibold text-textDark truncate px-1">${item.name}</div>
+                    <div class="text-[10px] text-textMuted px-1 mt-0.5">${item.category}</div>
+                    ${renderColorSwatches(item.dominant_color)}
+                </div>`).join('');
+            } else {
+                container.innerHTML = data.map(o => {
+                    let layout = {}; try { layout = JSON.parse(o.image_urls); } catch (e) { }
+                    return `
+                    <div class="bg-surface border border-borderLight rounded-[1.5rem] p-4 flex flex-col hover:shadow-md hover:border-primary/40 transition-all cursor-pointer group">
+                        <div class="w-full aspect-square bg-[#FBFBFA] rounded-[1.25rem] border border-borderLight/30 relative overflow-hidden mb-4">
+                            ${generateMiniCollage(layout)}
+                        </div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-bold text-sm text-textDark group-hover:text-primary transition-colors">${o.name}</h4>
+                                <p class="text-[10px] text-textMuted mt-1">${o.gaya} &bull; ${o.acara}</p>
+                            </div>
+                            <div class="relative action-dropdown-container">
+                                <button class="p-2 text-gray-400 hover:text-textDark rounded-full hover:bg-bgSoft transition-colors action-opts"><i class="ph-bold ph-dots-three text-lg pointer-events-none"></i></button>
+                                <div class="dropdown-menu absolute right-0 top-10 w-40 bg-white rounded-xl shadow-float border border-borderLight py-2 hidden z-10 origin-top-right scale-95 opacity-0 transition-all duration-200">
+                                    <button class="w-full text-left px-4 py-2 text-xs font-medium text-textDark hover:bg-bgSoft hover:text-primary flex items-center gap-2 btn-edit-outfit" data-outfit='${encodeURIComponent(JSON.stringify(o))}'><i class="ph-bold ph-pencil-simple text-sm"></i> Edit Outfit</button>
+                                    <button class="w-full text-left px-4 py-2 text-xs font-medium text-textDark hover:bg-bgSoft hover:text-primary flex items-center gap-2 btn-schedule-outfit" data-outfit='${encodeURIComponent(JSON.stringify(o))}'><i class="ph-bold ph-calendar-plus text-sm"></i> Jadwalkan</button>
+                                    <div class="h-px bg-borderLight/50 my-1"></div>
+                                    <button class="w-full text-left px-4 py-2 text-xs font-medium text-red-500 hover:bg-red-50 flex items-center gap-2 btn-delete-outfit" data-id="${o.id}"><i class="ph-bold ph-trash text-sm"></i> Hapus</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                }).join('');
+            }
+        }
+
+        /* ================= 6. HAPUS DATA ================= */
+        window.hapusItem = async function (id, imageUrl) {
+            if (!confirm("Yakin ingin menghapus item ini dari lemari?")) return;
+            try {
+                const fileName = imageUrl.split('/').pop();
+                await supabase.from('wardrobe').delete().eq('id', id);
+                await supabase.storage.from('wardrobe').remove([`${currentUser.id}/${fileName}`]);
+                showToast('Item berhasil dihapus', 'success');
+                document.querySelectorAll('.search-sync').forEach(inp => inp.value = ''); // Reset Search
+                await fetchWardrobe();
+            } catch (e) { showToast('Gagal menghapus item.', 'error'); }
+        };
+
+        window.hapusOutfit = async function (id) {
+            if (!confirm('Hapus kombinasi outfit ini?')) return;
+            try {
+                await supabase.from('outfits').delete().eq('id', id);
+                showToast('Kombinasi dihapus', 'success');
+                document.querySelectorAll('.search-sync').forEach(inp => inp.value = ''); // Reset Search
+                await fetchSavedOutfits();
+            } catch (e) { showToast('Gagal menghapus.', 'error'); }
+        };
+
+        /* ================= 7. UPLOAD / EDIT ITEM LOGIC ================= */
+        window.openUploadModal = function (isEdit = false, itemData = null) {
+            const modal = document.getElementById('upload-modal'); const modalContent = document.getElementById('upload-modal-content');
+            if (!modal) return;
+
+            document.getElementById('file-upload').value = "";
+            document.getElementById('toggle-remove-bg').checked = false;
+            uploadFile = null; detectedColorPalette = [];
+
+            if (isEdit && itemData) {
+                currentEditItemId = itemData.id; currentEditItemImg = itemData.image_url;
+                try { detectedColorPalette = JSON.parse(itemData.dominant_color || '[]'); } catch (e) { }
+
+                document.getElementById('modal-item-title').innerText = "Edit Item";
+                document.getElementById('input-item-name').value = itemData.name;
+
+                document.querySelectorAll('.modal-cat-btn').forEach(b => { b.classList.remove('bg-primary/10', 'border-transparent', 'ring-2', 'ring-primary/30'); b.classList.add('bg-surface', 'border-borderLight'); });
+                const parentGroup = Array.from(document.querySelectorAll('#modal-category-list .group')).find(g => g.querySelector('span').innerText === itemData.category);
+                if (parentGroup) {
+                    selectedUploadCat = itemData.category;
+                    const btn = parentGroup.querySelector('.modal-cat-btn');
+                    btn.classList.remove('bg-surface', 'border-borderLight'); btn.classList.add('bg-primary/10', 'border-transparent', 'ring-2', 'ring-primary/30');
+                }
+
+                document.getElementById('upload-preview-area').classList.remove('hidden');
+                document.getElementById('upload-preview-img').src = itemData.image_url;
+                const badge = document.getElementById('color-detected-badge');
+                if (detectedColorPalette.length > 0) {
+                    badge.innerHTML = detectedColorPalette.map(hex => `<div class="w-3 h-3 rounded-full border border-borderLight shadow-sm" style="background-color: ${hex}"></div>`).join('');
+                    badge.classList.remove('hidden');
+                } else { badge.classList.add('hidden'); }
+            } else {
+                currentEditItemId = null; currentEditItemImg = null;
+                document.getElementById('modal-item-title').innerText = "Tambah Item";
+                document.getElementById('input-item-name').value = "";
+                document.getElementById('upload-preview-area').classList.add('hidden');
+                document.getElementById('color-detected-badge').classList.add('hidden');
+                selectedUploadCat = '';
+                document.querySelectorAll('.modal-cat-btn').forEach(btn => { btn.classList.remove('bg-primary/10', 'border-transparent', 'ring-2', 'ring-primary/30'); btn.classList.add('bg-surface', 'border-borderLight'); });
+            }
+
+            modal.classList.remove('hidden'); modal.classList.add('flex'); setTimeout(() => { modal.classList.remove('opacity-0'); modalContent.classList.remove('scale-95'); }, 10);
+        };
+
+        window.closeUploadModal = function () {
+            const modal = document.getElementById('upload-modal'); const modalContent = document.getElementById('upload-modal-content');
+            modal.classList.add('opacity-0'); modalContent.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); uploadFile = null; detectedColorPalette = []; currentEditItemId = null; }, 300);
+        };
+
+        window.selectModalCategory = function (element, catName) {
+            selectedUploadCat = catName;
+            document.querySelectorAll('.modal-cat-btn').forEach(btn => { btn.classList.remove('bg-primary/10', 'border-transparent', 'ring-2', 'ring-primary/30'); btn.classList.add('bg-surface', 'border-borderLight'); });
+            const activeBtn = element.querySelector('.modal-cat-btn');
+            activeBtn.classList.remove('bg-surface', 'border-borderLight'); activeBtn.classList.add('bg-primary/10', 'border-transparent', 'ring-2', 'ring-primary/30');
+        };
+
+        window.handleFileUpload = function (input) {
+            if (input.files && input.files[0]) {
+                uploadFile = input.files[0];
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const imgEl = document.getElementById('upload-preview-img'); imgEl.src = e.target.result;
+                    document.getElementById('upload-preview-area').classList.remove('hidden');
+                    const badge = document.getElementById('color-detected-badge'); badge.innerHTML = ''; badge.classList.add('hidden');
+                    const detectColors = () => {
+                        try {
+                            const rgbPalette = colorThief.getPalette(imgEl, 3);
+                            detectedColorPalette = rgbPalette.map(rgb => rgbToHex(rgb[0], rgb[1], rgb[2]));
+                            badge.innerHTML = detectedColorPalette.map(hex => `<div class="w-3 h-3 rounded-full border border-borderLight shadow-sm" style="background-color: ${hex}"></div>`).join('');
+                            badge.classList.remove('hidden');
+                        } catch (err) { }
+                    };
+                    if (imgEl.complete) { detectColors(); } else { imgEl.onload = detectColors; }
+                }
+                reader.readAsDataURL(uploadFile);
+            }
+        };
+
+        window.removeUploadPreview = function (event) {
+            event.stopPropagation(); document.getElementById('file-upload').value = ""; document.getElementById('upload-preview-area').classList.add('hidden');
+            document.getElementById('color-detected-badge').classList.add('hidden'); uploadFile = null; detectedColorPalette = [];
+            if (currentEditItemId) { currentEditItemImg = null; }
+        };
+
+        async function processBackgroundRemoval(file) {
+            const formData = new FormData(); formData.append('image_file', file); formData.append('size', 'auto');
+            const response = await fetch('https://api.remove.bg/v1.0/removebg', { method: 'POST', headers: { 'X-Api-Key': REMOVE_BG_API_KEY }, body: formData });
+            if (!response.ok) throw new Error('Gagal hapus background. Limit API Key mungkin habis.');
+            return await response.blob();
+        }
+
+        window.saveNewItem = async function () {
+            const btn = document.getElementById('btn-simpan-item');
+            const name = document.getElementById('input-item-name').value;
+            const isRemoveBg = document.getElementById('toggle-remove-bg').checked;
+
+            if (!name || !selectedUploadCat) { showToast('Lengkapi nama dan kategori!', 'error'); return; }
+            if (!currentEditItemId && !uploadFile) { showToast('Harap upload foto item!', 'error'); return; }
+            if (currentEditItemId && !currentEditItemImg && !uploadFile) { showToast('Harap upload foto item pengganti!', 'error'); return; }
+
+            btn.disabled = true; btn.classList.add('opacity-70', 'cursor-not-allowed');
+
+            try {
+                let finalImageUrl = currentEditItemImg;
+                let finalColorData = (detectedColorPalette && detectedColorPalette.length > 0) ? detectedColorPalette : ['#EAE6E1'];
+
+                if (uploadFile) {
+                    btn.innerHTML = '<i class="ph-bold ph-spinner animate-spin text-lg"></i> Memproses Foto...';
+                    let fileToPush = uploadFile; let fileName = `${Date.now()}_${uploadFile.name.replace(/\s+/g, '_')}`; let contentType = uploadFile.type;
+
+                    if (isRemoveBg) {
+                        fileToPush = await processBackgroundRemoval(uploadFile); fileName = `${Date.now()}_nobg.png`; contentType = 'image/png';
+
+                        const tempImg = new Image(); const objectUrl = URL.createObjectURL(fileToPush);
+                        tempImg.crossOrigin = "Anonymous"; tempImg.src = objectUrl;
+                        await new Promise((resolve, reject) => { tempImg.onload = resolve; tempImg.onerror = reject; });
+                        try { const rgbPalette = colorThief.getPalette(tempImg, 3); if (rgbPalette && rgbPalette.length > 0) { finalColorData = rgbPalette.map(rgb => rgbToHex(rgb[0], rgb[1], rgb[2])); } } catch (err) { } finally { URL.revokeObjectURL(objectUrl); }
+                    }
+
+                    const { error: uploadError } = await supabase.storage.from('wardrobe').upload(`${currentUser.id}/${fileName}`, fileToPush, { contentType: contentType });
+                    if (uploadError) throw uploadError;
+
+                    const { data: publicUrlData } = supabase.storage.from('wardrobe').getPublicUrl(`${currentUser.id}/${fileName}`);
+                    finalImageUrl = publicUrlData.publicUrl;
+                }
+
+                const colorString = JSON.stringify(finalColorData);
+
+                if (currentEditItemId) {
+                    const { error: dbError } = await supabase.from('wardrobe').update({ name: name, category: selectedUploadCat, image_url: finalImageUrl, dominant_color: colorString }).eq('id', currentEditItemId);
+                    if (dbError) throw dbError;
+                    showToast('Item berhasil diperbarui!', 'success');
+                } else {
+                    const { error: dbError } = await supabase.from('wardrobe').insert([{ user_id: currentUser.id, name: name, category: selectedUploadCat, image_url: finalImageUrl, dominant_color: colorString }]);
+                    if (dbError) throw dbError;
+                    showToast('Item berhasil ditambahkan!', 'success');
+                }
+
+                closeUploadModal();
+                document.querySelectorAll('.search-sync').forEach(inp => inp.value = ''); // Reset Search
+                await fetchWardrobe();
+            } catch (error) {
+                showToast(error.message || 'Terjadi kesalahan sistem.', 'error');
+            } finally {
+                btn.disabled = false; btn.classList.remove('opacity-70', 'cursor-not-allowed'); btn.innerHTML = 'Simpan Item';
+            }
+        };
+
+        /* ================= 8. MODAL SIMPAN OUTFIT (SAVE & EDIT) ================= */
+        window.openSaveModal = function (isEdit = false, outfitData = null) {
+            const saveModal = document.getElementById('save-modal');
+            const saveModalContent = document.getElementById('save-modal-content');
+            const outfitNameInput = document.getElementById('outfit-name');
+            const outfitGayaInput = document.getElementById('outfit-gaya');
+            const outfitAcaraInput = document.getElementById('outfit-acara');
+            const outfitMusimInput = document.getElementById('outfit-musim');
+
+            if (!isEdit) {
+                currentEditOutfitId = null;
+                document.getElementById('modal-outfit-title').innerText = "Simpan Kombinasi";
+                if (outfitNameInput) outfitNameInput.value = '';
+                if (outfitGayaInput) outfitGayaInput.value = 'Casual';
+                if (outfitAcaraInput) outfitAcaraInput.value = 'Sehari-hari';
+                if (outfitMusimInput) outfitMusimInput.value = 'Semua Musim';
+            } else {
+                currentEditOutfitId = outfitData.id;
+                document.getElementById('modal-outfit-title').innerText = "Edit Kombinasi";
+                if (outfitNameInput) outfitNameInput.value = outfitData.name;
+                if (outfitGayaInput) outfitGayaInput.value = outfitData.gaya || 'Casual';
+                if (outfitAcaraInput) outfitAcaraInput.value = outfitData.acara || 'Sehari-hari';
+                if (outfitMusimInput) outfitMusimInput.value = outfitData.musim || 'Semua Musim';
+            }
+
+            if (!saveModal) return; saveModal.classList.remove('hidden'); saveModal.classList.add('flex');
+            setTimeout(() => { saveModal.classList.remove('opacity-0'); if (saveModalContent) saveModalContent.classList.remove('scale-95'); }, 10);
+            if (outfitNameInput) outfitNameInput.focus();
+        }
+
+        window.closeSaveModal = function () {
+            const saveModal = document.getElementById('save-modal'); const saveModalContent = document.getElementById('save-modal-content');
+            if (!saveModal) return; saveModal.classList.add('opacity-0'); if (saveModalContent) saveModalContent.classList.add('scale-95');
+            setTimeout(() => { saveModal.classList.add('hidden'); saveModal.classList.remove('flex'); currentEditOutfitId = null; }, 300);
+        }
+
+        document.getElementById('cancel-save').addEventListener('click', closeSaveModal);
+        document.getElementById('close-save-modal').addEventListener('click', closeSaveModal);
+
+        document.getElementById('confirm-save').addEventListener('click', async () => {
+            const outfitNameInput = document.getElementById('outfit-name');
+            let outfitName = 'Kombinasi Baru';
+            if (outfitNameInput && outfitNameInput.value.trim() !== '') { outfitName = outfitNameInput.value.trim(); }
+
+            const gayaVal = document.getElementById('outfit-gaya').value;
+            const acaraVal = document.getElementById('outfit-acara').value;
+            const musimVal = document.getElementById('outfit-musim').value;
+
+            try {
+                const btnText = document.getElementById('save-btn-text');
+                btnText.innerText = "Menyimpan...";
+
+                if (currentEditOutfitId) {
+                    const { error } = await supabase.from('outfits').update({
+                        name: outfitName, gaya: gayaVal, acara: acaraVal, musim: musimVal
+                    }).eq('id', currentEditOutfitId);
+                    if (error) throw error;
+                    showToast(`Outfit "${outfitName}" berhasil diperbarui!`);
+                }
+
+                closeSaveModal();
+                document.querySelectorAll('.search-sync').forEach(inp => inp.value = ''); // Reset Search
+                await fetchSavedOutfits();
+            } catch (error) { showToast('Gagal menyimpan ke database.', 'error'); }
+            finally { const btnText = document.getElementById('save-btn-text'); btnText.innerText = "Perbarui"; }
+        });
+
+        /* ================= 9. GLOBAL CLICKS (UI & DROPDOWNS) ================= */
+        window.toggleNotifications = function (e) { e.stopPropagation(); const d = document.getElementById('notif-dropdown'); d.classList.toggle('hidden'); setTimeout(() => d.classList.toggle('opacity-100'), 10); };
+        window.toggleProfileDropdown = function (e) { e.stopPropagation(); const d = document.getElementById('profile-menu'); const c = document.getElementById('profile-chevron'); d.classList.toggle('hidden'); setTimeout(() => { d.classList.toggle('opacity-100'); if (c) c.style.transform = d.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)'; }, 10); };
+        window.toggleMobileMore = function (e) { if (e) e.stopPropagation(); const d = document.getElementById('mobile-more-menu'); const c = document.getElementById('mobile-more-content'); if (d.classList.contains('hidden')) { d.classList.remove('hidden'); d.classList.add('flex'); setTimeout(() => { d.classList.remove('opacity-0'); c.classList.remove('translate-y-full'); }, 10); } else { d.classList.add('opacity-0'); c.classList.add('translate-y-full'); setTimeout(() => { d.classList.add('hidden'); d.classList.remove('flex'); }, 300); } }
+        window.logout = async function () { await supabase.auth.signOut(); window.location.href = 'auth.html'; }
+
+        document.addEventListener('click', (e) => {
+            const notif = document.getElementById('notif-dropdown'); if (notif && !notif.contains(e.target) && !e.target.closest('[onclick="toggleNotifications(event)"]')) { notif.classList.add('hidden'); notif.classList.remove('opacity-100'); }
+            const prof = document.getElementById('profile-menu'); const profC = document.getElementById('profile-chevron'); if (prof && !prof.contains(e.target) && !e.target.closest('#profile-dropdown-wrapper')) { prof.classList.add('hidden'); prof.classList.remove('opacity-100'); if (profC) profC.style.transform = 'rotate(0deg)'; }
+            const mobM = document.getElementById('mobile-more-menu'); const mobC = document.getElementById('mobile-more-content'); if (mobM && !mobM.classList.contains('hidden') && !mobC.contains(e.target) && !e.target.closest('[onclick*="toggleMobileMore"]')) { toggleMobileMore(); }
+            const upM = document.getElementById('upload-modal'); const upC = document.getElementById('upload-modal-content'); if (upM && !upM.classList.contains('hidden') && !upC.contains(e.target) && !e.target.closest('[onclick*="openUploadModal"]')) { closeUploadModal(); }
+            const savM = document.getElementById('save-modal'); const savC = document.getElementById('save-modal-content'); if (savM && !savM.classList.contains('hidden') && !savC.contains(e.target)) { closeSaveModal(); }
+
+            if (!e.target.closest('.action-dropdown-container') && !e.target.closest('.action-opts')) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => { menu.classList.remove('opacity-100', 'scale-100'); menu.classList.add('opacity-0', 'scale-95'); setTimeout(() => menu.classList.add('hidden'), 200); });
+            }
+
+            if (e.target.closest('.action-opts')) {
+                e.stopPropagation(); const container = e.target.closest('.action-dropdown-container'); const menu = container.querySelector('.dropdown-menu');
+                document.querySelectorAll('.dropdown-menu').forEach(m => { if (m !== menu) { m.classList.remove('opacity-100', 'scale-100'); m.classList.add('opacity-0', 'scale-95'); setTimeout(() => m.classList.add('hidden'), 200); } });
+                if (menu.classList.contains('hidden')) { menu.classList.remove('hidden'); setTimeout(() => { menu.classList.remove('opacity-0', 'scale-95'); menu.classList.add('opacity-100', 'scale-100'); }, 10); } else { menu.classList.remove('opacity-100', 'scale-100'); menu.classList.add('opacity-0', 'scale-95'); setTimeout(() => menu.classList.add('hidden'), 200); }
+            }
+
+            // Aksi Koleksi Item
+            if (e.target.closest('.btn-delete-item')) {
+                e.stopPropagation(); const btn = e.target.closest('.btn-delete-item'); const id = btn.getAttribute('data-id'); const url = btn.getAttribute('data-url');
+                hapusItem(id, url);
+            }
+            if (e.target.closest('.btn-edit-item')) {
+                e.stopPropagation(); const btn = e.target.closest('.btn-edit-item'); const itemData = JSON.parse(decodeURIComponent(btn.getAttribute('data-item')));
+                const card = btn.closest('.group'); const menu = card.querySelector('.dropdown-menu');
+                if (menu) { menu.classList.remove('opacity-100', 'scale-100'); menu.classList.add('opacity-0', 'scale-95'); setTimeout(() => menu.classList.add('hidden'), 200); }
+                openUploadModal(true, itemData);
+            }
+
+            // Aksi Kombinasi Outfit
+            if (e.target.closest('.btn-delete-outfit')) {
+                e.stopPropagation(); const btn = e.target.closest('.btn-delete-outfit'); const outfitId = btn.getAttribute('data-id');
+                hapusOutfit(outfitId);
+            }
+            if (e.target.closest('.btn-edit-outfit')) {
+                e.stopPropagation(); const btn = e.target.closest('.btn-edit-outfit'); const outfitData = JSON.parse(decodeURIComponent(btn.getAttribute('data-outfit')));
+                const card = btn.closest('.group'); const menu = card.querySelector('.dropdown-menu');
+                if (menu) { menu.classList.remove('opacity-100', 'scale-100'); menu.classList.add('opacity-0', 'scale-95'); setTimeout(() => menu.classList.add('hidden'), 200); }
+                openSaveModal(true, outfitData);
+            }
+            if (e.target.closest('.btn-schedule-outfit')) {
+                e.stopPropagation(); const btn = e.target.closest('.btn-schedule-outfit'); const outfitDataStr = btn.getAttribute('data-outfit');
+                localStorage.setItem('pendingScheduleOutfit', decodeURIComponent(outfitDataStr)); showToast('Mengalihkan ke Kalender...'); setTimeout(() => { window.location.href = 'kalender.html'; }, 600);
+            }
+        });
+    </script>
+</body>
+
+</html>

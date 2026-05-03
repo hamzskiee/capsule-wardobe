@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Phosphor Icons Saja -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        background: '#FAF9F7', surface: '#FFFFFF', primary: '#9D8371',
+                        primaryHover: '#8A7363', textDark: '#1C1C1C', textMuted: '#7A7A7A',
+                        borderLight: '#F0EBE6', bgSoft: '#FBFBFA', dark: '#2D2D2D'
+                    },
+                    fontFamily: { sans: ['Poppins', 'system-ui', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .transition-all {
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 300ms;
+        }
+
+        .card-rounded {
+            border-radius: 1.5rem;
+        }
+
+        .page-transition {
+            animation: fadeInView 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeInView {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Toast Animation */
+        @keyframes slideUpFade {
+            from {
+                opacity: 0;
+                transform: translateY(20px) translateX(-50%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) translateX(-50%);
+            }
+        }
+
+        .toast-enter {
+            animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+    </style>
+    <title>Pengaturan - Capsule Wardrobe</title>
+</head>
+
+<body class="bg-background text-textDark font-sans h-[100dvh] flex overflow-hidden">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-5 right-5 z-[200] flex flex-col gap-3 pointer-events-none"></div>
+
+    <!-- Sidebar Desktop -->
+    <aside
+        class="w-64 bg-surface border-r border-borderLight flex-col hidden lg:flex h-full z-20 shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.01)]">
+        <div class="p-8">
+            <!-- Logo -->
+            <div class="flex items-center gap-2 group cursor-pointer" onclick="window.location.href='dashboard.html'">
+                <i class="ph ph-coat-hanger text-4xl text-primary group-hover:text-primaryHover transition-colors"></i>
+                <div class="leading-tight text-left">
+                    <h1 class="font-semibold text-xl tracking-tight text-textDark">Capsule</h1>
+                    <p class="text-[10px] text-textMuted uppercase tracking-widest font-medium">Wardrobe</p>
+                </div>
+            </div>
+        </div>
+        <nav class="flex-1 px-4 space-y-1 overflow-y-auto no-scrollbar pb-8">
+            <a href="dashboard.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-[#F8F7F4] hover:text-textDark rounded-xl font-medium transition-all"><i
+                    class="ph ph-house text-xl"></i> Beranda</a>
+            <a href="lemari.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-[#F8F7F4] hover:text-textDark rounded-xl font-medium transition-all"><i
+                    class="ph ph-t-shirt text-xl"></i> Lemari Saya</a>
+            <a href="mix&match.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-[#F8F7F4] hover:text-textDark rounded-xl font-medium transition-all"><i
+                    class="ph ph-magic-wand text-xl"></i> Mix & Match</a>
+            <a href="kalender.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-[#F8F7F4] hover:text-textDark rounded-xl font-medium transition-all"><i
+                    class="ph ph-calendar text-xl"></i> Kalender Outfit</a>
+            <a href="inspirasi.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-[#F8F7F4] hover:text-textDark rounded-xl font-medium transition-all"><i
+                    class="ph ph-lightbulb text-xl"></i> Inspirasi</a>
+            <a href="statistik.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-[#F8F7F4] hover:text-textDark rounded-xl font-medium transition-all"><i
+                    class="ph ph-chart-bar text-xl"></i> Statistik</a>
+            <a href="wishlist.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-[#F8F7F4] hover:text-textDark rounded-xl font-medium transition-all"><i
+                    class="ph ph-heart text-xl"></i> Wishlist</a>
+
+            <!-- Active Menu -->
+            <a href="#"
+                class="nav-link flex items-center gap-3 px-4 py-3 bg-[#EAE6E1] text-textDark rounded-xl font-semibold transition-all shadow-sm mt-4"><i
+                    class="ph-fill ph-gear text-xl text-primary"></i> Pengaturan</a>
+        </nav>
+        <div class="p-6 mt-auto">
+            <div
+                class="bg-[#F8F7F4] border border-borderLight p-5 rounded-2xl relative overflow-hidden group cursor-pointer hover:border-primary/40 transition-colors">
+                <i data-lucide="gem"
+                    class="w-16 h-16 text-primary/5 absolute -right-2 -bottom-2 group-hover:scale-110 transition-transform duration-500"></i>
+                <p class="text-[13px] font-light text-textDark mb-1 relative z-10"><span
+                        class="font-bold text-textDark">Minimal</span> items,</p>
+                <p class="text-[13px] font-light text-textDark mb-2 relative z-10"><span
+                        class="font-bold text-primary">maximum</span> style.</p>
+                <p class="text-[10px] text-textMuted relative z-10 leading-relaxed">Bangun gaya terbaikmu dengan koleksi yang
+                    bermakna.</p>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="lg:hidden fixed bottom-0 left-0 w-full bg-surface/90 backdrop-blur-lg border-t border-borderLight z-40 flex justify-around py-3 px-2 pb-6 md:pb-4 text-[10px] shadow-[0_-10px_40px_rgba(0,0,0,0.03)]"
+        id="mobile-nav">
+        <a href="dashboard.html"
+            class="mobile-nav-link flex flex-col items-center gap-1.5 text-textMuted hover:text-textDark transition-all relative font-medium"><i
+                class="ph ph-house text-xl md:text-2xl"></i>Beranda</a>
+        <a href="lemari.html"
+            class="mobile-nav-link flex flex-col items-center gap-1.5 text-textMuted hover:text-textDark transition-all relative font-medium"><i
+                class="ph ph-t-shirt text-xl md:text-2xl"></i>Lemari</a>
+        <a href="mix&match.html"
+            class="mobile-nav-link flex flex-col items-center gap-1.5 text-textMuted hover:text-textDark transition-all relative font-medium"><i
+                class="ph ph-magic-wand text-xl md:text-2xl"></i>Mix & Match</a>
+        <a href="kalender.html"
+            class="mobile-nav-link flex flex-col items-center gap-1.5 text-textMuted hover:text-textDark transition-all relative font-medium"><i
+                class="ph ph-calendar-blank text-xl md:text-2xl"></i>Kalender</a>
+        <!-- Tombol Lainnya Aktif -->
+        <button onclick="toggleMobileMore()"
+            class="mobile-nav-link flex flex-col items-center gap-1.5 text-primary transition-all relative font-semibold focus:outline-none"><i
+                class="ph-fill ph-squares-four text-xl md:text-2xl text-primary"></i>Lainnya</button>
+    </nav>
+
+    <!-- Mobile Bottom Sheet Menu (Lainnya) -->
+    <div id="mobile-more-menu"
+        class="fixed inset-0 bg-dark/60 backdrop-blur-sm z-[200] hidden flex-col justify-end opacity-0 transition-opacity duration-300 lg:hidden">
+        <div id="mobile-more-content"
+            class="bg-surface w-full rounded-t-[2rem] p-6 transform translate-y-full transition-transform duration-300 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] flex flex-col">
+            <div class="w-12 h-1.5 bg-borderLight rounded-full mx-auto mb-6"></div>
+            <h3 class="text-lg font-bold text-textDark mb-6 font-display">Menu Lainnya</h3>
+
+            <div class="grid grid-cols-4 gap-4 mb-2">
+                <a href="wishlist.html" class="flex flex-col items-center gap-2 group">
+                    <div
+                        class="w-14 h-14 rounded-[1.25rem] bg-bgSoft border border-borderLight flex items-center justify-center text-textMuted group-hover:text-primary group-hover:border-primary/30 transition-all shadow-sm">
+                        <i class="ph ph-heart text-2xl"></i>
+                    </div>
+                    <span class="text-[10px] font-medium text-textDark">Wishlist</span>
+                </a>
+                <a href="inspirasi.html" class="flex flex-col items-center gap-2 group">
+                    <div
+                        class="w-14 h-14 rounded-[1.25rem] bg-bgSoft border border-borderLight flex items-center justify-center text-textMuted group-hover:text-primary group-hover:border-primary/30 transition-all shadow-sm">
+                        <i class="ph ph-lightbulb text-2xl"></i>
+                    </div>
+                    <span class="text-[10px] font-medium text-textDark">Inspirasi</span>
+                </a>
+                <a href="statistik.html" class="flex flex-col items-center gap-2 group">
+                    <div
+                        class="w-14 h-14 rounded-[1.25rem] bg-bgSoft border border-borderLight flex items-center justify-center text-textMuted group-hover:text-primary group-hover:border-primary/30 transition-all shadow-sm">
+                        <i class="ph ph-chart-bar text-2xl"></i>
+                    </div>
+                    <span class="text-[10px] font-medium text-textDark">Statistik</span>
+                </a>
+                <!-- Pengaturan Aktif -->
+                <a href="#" class="flex flex-col items-center gap-2 group">
+                    <div
+                        class="w-14 h-14 rounded-[1.25rem] bg-primary/10 border border-primary/30 flex items-center justify-center text-primary transition-all shadow-sm">
+                        <i class="ph-fill ph-gear text-2xl text-primary"></i>
+                    </div>
+                    <span class="text-[10px] font-semibold text-primary">Pengaturan</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <main class="flex-1 flex flex-col h-full relative overflow-hidden bg-background">
+
+        <!-- Navbar Utama -->
+        <header
+            class="bg-background/90 backdrop-blur-md sticky top-0 z-40 px-6 md:px-10 py-5 flex items-center justify-between border-b border-borderLight/50">
+
+            <!-- Mobile Header Logo -->
+            <div class="flex items-center gap-2 lg:hidden cursor-pointer"
+                onclick="window.location.href='dashboard.html'">
+                <i class="ph ph-coat-hanger text-3xl text-primary"></i>
+                <div class="leading-tight text-left">
+                    <h1 class="font-semibold text-lg tracking-tight text-textDark">Capsule</h1>
+                    <p class="text-[10px] text-textMuted uppercase tracking-widest font-medium">Wardrobe</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 md:gap-6 ml-auto shrink-0">
+                <!-- Notification Bell & Dropdown -->
+                <div class="relative">
+                    <button onclick="toggleNotifications(event)"
+                        class="p-2 text-textDark hover:bg-surface rounded-full transition-all relative border border-transparent hover:border-borderLight">
+                        <i class="ph ph-bell text-xl"></i>
+                        <span id="notif-badge-dot"
+                            class="hidden absolute top-1.5 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-background"></span>
+                    </button>
+                    <!-- Notif Dropdown Panel (Konsisten dengan file lain) -->
+                    <div id="notif-dropdown"
+                        class="hidden absolute right-[-40px] sm:right-0 mt-3 w-[300px] sm:w-[400px] bg-surface border border-borderLight rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.08)] z-50 overflow-hidden transform opacity-0 scale-95 transition-all duration-200 origin-top-right flex flex-col">
+                        <div
+                            class="p-4 sm:p-5 border-b border-borderLight flex justify-between items-center bg-surface">
+                            <span class="font-bold text-sm sm:text-[15px] text-textDark font-display">Notifikasi</span>
+                            <span id="notif-count-badge"
+                                class="text-[10px] font-bold bg-[#F4EFEA] text-[#8A7363] px-3 py-1.5 rounded-lg tracking-wide">0
+                                BARU</span>
+                        </div>
+                        <div class="max-h-[350px] overflow-y-auto hide-scrollbar" id="notif-list-container">
+                            <div class="p-6 text-center text-sm text-textMuted">Memuat notifikasi...</div>
+                        </div>
+                        <div
+                            class="p-3 sm:p-4 border-t border-borderLight bg-surface flex justify-between items-center">
+                            <button onclick="markAllReadNotif()"
+                                class="text-xs sm:text-[13px] font-semibold text-[#8A7363] hover:text-[#9D8371] transition-colors">Tandai
+                                semua dibaca</button>
+                            <button onclick="deleteAllNotif(event)"
+                                class="text-xs sm:text-[13px] font-semibold text-red-500 hover:text-red-600 transition-colors">Hapus
+                                semua</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Profile Dropdown -->
+                <div class="relative" id="profile-dropdown-wrapper">
+                    <div onclick="toggleProfileDropdown(event)"
+                        class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity pl-2 sm:pl-4 border-l border-borderLight">
+                        <div
+                            class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gray-200 overflow-hidden shadow-sm shrink-0 border border-borderLight">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
+                                alt="Profile" id="header-avatar" class="w-full h-full object-cover">
+                        </div>
+                        <div class="text-sm font-medium hidden md:flex items-center gap-1 text-textDark">
+                            <span id="user-name-header">User</span>
+                            <i class="ph-bold ph-caret-down text-xs text-textMuted transition-transform duration-300"
+                                id="profile-chevron"></i>
+                        </div>
+                    </div>
+                    <!-- Profile Menu -->
+                    <div id="profile-menu"
+                        class="hidden absolute right-0 mt-3 w-52 bg-surface border border-borderLight rounded-2xl shadow-xl z-50 overflow-hidden opacity-0 transform scale-95 transition-all duration-200">
+                        <div class="p-4 border-b border-borderLight bg-bgSoft/30">
+                            <p class="text-[10px] text-textMuted uppercase tracking-widest font-bold">Akun Saya</p>
+                            <p id="user-email-header" class="text-xs text-textDark font-medium truncate mt-1">email</p>
+                        </div>
+                        <div class="p-2">
+                            <button onclick="window.location.href='pengaturan.html'"
+                                class="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-textDark hover:bg-bgSoft rounded-xl transition-colors text-left group">
+                                <i
+                                    class="ph-bold ph-gear text-base text-textMuted group-hover:text-primary transition-colors"></i>
+                                <span>Pengaturan</span>
+                            </button>
+                            <div class="h-px bg-borderLight/50 my-1 mx-2"></div>
+                            <button id="btn-logout-header"
+                                class="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-red-500 hover:bg-red-50 rounded-xl transition-colors text-left group">
+                                <i
+                                    class="ph-bold ph-sign-out text-base text-red-400 group-hover:text-red-600 transition-colors"></i>
+                                <span class="font-semibold">Keluar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto no-scrollbar px-5 md:px-10 pb-28 md:pb-12 scroll-smooth"
+            id="main-scroll-area">
+            <div class="page-transition">
+
+                <!-- Header Halaman -->
+                <div class="mt-6 mb-8 max-w-3xl mx-auto">
+                    <h2 class="text-2xl md:text-3xl font-semibold mb-2 flex items-center gap-3">Pengaturan <i
+                            class="ph-fill ph-gear text-2xl text-primary"></i></h2>
+                    <p class="text-textMuted text-sm">Sesuaikan profil dan preferensi aplikasi Anda.</p>
+                </div>
+
+                <div class="max-w-3xl mx-auto space-y-6">
+
+                    <!-- Profil Akun Card -->
+                    <div class="bg-surface card-rounded p-6 md:p-8 border border-borderLight shadow-sm">
+                        <h3 class="text-[13px] font-semibold text-textMuted uppercase tracking-widest mb-5">Profil Akun
+                        </h3>
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-16 h-16 rounded-full bg-bgSoft overflow-hidden shadow-sm shrink-0 border border-borderLight relative group">
+                                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
+                                        alt="Profile" id="settings-avatar" class="w-full h-full object-cover">
+                                </div>
+                                <div>
+                                    <div class="font-semibold text-lg text-textDark" id="user-full-name-settings">
+                                        Memuat...</div>
+                                    <div class="text-xs text-textMuted mt-0.5" id="user-email-settings">Memuat...</div>
+                                </div>
+                            </div>
+                            <button onclick="openEditProfileModal()"
+                                class="px-5 py-2.5 bg-primary text-white hover:bg-primaryHover rounded-full text-xs font-medium transition-colors shadow-sm flex items-center gap-2 justify-center">
+                                <i class="ph-bold ph-pencil-simple text-sm"></i> Edit Profil
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Pengaturan Umum Card -->
+                    <div class="bg-surface card-rounded p-6 md:p-8 border border-borderLight shadow-sm">
+                        <h3 class="text-[13px] font-semibold text-textMuted uppercase tracking-widest mb-5">Pengaturan
+                            Umum</h3>
+                        <div class="space-y-1">
+                            <div
+                                class="flex items-center justify-between p-3 -mx-3 hover:bg-bgSoft rounded-xl transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <i class="ph-bold ph-bell text-lg text-textDark"></i>
+                                    <span class="text-[13px] font-medium text-textDark">Notifikasi Push</span>
+                                </div>
+                                <div onclick="this.classList.toggle('bg-[#A28876]'); this.classList.toggle('bg-borderLight'); this.children[0].classList.toggle('right-1'); this.children[0].classList.toggle('left-1');"
+                                    class="w-12 h-6 bg-[#A28876] rounded-full relative cursor-pointer transition-colors shadow-inner shrink-0">
+                                    <div
+                                        class="w-4 h-4 bg-white rounded-full absolute top-1 right-1 shadow-sm transition-all">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 -mx-3 hover:bg-bgSoft rounded-xl cursor-pointer transition-colors"
+                                onclick="openSecurityModal()">
+                                <div class="flex items-center gap-3">
+                                    <i class="ph-bold ph-shield-check text-lg text-textMuted"></i>
+                                    <span class="text-[13px] font-medium text-textDark">Keamanan & Kata Sandi</span>
+                                </div>
+                                <i class="ph-bold ph-caret-right text-base text-borderLight"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bantuan & Dukungan Card -->
+                    <div class="bg-surface card-rounded p-6 md:p-8 border border-borderLight shadow-sm">
+                        <h3 class="text-[13px] font-semibold text-textMuted uppercase tracking-widest mb-5">Bantuan &
+                            Dukungan</h3>
+                        <div class="space-y-1">
+                            <div class="flex items-center justify-between p-3 -mx-3 hover:bg-bgSoft rounded-xl cursor-pointer transition-colors"
+                                onclick="openHelpModal()">
+                                <div class="flex items-center gap-3">
+                                    <i class="ph-bold ph-question text-lg text-textMuted"></i>
+                                    <span class="text-[13px] font-medium text-textDark">Pusat Bantuan & FAQ</span>
+                                </div>
+                                <i class="ph-bold ph-caret-right text-base text-borderLight"></i>
+                            </div>
+                            <div class="h-px bg-borderLight/50 my-2"></div>
+                            <div id="btn-logout-settings"
+                                class="flex items-center justify-between p-3 -mx-3 bg-red-50/50 hover:bg-red-50 rounded-xl cursor-pointer transition-colors border border-transparent hover:border-red-100">
+                                <div class="flex items-center gap-3 text-red-600">
+                                    <i class="ph-bold ph-sign-out text-lg"></i>
+                                    <span class="text-[13px] font-semibold">Keluar Akun</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <footer
+                    class="mt-16 pt-8 border-t border-borderLight flex flex-col md:flex-row justify-between items-center text-xs text-textMuted gap-4 pb-4 px-2 max-w-3xl mx-auto w-full">
+                    <p>&copy; <span id="footer-year">2026</span> Capsule Wardrobe. Didesain dengan presisi.</p>
+                    <div class="flex flex-wrap justify-center gap-6">
+                        <a href="#" class="hover:text-textDark transition-colors">Kebijakan Privasi</a>
+                        <a href="#" class="hover:text-textDark transition-colors">Syarat Ketentuan</a>
+                        <a href="#" class="hover:text-textDark transition-colors">Bantuan</a>
+                    </div>
+                </footer>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Edit Profil -->
+    <div id="edit-profile-modal"
+        class="fixed inset-0 bg-dark/70 backdrop-blur-sm z-[110] hidden flex items-center justify-center opacity-0 transition-opacity duration-300 p-4 sm:p-0">
+        <div class="bg-surface w-full max-w-[420px] sm:rounded-[2rem] rounded-3xl shadow-2xl transform scale-95 transition-transform duration-300 relative overflow-hidden flex flex-col max-h-[90vh] sm:max-h-[85vh]"
+            id="edit-profile-modal-content">
+
+            <div class="flex items-center px-6 py-5 border-b border-borderLight bg-surface sticky top-0 z-10">
+                <button onclick="closeEditProfileModal()"
+                    class="text-textDark hover:bg-bgSoft p-2 rounded-full transition-colors -ml-2">
+                    <i class="ph-bold ph-caret-left text-xl"></i>
+                </button>
+                <h3 class="flex-1 text-center text-base font-semibold text-textDark pr-8">Edit Profil</h3>
+            </div>
+
+            <div class="p-6 overflow-y-auto no-scrollbar flex-1 space-y-6 bg-surface flex flex-col items-center">
+
+                <!-- Ganti Foto -->
+                <div class="relative group cursor-pointer"
+                    onclick="document.getElementById('edit-avatar-upload').click()">
+                    <div
+                        class="w-24 h-24 rounded-full overflow-hidden shadow-sm border-4 border-surface ring-1 ring-borderLight relative bg-bgSoft">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
+                            alt="Avatar" id="modal-avatar-preview"
+                            class="w-full h-full object-cover group-hover:opacity-70 transition-opacity">
+                        <div
+                            class="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <i class="ph-fill ph-camera text-2xl text-white"></i>
+                        </div>
+                    </div>
+                    <div
+                        class="absolute bottom-0 right-0 w-7 h-7 bg-primary rounded-full flex items-center justify-center text-white border-2 border-surface shadow-sm">
+                        <i class="ph-bold ph-pencil-simple text-sm"></i>
+                    </div>
+                    <!-- INPUT FILE UNTUK UPLOAD FOTO (Maks 2MB) -->
+                    <input type="file" id="edit-avatar-upload" class="hidden" accept="image/png, image/jpeg, image/jpg"
+                        onchange="handleAvatarChange(this)">
+                </div>
+
+                <div class="w-full space-y-4 pt-2">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-800 uppercase tracking-wider mb-2.5">Nama
+                            Lengkap</label>
+                        <div class="relative">
+                            <i
+                                class="ph-fill ph-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg pointer-events-none"></i>
+                            <input type="text" id="edit-input-name"
+                                class="w-full pl-11 pr-4 py-3.5 rounded-xl border border-borderLight bg-bgSoft text-[13px] text-textDark focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all hover:border-gray-300 shadow-sm">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-800 uppercase tracking-wider mb-2.5">Email
+                            Akun</label>
+                        <div class="relative">
+                            <i
+                                class="ph-fill ph-envelope-simple absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg pointer-events-none"></i>
+                            <input type="email" id="edit-input-email" disabled
+                                class="w-full pl-11 pr-4 py-3.5 rounded-xl border border-borderLight bg-gray-100 text-[13px] text-textMuted cursor-not-allowed shadow-inner"
+                                title="Email tidak dapat diubah">
+                        </div>
+                        <p class="text-[10px] text-textMuted mt-1.5">*Email terikat dengan kredensial sistem</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 border-t border-borderLight bg-surface sticky bottom-0 z-10 flex gap-3">
+                <button onclick="closeEditProfileModal()"
+                    class="flex-1 py-3.5 rounded-xl border border-borderLight text-textDark font-medium hover:bg-bgSoft transition-all text-[13px]">Batal</button>
+                <button id="btn-simpan-profil" onclick="saveProfileChanges(this)"
+                    class="flex-[1.5] bg-primary hover:bg-primaryHover text-white py-3.5 rounded-xl text-[13px] font-medium transition-all shadow-md shadow-primary/20 active:scale-95 flex justify-center items-center gap-2">
+                    Simpan Profil
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Keamanan & Kata Sandi -->
+    <div id="security-modal"
+        class="fixed inset-0 bg-dark/70 backdrop-blur-sm z-[110] hidden flex items-center justify-center opacity-0 transition-opacity duration-300 p-4 sm:p-0">
+        <div class="bg-surface w-full max-w-[420px] sm:rounded-[2rem] rounded-3xl shadow-2xl transform scale-95 transition-transform duration-300 relative overflow-hidden flex flex-col"
+            id="security-modal-content">
+            <div class="flex items-center px-6 py-5 border-b border-borderLight bg-surface sticky top-0 z-10">
+                <button onclick="closeSecurityModal()"
+                    class="text-textDark hover:bg-bgSoft p-2 rounded-full transition-colors -ml-2">
+                    <i class="ph-bold ph-caret-left text-xl"></i>
+                </button>
+                <h3 class="flex-1 text-center text-base font-semibold text-textDark pr-8">Kata Sandi Baru</h3>
+            </div>
+
+            <div class="p-6 overflow-y-auto no-scrollbar flex-1 space-y-4 bg-surface">
+                <div>
+                    <label class="block text-xs font-bold text-gray-800 uppercase tracking-wider mb-2.5">Kata Sandi
+                        Baru</label>
+                    <div class="relative">
+                        <i
+                            class="ph-fill ph-lock absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg pointer-events-none"></i>
+                        <input type="password" id="input-new-password" placeholder="Min. 6 karakter"
+                            class="w-full pl-11 pr-4 py-3.5 rounded-xl border border-borderLight bg-bgSoft text-[13px] text-textDark focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all hover:border-gray-300 shadow-sm">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-800 uppercase tracking-wider mb-2.5">Konfirmasi Kata
+                        Sandi</label>
+                    <div class="relative">
+                        <i
+                            class="ph-fill ph-lock absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg pointer-events-none"></i>
+                        <input type="password" id="input-confirm-password" placeholder="Ketik ulang kata sandi baru"
+                            class="w-full pl-11 pr-4 py-3.5 rounded-xl border border-borderLight bg-bgSoft text-[13px] text-textDark focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all hover:border-gray-300 shadow-sm">
+                    </div>
+                </div>
+                <p class="text-[10px] text-textMuted mt-2">*Sistem akan memperbarui kredensial Anda dan mengamankan
+                    akun.</p>
+            </div>
+
+            <div class="p-6 border-t border-borderLight bg-surface sticky bottom-0 z-10 flex gap-3">
+                <button onclick="closeSecurityModal()"
+                    class="flex-1 py-3.5 rounded-xl border border-borderLight text-textDark font-medium hover:bg-bgSoft transition-all text-[13px]">Batal</button>
+                <button onclick="savePasswordChanges(this)"
+                    class="flex-[1.5] bg-primary hover:bg-primaryHover text-white py-3.5 rounded-xl text-[13px] font-medium transition-all shadow-md shadow-primary/20 active:scale-95 flex justify-center items-center gap-2">
+                    Simpan Sandi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Pusat Bantuan & FAQ -->
+    <div id="help-modal"
+        class="fixed inset-0 bg-dark/70 backdrop-blur-sm z-[110] hidden flex items-center justify-center opacity-0 transition-opacity duration-300 p-4 sm:p-0">
+        <div class="bg-surface w-full max-w-[420px] sm:rounded-[2rem] rounded-3xl shadow-2xl transform scale-95 transition-transform duration-300 relative overflow-hidden flex flex-col max-h-[90vh] sm:max-h-[85vh]"
+            id="help-modal-content">
+            <div class="flex items-center px-6 py-5 border-b border-borderLight bg-surface sticky top-0 z-10">
+                <button onclick="closeHelpModal()"
+                    class="text-textDark hover:bg-bgSoft p-2 rounded-full transition-colors -ml-2">
+                    <i class="ph-bold ph-caret-left text-xl"></i>
+                </button>
+                <h3 class="flex-1 text-center text-base font-semibold text-textDark pr-8">Pusat Bantuan & FAQ</h3>
+            </div>
+
+            <div class="p-6 overflow-y-auto no-scrollbar flex-1 space-y-4 bg-surface">
+                <div class="border border-borderLight rounded-xl overflow-hidden">
+                    <details class="group">
+                        <summary
+                            class="flex justify-between items-center font-medium cursor-pointer list-none p-4 text-[13px] text-textDark hover:bg-bgSoft transition-colors">
+                            <span>Bagaimana menghapus background item?</span>
+                            <span class="transition group-open:rotate-180"><i
+                                    class="ph-bold ph-caret-down text-base text-textMuted"></i></span>
+                        </summary>
+                        <div
+                            class="text-textMuted text-[12px] p-4 pt-0 border-t border-borderLight bg-bgSoft/50 leading-relaxed">
+                            Aplikasi menggunakan AI otomatis untuk menghapus latar belakang foto yang Anda unggah saat
+                            proses "Tambah Item". Pastikan foto Anda memiliki pencahayaan yang baik.
+                        </div>
+                    </details>
+                </div>
+                <div class="border border-borderLight rounded-xl overflow-hidden">
+                    <details class="group">
+                        <summary
+                            class="flex justify-between items-center font-medium cursor-pointer list-none p-4 text-[13px] text-textDark hover:bg-bgSoft transition-colors">
+                            <span>Kenapa AI Stylist saya kosong?</span>
+                            <span class="transition group-open:rotate-180"><i
+                                    class="ph-bold ph-caret-down text-base text-textMuted"></i></span>
+                        </summary>
+                        <div
+                            class="text-textMuted text-[12px] p-4 pt-0 border-t border-borderLight bg-bgSoft/50 leading-relaxed">
+                            Fitur AI Mix & Match memerlukan koleksi pakaian yang cukup di "Lemari Saya". Tambahkan
+                            setidaknya 3 Atasan dan 3 Bawahan.
+                        </div>
+                    </details>
+                </div>
+                <div class="border border-borderLight rounded-xl overflow-hidden">
+                    <details class="group">
+                        <summary
+                            class="flex justify-between items-center font-medium cursor-pointer list-none p-4 text-[13px] text-textDark hover:bg-bgSoft transition-colors">
+                            <span>Cara kerja kalender outfit?</span>
+                            <span class="transition group-open:rotate-180"><i
+                                    class="ph-bold ph-caret-down text-base text-textMuted"></i></span>
+                        </summary>
+                        <div
+                            class="text-textMuted text-[12px] p-4 pt-0 border-t border-borderLight bg-bgSoft/50 leading-relaxed">
+                            Setelah menyimpan kombinasi outfit, buka tab Kalender dan tekan 'Tambah Jadwal'. Pilih
+                            tanggal dan hubungkan dengan outfit Anda.
+                        </div>
+                    </details>
+                </div>
+
+                <div class="mt-6 p-4 bg-primary/5 rounded-xl border border-primary/20 text-center">
+                    <p class="text-[12px] text-textDark font-medium mb-1">Masih butuh bantuan?</p>
+                    <p class="text-[10px] text-textMuted mb-3">Kirim tiket dukungan ke tim Capsule Wardrobe.</p>
+                    <a href=""
+                        class="inline-flex items-center gap-2 bg-white border border-borderLight px-4 py-2 rounded-lg text-xs font-semibold text-primary shadow-sm hover:border-primary/30 transition-all">
+                        <i class="ph-bold ph-envelope-simple text-sm"></i> Hubungi CS
+                    </a>
+                </div>
+            </div>
+
+            <div class="p-6 border-t border-borderLight bg-surface sticky bottom-0 z-10">
+                <button onclick="closeHelpModal()"
+                    class="w-full py-3.5 rounded-xl border border-borderLight text-textDark font-medium hover:bg-bgSoft transition-all text-[13px]">
+                    Kembali
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT SUPABASE & LOGIC -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module">
+        import { CONFIG } from './assets/js/config.js';
+        const supabase = window.supabase.createClient(CONFIG.SB_URL, CONFIG.SB_KEY);
+
+        let currentUser = null;
+        let avatarUploadFile = null; // Menyimpan file asli yang diunggah
+
+        /* STATE UNTUK NOTIFIKASI PERSISTEN DI LOCALSTORAGE */
+        let deletedNotifs = JSON.parse(localStorage.getItem('capsule_deleted_notifs') || '[]');
+        let readNotifs = JSON.parse(localStorage.getItem('capsule_read_notifs') || '[]');
+
+        function saveNotifState() {
+            localStorage.setItem('capsule_deleted_notifs', JSON.stringify(deletedNotifs));
+            localStorage.setItem('capsule_read_notifs', JSON.stringify(readNotifs));
+        }
+
+        /* DATA MOCKUP NOTIFIKASI */
+        const mockNotifs = [
+            { id: 'notif-set-1', title: 'Jadwal besok!', time: '08:00', desc: 'Jangan lupa siapkan outfit "Smart Casual" untuk jadwalmu besok pagi.', timeAgo: '2 jam yang lalu', icon: 'ph-calendar-check', iconBg: 'bg-blue-50 text-blue-500 border-blue-100' },
+            { id: 'notif-set-2', title: 'Inspirasi Baru', time: '09:15', desc: 'AI menemukan rekomendasi mix & match baru.', timeAgo: 'Baru saja', icon: 'ph-magic-wand', iconBg: 'bg-primary/10 text-primary border-primary/20' }
+        ];
+
+        /* FUNGSI RENDER NOTIFIKASI (Seragam dengan halaman lain) */
+        window.renderNotifications = function () {
+            const container = document.getElementById('notif-list-container');
+            const countBadge = document.getElementById('notif-count-badge');
+            const dot = document.getElementById('notif-badge-dot');
+
+            let html = '';
+            let unreadCount = 0;
+            let visibleCount = 0;
+
+            mockNotifs.forEach(n => {
+                if (deletedNotifs.includes(n.id)) return;
+                visibleCount++;
+
+                const isRead = readNotifs.includes(n.id);
+                if (!isRead) unreadCount++;
+
+                const readClass = isRead ? "opacity-50 bg-gray-50" : "";
+
+                html += `
+                <div class="notif-item p-4 sm:p-5 border-b border-borderLight hover:bg-bgSoft transition-colors flex gap-3 sm:gap-4 relative group ${readClass}" id="${n.id}">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full ${n.iconBg} border flex items-center justify-center shrink-0 cursor-pointer">
+                        <i class="ph-bold ${n.icon} text-lg sm:text-xl"></i>
+                    </div>
+                    <div class="flex-1 cursor-pointer pr-2">
+                        <div class="flex justify-between items-start mb-1">
+                            <p class="text-sm sm:text-[15px] font-semibold text-textDark leading-tight">${n.title}</p>
+                            <div class="flex items-center gap-1.5 sm:gap-2">
+                                <span class="text-[10px] sm:text-[11px] text-textMuted font-medium">${n.time}</span>
+                                <button onclick="removeNotif('${n.id}', event)" class="text-red-400 hover:text-red-600 transition-colors p-0.5" title="Hapus Notifikasi">
+                                    <i class="ph-bold ph-x text-sm sm:text-base"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-xs sm:text-[13px] text-textMuted leading-relaxed">${n.desc}</p>
+                        <p class="text-[10px] sm:text-[11px] text-textMuted/70 mt-1.5 sm:mt-2 font-medium">${n.timeAgo}</p>
+                    </div>
+                </div>`;
+            });
+
+            if (visibleCount === 0) {
+                container.innerHTML = '<div class="p-6 sm:p-8 text-center text-xs sm:text-sm text-textMuted">Tidak ada notifikasi baru.</div>';
+            } else {
+                container.innerHTML = html;
+            }
+
+            if (unreadCount > 0) {
+                if (dot) dot.classList.remove('hidden');
+                if (countBadge) countBadge.innerText = `${unreadCount} BARU`;
+            } else {
+                if (dot) dot.classList.add('hidden');
+                if (countBadge) countBadge.innerText = `0 BARU`;
+            }
+        }
+
+        window.removeNotif = function (id, e) {
+            e.stopPropagation();
+            if (!deletedNotifs.includes(id)) {
+                deletedNotifs.push(id);
+                saveNotifState();
+                renderNotifications();
+            }
+        };
+
+        window.markAllReadNotif = function () {
+            mockNotifs.forEach(n => {
+                if (!readNotifs.includes(n.id)) readNotifs.push(n.id);
+            });
+            saveNotifState();
+            renderNotifications();
+            showToast('Semua notifikasi ditandai dibaca');
+        };
+
+        window.deleteAllNotif = function (e) {
+            e.stopPropagation();
+            mockNotifs.forEach(n => {
+                if (!deletedNotifs.includes(n.id)) deletedNotifs.push(n.id);
+            });
+            saveNotifState();
+            renderNotifications();
+            showToast('Semua notifikasi dihapus');
+        };
+
+        /* INIT USER & FETCH METADATA */
+        document.addEventListener('DOMContentLoaded', async () => {
+            const footerYear = document.getElementById('footer-year');
+            if (footerYear) footerYear.innerText = new Date().getFullYear();
+
+            renderNotifications();
+
+            const { data: { session }, error } = await supabase.auth.getSession();
+            if (!session) {
+                window.location.href = 'auth.html';
+                return;
+            }
+            currentUser = session.user;
+
+            const metadata = currentUser.user_metadata || {};
+            const fullName = metadata.full_name || "User";
+            const firstName = fullName.split(' ')[0];
+            const avatarUrl = metadata.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80';
+
+            // Set Data di Header
+            document.getElementById('user-name-header').innerText = firstName;
+            document.getElementById('user-email-header').innerText = currentUser.email;
+            document.getElementById('header-avatar').src = avatarUrl;
+
+            // Set Data di Halaman Settings
+            document.getElementById('user-full-name-settings').innerText = fullName;
+            document.getElementById('user-email-settings').innerText = currentUser.email;
+            document.getElementById('settings-avatar').src = avatarUrl;
+
+            // Bind Logout
+            const handleLogout = async () => { await supabase.auth.signOut(); window.location.href = 'auth.html'; };
+            document.getElementById('btn-logout-header').onclick = handleLogout;
+            document.getElementById('btn-logout-settings').onclick = handleLogout;
+        });
+
+        /* ================= 1. TOAST & DROPDOWNS LOGIC ================= */
+        window.showToast = function (message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bgColor = type === 'success' ? 'bg-surface text-textDark border-borderLight' : 'bg-red-50 text-red-800 border-red-200';
+            const icon = type === 'success' ? 'ph-check-circle' : 'ph-warning-circle';
+            const iconColor = type === 'success' ? 'text-primary' : 'text-red-500';
+
+            toast.className = `flex items-center gap-3 px-5 py-3.5 rounded-2xl border shadow-[0_10px_40px_rgba(0,0,0,0.08)] transform transition-all duration-300 translate-x-full ${bgColor}`;
+            toast.innerHTML = `<i class="ph-fill ${icon} text-xl ${iconColor}"></i><p class="text-[13px] font-semibold">${message}</p>`;
+
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.remove('translate-x-full'), 10);
+            setTimeout(() => { toast.classList.add('translate-x-full'); setTimeout(() => toast.remove(), 300); }, 3000);
+        }
+
+        window.toggleNotifications = function (e) {
+            if (e) e.stopPropagation();
+            const drop = document.getElementById('notif-dropdown');
+            if (drop.classList.contains('hidden')) {
+                drop.classList.remove('hidden');
+                setTimeout(() => { drop.classList.remove('opacity-0', 'scale-95'); drop.classList.add('opacity-100', 'scale-100'); }, 10);
+            } else {
+                drop.classList.remove('opacity-100', 'scale-100'); drop.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => { drop.classList.add('hidden'); }, 200);
+            }
+        }
+
+        window.toggleProfileDropdown = function (e) {
+            e.stopPropagation();
+            const menu = document.getElementById('profile-menu');
+            const chevron = document.getElementById('profile-chevron');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                setTimeout(() => {
+                    menu.classList.remove('opacity-0', 'scale-95'); menu.classList.add('opacity-100', 'scale-100');
+                    if (chevron) chevron.style.transform = 'rotate(180deg)';
+                }, 10);
+            } else {
+                menu.classList.remove('opacity-100', 'scale-100'); menu.classList.add('opacity-0', 'scale-95');
+                if (chevron) chevron.style.transform = 'rotate(0deg)';
+                setTimeout(() => menu.classList.add('hidden'), 200);
+            }
+        }
+
+        window.toggleMobileMore = function () {
+            const menu = document.getElementById('mobile-more-menu');
+            const content = document.getElementById('mobile-more-content');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden'); menu.classList.add('flex');
+                setTimeout(() => { menu.classList.remove('opacity-0'); content.classList.remove('translate-y-full'); }, 10);
+            } else {
+                menu.classList.add('opacity-0'); content.classList.add('translate-y-full');
+                setTimeout(() => { menu.classList.add('hidden'); menu.classList.remove('flex'); }, 300);
+            }
+        }
+
+        document.addEventListener('click', (e) => {
+            const notifDropdown = document.getElementById('notif-dropdown');
+            if (notifDropdown && !notifDropdown.classList.contains('hidden') && !e.target.closest('#notif-dropdown') && !e.target.closest('button[onclick*="toggleNotifications"]')) {
+                notifDropdown.classList.remove('opacity-100', 'scale-100'); notifDropdown.classList.add('opacity-0', 'scale-95'); setTimeout(() => { notifDropdown.classList.add('hidden'); }, 200);
+            }
+            const wrapper = document.getElementById('profile-dropdown-wrapper');
+            const profileMenu = document.getElementById('profile-menu');
+            const profileChevron = document.getElementById('profile-chevron');
+            if (wrapper && !wrapper.contains(e.target) && !profileMenu.classList.contains('hidden')) {
+                profileMenu.classList.remove('opacity-100', 'scale-100'); profileMenu.classList.add('opacity-0', 'scale-95');
+                if (profileChevron) profileChevron.style.transform = 'rotate(0deg)'; setTimeout(() => profileMenu.classList.add('hidden'), 200);
+            }
+            const mobileMoreMenu = document.getElementById('mobile-more-menu');
+            const mobileMoreContent = document.getElementById('mobile-more-content');
+            if (mobileMoreMenu && !mobileMoreMenu.classList.contains('hidden') && !mobileMoreContent.contains(e.target) && !e.target.closest('button[onclick*="toggleMobileMore"]')) {
+                toggleMobileMore();
+            }
+        });
+
+        /* ================= 2. FUNGSI EDIT PROFIL (KONEKSI SUPABASE) ================= */
+        window.openEditProfileModal = function () {
+            const modal = document.getElementById('edit-profile-modal');
+            const content = document.getElementById('edit-profile-modal-content');
+
+            document.getElementById('edit-input-name').value = document.getElementById('user-full-name-settings').innerText;
+            document.getElementById('edit-input-email').value = document.getElementById('user-email-settings').innerText;
+            document.getElementById('modal-avatar-preview').src = document.getElementById('settings-avatar').src;
+
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            setTimeout(() => { modal.classList.remove('opacity-0'); content.classList.remove('scale-95'); }, 10);
+        }
+
+        window.closeEditProfileModal = function () {
+            const modal = document.getElementById('edit-profile-modal');
+            const content = document.getElementById('edit-profile-modal-content');
+            modal.classList.add('opacity-0'); content.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); avatarUploadFile = null; }, 300);
+        }
+
+        window.handleAvatarChange = function (input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+
+                // Validasi ukuran maks 2MB
+                if (file.size > 2 * 1024 * 1024) {
+                    showToast('Ukuran foto maksimal 2MB', 'error');
+                    input.value = '';
+                    return;
+                }
+
+                avatarUploadFile = file;
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('modal-avatar-preview').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        window.saveProfileChanges = async function (btn) {
+            const newName = document.getElementById('edit-input-name').value;
+            if (!newName.trim()) { showToast('Nama tidak boleh kosong', 'error'); return; }
+
+            const originalHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="ph-bold ph-spinner animate-spin text-white"></i> Memperbarui...';
+            btn.disabled = true;
+
+            try {
+                let finalAvatarUrl = currentUser.user_metadata?.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80';
+
+                // 1. Jika User Mengunggah Foto Baru
+                if (avatarUploadFile) {
+                    const fileExt = avatarUploadFile.name.split('.').pop();
+                    const fileName = `avatar_${currentUser.id}_${Date.now()}.${fileExt}`;
+
+                    // Upload ke bucket 'avatars'
+                    const { error: uploadError } = await supabase.storage.from('avatars').upload(`${currentUser.id}/${fileName}`, avatarUploadFile, {
+                        cacheControl: '3600',
+                        upsert: true
+                    });
+
+                    if (uploadError) throw uploadError;
+
+                    // Ambil URL public nya
+                    const { data: publicUrlData } = supabase.storage.from('avatars').getPublicUrl(`${currentUser.id}/${fileName}`);
+                    finalAvatarUrl = publicUrlData.publicUrl;
+                }
+
+                // 2. Update Auth Metadata (Nama & URL Avatar)
+                const { error: updateError } = await supabase.auth.updateUser({
+                    data: { full_name: newName, avatar_url: finalAvatarUrl }
+                });
+
+                if (updateError) throw updateError;
+
+                btn.innerHTML = '<i class="ph-bold ph-check text-white"></i> Tersimpan!';
+                btn.classList.add('bg-green-600'); btn.classList.remove('bg-primary', 'hover:bg-primaryHover');
+
+                // Update UI Seketika
+                document.getElementById('user-full-name-settings').innerText = newName;
+                document.getElementById('user-name-header').innerText = newName.split(' ')[0];
+                document.getElementById('settings-avatar').src = finalAvatarUrl;
+                document.getElementById('header-avatar').src = finalAvatarUrl;
+
+                setTimeout(() => {
+                    closeEditProfileModal();
+                    showToast(`Profil berhasil diperbarui`);
+                    setTimeout(() => {
+                        btn.innerHTML = originalHtml;
+                        btn.classList.add('bg-primary', 'hover:bg-primaryHover');
+                        btn.classList.remove('bg-green-600');
+                        btn.disabled = false;
+                    }, 300);
+                }, 800);
+
+            } catch (err) {
+                console.error(err);
+                showToast('Gagal memperbarui profil', 'error');
+                btn.innerHTML = originalHtml;
+                btn.disabled = false;
+            }
+        }
+
+        /* ================= 3. FUNGSI KEAMANAN & KATA SANDI ================= */
+        window.openSecurityModal = function () {
+            const modal = document.getElementById('security-modal');
+            const content = document.getElementById('security-modal-content');
+            document.getElementById('input-new-password').value = '';
+            document.getElementById('input-confirm-password').value = '';
+
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            setTimeout(() => { modal.classList.remove('opacity-0'); content.classList.remove('scale-95'); }, 10);
+        }
+
+        window.closeSecurityModal = function () {
+            const modal = document.getElementById('security-modal');
+            const content = document.getElementById('security-modal-content');
+            modal.classList.add('opacity-0'); content.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 300);
+        }
+
+        window.savePasswordChanges = async function (btn) {
+            const newPass = document.getElementById('input-new-password').value;
+            const confirmPass = document.getElementById('input-confirm-password').value;
+
+            if (!newPass || !confirmPass) { showToast('Kata sandi tidak boleh kosong!', 'error'); return; }
+            if (newPass.length < 6) { showToast('Kata sandi minimal 6 karakter!', 'error'); return; }
+            if (newPass !== confirmPass) { showToast('Konfirmasi kata sandi tidak cocok!', 'error'); return; }
+
+            const originalHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="ph-bold ph-spinner animate-spin text-white"></i> Memproses...';
+            btn.disabled = true;
+
+            try {
+                const { error } = await supabase.auth.updateUser({ password: newPass });
+                if (error) throw error;
+
+                btn.innerHTML = '<i class="ph-bold ph-check text-white"></i> Berhasil!';
+                btn.classList.add('bg-green-600'); btn.classList.remove('bg-primary', 'hover:bg-primaryHover');
+
+                setTimeout(() => {
+                    closeSecurityModal();
+                    showToast('Kata sandi berhasil diperbarui');
+                    setTimeout(() => {
+                        btn.innerHTML = originalHtml;
+                        btn.classList.add('bg-primary', 'hover:bg-primaryHover');
+                        btn.classList.remove('bg-green-600');
+                        btn.disabled = false;
+                    }, 300);
+                }, 800);
+            } catch (err) {
+                console.error(err);
+                showToast('Gagal memperbarui kata sandi', 'error');
+                btn.innerHTML = originalHtml;
+                btn.disabled = false;
+            }
+        }
+
+        /* ================= 4. FUNGSI PUSAT BANTUAN & FAQ ================= */
+        window.openHelpModal = function () {
+            const modal = document.getElementById('help-modal');
+            const content = document.getElementById('help-modal-content');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            setTimeout(() => { modal.classList.remove('opacity-0'); content.classList.remove('scale-95'); }, 10);
+        }
+
+        window.closeHelpModal = function () {
+            const modal = document.getElementById('help-modal');
+            const content = document.getElementById('help-modal-content');
+            modal.classList.add('opacity-0'); content.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 300);
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Wishlist - Capsule Wardrobe</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- KEDUA ICON LIBRARY DIAKTIFKAN AGAR TIDAK ERROR -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        background: '#FAF9F7',
+                        surface: '#FFFFFF',
+                        primary: '#9D8371',
+                        primaryHover: '#8A7363',
+                        textDark: '#1C1C1C',
+                        textMuted: '#7A7A7A',
+                        borderLight: '#F0EBE6',
+                        bgSoft: '#FBFBFA'
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'system-ui', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .transition-all {
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 300ms;
+        }
+
+        .page-transition {
+            animation: fadeInView 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeInView {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUpFade {
+            from {
+                opacity: 0;
+                transform: translateY(20px) translateX(-50%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) translateX(-50%);
+            }
+        }
+
+        .toast-enter {
+            animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .blend-darken {
+            mix-blend-mode: darken;
+        }
+    </style>
+</head>
+
+<body class="bg-background text-textDark font-sans h-[100dvh] flex overflow-hidden">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-5 right-5 z-[200] flex flex-col gap-3 pointer-events-none"></div>
+
+    <!-- Sidebar Overlay for Mobile -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden transition-opacity opacity-0">
+    </div>
+
+    <!-- Sidebar SAMA PERSIS dengan Pengaturan -->
+    <aside id="sidebar"
+        class="w-64 bg-surface border-r border-borderLight flex-col hidden lg:flex h-full z-20 shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.01)] transition-transform duration-300 -translate-x-full lg:translate-x-0">
+        <div class="p-8 flex items-center justify-between lg:justify-start gap-3">
+            <div class="flex items-center gap-2 group cursor-pointer" onclick="window.location.href='dashboard.html'">
+                <i class="ph ph-coat-hanger text-4xl text-primary group-hover:text-primaryHover transition-colors"></i>
+                <div class="leading-tight text-left">
+                    <h1 class="font-semibold text-xl tracking-tight text-textDark">Capsule</h1>
+                    <p class="text-[10px] text-textMuted uppercase tracking-widest font-medium">Wardrobe</p>
+                </div>
+            </div>
+            <button id="close-sidebar-btn" class="lg:hidden text-2xl text-textMuted hover:text-textDark">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+        </div>
+
+        <nav class="flex-1 px-4 space-y-1 overflow-y-auto no-scrollbar pb-8" id="sidebar-nav">
+            <a href="dashboard.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-[#F8F7F4] hover:text-textDark rounded-xl font-medium transition-all"><i
+                    class="ph ph-house text-xl"></i> Beranda</a>
+            <a href="lemari.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-[#F8F7F4] hover:text-textDark rounded-xl font-medium transition-all"><i
+                    class="ph ph-t-shirt text-xl"></i> Lemari Saya</a>
+            <a href="mix&match.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-[#F8F7F4] hover:text-textDark rounded-xl font-medium transition-all"><i
+                    class="ph ph-magic-wand text-xl"></i> Mix & Match</a>
+            <a href="kalender.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-[#F8F7F4] hover:text-textDark rounded-xl font-medium transition-all"><i
+                    class="ph ph-calendar text-xl"></i> Kalender Outfit</a>
+            <a href="inspirasi.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-[#F8F7F4] hover:text-textDark rounded-xl font-medium transition-all"><i
+                    class="ph ph-lightbulb text-xl"></i> Inspirasi</a>
+            <a href="statistik.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-[#F8F7F4] hover:text-textDark rounded-xl font-medium transition-all"><i
+                    class="ph ph-chart-bar text-xl"></i> Statistik</a>
+
+            <!-- Active Menu: Wishlist -->
+            <a href="#"
+                class="nav-link flex items-center gap-3 px-4 py-3 bg-[#EAE6E1] text-textDark rounded-xl font-semibold transition-all shadow-sm"><i
+                    class="ph-fill ph-heart text-xl text-primary"></i> Wishlist</a>
+
+            <a href="pengaturan.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-[#F8F7F4] hover:text-textDark rounded-xl font-medium transition-all mt-4"><i
+                    class="ph ph-gear text-xl"></i> Pengaturan</a>
+        </nav>
+
+        <div class="p-6 mt-auto">
+            <div
+                class="bg-[#F8F7F4] border border-borderLight p-5 rounded-2xl relative overflow-hidden group cursor-pointer hover:border-primary/40 transition-colors">
+                <i data-lucide="gem"
+                    class="w-16 h-16 text-primary/5 absolute -right-2 -bottom-2 group-hover:scale-110 transition-transform duration-500"></i>
+                <p class="text-[13px] font-light text-textDark mb-1 relative z-10"><span
+                        class="font-bold text-textDark">Minimal</span> items,</p>
+                <p class="text-[13px] font-light text-textDark mb-2 relative z-10"><span
+                        class="font-bold text-primary">maximum</span> style.</p>
+                <p class="text-[10px] text-textMuted relative z-10 leading-relaxed">Bangun gaya terbaikmu dengan koleksi yang
+                    bermakna.</p>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Mobile Bottom Navigation SAMA PERSIS dengan Pengaturan -->
+    <nav class="lg:hidden fixed bottom-0 left-0 w-full bg-surface/90 backdrop-blur-lg border-t border-borderLight z-40 flex justify-around py-3 px-2 pb-6 md:pb-4 text-[10px] shadow-[0_-10px_40px_rgba(0,0,0,0.03)]"
+        id="mobile-nav">
+        <a href="dashboard.html"
+            class="mobile-nav-link flex flex-col items-center gap-1.5 text-textMuted hover:text-textDark transition-all relative font-medium"><i
+                class="ph ph-house text-xl md:text-2xl"></i>Beranda</a>
+        <a href="lemari.html"
+            class="mobile-nav-link flex flex-col items-center gap-1.5 text-textMuted hover:text-textDark transition-all relative font-medium"><i
+                class="ph ph-t-shirt text-xl md:text-2xl"></i>Lemari</a>
+        <a href="mix&match.html"
+            class="mobile-nav-link flex flex-col items-center gap-1.5 text-textMuted hover:text-textDark transition-all relative font-medium"><i
+                class="ph ph-magic-wand text-xl md:text-2xl"></i>Mix & Match</a>
+        <a href="kalender.html"
+            class="mobile-nav-link flex flex-col items-center gap-1.5 text-textMuted hover:text-textDark transition-all relative font-medium"><i
+                class="ph ph-calendar-blank text-xl md:text-2xl"></i>Kalender</a>
+        <!-- Tombol Lainnya Aktif -->
+        <button onclick="toggleMobileMore()"
+            class="mobile-nav-link flex flex-col items-center gap-1.5 text-primary transition-all relative font-semibold focus:outline-none"><i
+                class="ph-fill ph-squares-four text-xl md:text-2xl text-primary"></i>Lainnya</button>
+    </nav>
+
+    <!-- Mobile Bottom Sheet Menu (Lainnya) -->
+    <div id="mobile-more-menu"
+        class="fixed inset-0 bg-dark/60 backdrop-blur-sm z-[200] hidden flex-col justify-end opacity-0 transition-opacity duration-300 lg:hidden">
+        <div id="mobile-more-content"
+            class="bg-surface w-full rounded-t-[2rem] p-6 transform translate-y-full transition-transform duration-300 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] flex flex-col">
+            <div class="w-12 h-1.5 bg-borderLight rounded-full mx-auto mb-6"></div>
+            <h3 class="text-lg font-bold text-textDark mb-6 font-display">Menu Lainnya</h3>
+            <div class="grid grid-cols-4 gap-4 mb-2">
+                <a href="#" class="flex flex-col items-center gap-2 group">
+                    <div
+                        class="w-14 h-14 rounded-[1.25rem] bg-primary/10 border border-primary/30 flex items-center justify-center text-primary transition-all shadow-sm">
+                        <i class="ph-fill ph-heart text-2xl text-primary"></i>
+                    </div>
+                    <span class="text-[10px] font-semibold text-primary">Wishlist</span>
+                </a>
+                <a href="inspirasi.html" class="flex flex-col items-center gap-2 group">
+                    <div
+                        class="w-14 h-14 rounded-[1.25rem] bg-bgSoft border border-borderLight flex items-center justify-center text-textMuted group-hover:text-primary group-hover:border-primary/30 transition-all shadow-sm">
+                        <i class="ph ph-lightbulb text-2xl"></i>
+                    </div>
+                    <span class="text-[10px] font-medium text-textDark">Inspirasi</span>
+                </a>
+                <a href="statistik.html" class="flex flex-col items-center gap-2 group">
+                    <div
+                        class="w-14 h-14 rounded-[1.25rem] bg-bgSoft border border-borderLight flex items-center justify-center text-textMuted group-hover:text-primary group-hover:border-primary/30 transition-all shadow-sm">
+                        <i class="ph ph-chart-bar text-2xl"></i>
+                    </div>
+                    <span class="text-[10px] font-medium text-textDark">Statistik</span>
+                </a>
+                <a href="pengaturan.html" class="flex flex-col items-center gap-2 group">
+                    <div
+                        class="w-14 h-14 rounded-[1.25rem] bg-bgSoft border border-borderLight flex items-center justify-center text-textMuted group-hover:text-primary group-hover:border-primary/30 transition-all shadow-sm">
+                        <i class="ph ph-gear text-2xl"></i>
+                    </div>
+                    <span class="text-[10px] font-medium text-textDark">Pengaturan</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full relative overflow-hidden bg-background">
+
+        <!-- Navbar Utama -->
+        <header
+            class="bg-background/90 backdrop-blur-md sticky top-0 z-40 px-6 md:px-10 py-5 flex items-center justify-between border-b border-borderLight/50">
+            <!-- Mobile Header Logo SAMA PERSIS Pengaturan -->
+            <div class="flex items-center gap-2 lg:hidden cursor-pointer"
+                onclick="window.location.href='dashboard.html'">
+                <i class="ph ph-coat-hanger text-3xl text-primary"></i>
+                <div class="leading-tight text-left">
+                    <h1 class="font-semibold text-lg tracking-tight text-textDark">Capsule</h1>
+                    <p class="text-[10px] text-textMuted uppercase tracking-widest font-medium">Wardrobe</p>
+                </div>
+            </div>
+
+            <!-- Search Bar (Desktop) -->
+            <div
+                class="hidden lg:flex flex-1 max-w-lg bg-surface border border-borderLight rounded-full px-5 py-2.5 items-center shadow-sm focus-within:border-primary/50 transition-all mr-auto ml-0 lg:mx-0">
+                <input type="text" id="search-input-desktop" placeholder="Cari item wishlist atau gaya moodboard..."
+                    class="bg-transparent border-none outline-none text-xs w-full text-textDark placeholder:text-textMuted font-medium search-sync">
+                <i data-lucide="search" class="w-4 h-4 text-textMuted ml-3"></i>
+            </div>
+
+            <div class="flex items-center gap-4 md:gap-6 ml-auto shrink-0">
+                <div class="relative">
+                    <!-- Icon Bell Phosphor -->
+                    <button onclick="toggleNotifications(event)"
+                        class="p-2 text-textDark hover:bg-surface rounded-full transition-all relative border border-transparent hover:border-borderLight">
+                        <i class="ph ph-bell text-xl"></i>
+                        <span id="notif-badge-dot"
+                            class="hidden absolute top-1.5 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-background"></span>
+                    </button>
+                    <!-- Notif Dropdown Panel -->
+                    <div id="notif-dropdown"
+                        class="hidden absolute right-[-40px] sm:right-0 mt-3 w-[300px] sm:w-[400px] bg-surface border border-borderLight rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.08)] z-50 overflow-hidden transform opacity-0 scale-95 transition-all duration-200 origin-top-right flex flex-col">
+                        <div
+                            class="p-4 sm:p-5 border-b border-borderLight flex justify-between items-center bg-surface">
+                            <span class="font-bold text-sm sm:text-[15px] text-textDark font-display">Notifikasi</span>
+                            <span id="notif-count-badge"
+                                class="text-[10px] font-bold bg-[#F4EFEA] text-[#8A7363] px-3 py-1.5 rounded-lg tracking-wide">0
+                                BARU</span>
+                        </div>
+                        <div class="max-h-[350px] overflow-y-auto hide-scrollbar" id="notif-list-container">
+                            <div class="p-6 text-center text-sm text-textMuted">Memuat notifikasi...</div>
+                        </div>
+                        <div
+                            class="p-3 sm:p-4 border-t border-borderLight bg-surface flex justify-between items-center">
+                            <button onclick="markAllReadNotif()"
+                                class="text-xs sm:text-[13px] font-semibold text-[#8A7363] hover:text-[#9D8371] transition-colors">Tandai
+                                semua dibaca</button>
+                            <button onclick="deleteAllNotif(event)"
+                                class="text-xs sm:text-[13px] font-semibold text-red-500 hover:text-red-600 transition-colors">Hapus
+                                semua</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative" id="profile-dropdown-wrapper">
+                    <div onclick="toggleProfileDropdown(event)"
+                        class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity pl-2 sm:pl-4 border-l border-borderLight">
+                        <div
+                            class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gray-200 overflow-hidden shadow-sm shrink-0 border border-borderLight">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
+                                alt="Profile" id="header-avatar" class="w-full h-full object-cover">
+                        </div>
+                        <div class="text-sm font-medium hidden md:flex items-center gap-1 text-textDark">
+                            <span id="user-display-name">User</span>
+                            <i class="ph-bold ph-caret-down text-xs text-textMuted transition-transform duration-300"
+                                id="profile-chevron"></i>
+                        </div>
+                    </div>
+                    <!-- Profile Menu dengan Ikon Phosphor -->
+                    <div id="profile-menu"
+                        class="hidden absolute right-0 mt-3 w-52 bg-surface border border-borderLight rounded-2xl shadow-xl z-50 overflow-hidden opacity-0 transform scale-95 transition-all duration-200">
+                        <div class="p-4 border-b border-borderLight bg-bgSoft/30">
+                            <p class="text-[10px] text-textMuted uppercase tracking-widest font-bold">Akun Saya</p>
+                            <p class="text-xs text-textDark font-medium truncate mt-1" id="user-email-display">email</p>
+                        </div>
+                        <div class="p-2">
+                            <button onclick="window.location.href='pengaturan.html'"
+                                class="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-textDark hover:bg-bgSoft rounded-xl transition-colors text-left group">
+                                <i
+                                    class="ph-bold ph-gear text-base text-textMuted group-hover:text-primary transition-colors"></i><span>Pengaturan</span>
+                            </button>
+                            <div class="h-px bg-borderLight/50 my-1 mx-2"></div>
+                            <button onclick="logout()"
+                                class="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-red-500 hover:bg-red-50 rounded-xl transition-colors text-left group">
+                                <i
+                                    class="ph-bold ph-sign-out text-base text-red-400 group-hover:text-red-600 transition-colors"></i><span
+                                    class="font-semibold">Keluar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Area Konten Utama -->
+        <div class="flex-1 overflow-y-auto no-scrollbar px-4 sm:px-6 md:px-10 pb-28 md:pb-12 scroll-smooth"
+            id="main-scroll-area">
+
+            <!-- MOBILE SEARCH BAR -->
+            <div class="lg:hidden mt-4 mb-6">
+                <div
+                    class="flex w-full bg-surface border border-borderLight rounded-full px-4 py-3 items-center shadow-sm focus-within:border-primary/50 transition-all">
+                    <input type="text" id="search-input-mobile" placeholder="Cari item wishlist atau moodboard..."
+                        class="bg-transparent border-none outline-none text-xs w-full text-textDark placeholder:text-textMuted font-medium search-sync">
+                    <i data-lucide="search" class="w-4 h-4 text-textMuted ml-3"></i>
+                </div>
+            </div>
+
+            <div class="page-transition">
+                <!-- Header Wishlist & Stats -->
+                <div class="mt-4 lg:mt-6 mb-8">
+                    <h2
+                        class="text-2xl md:text-3xl font-display font-semibold mb-2 flex items-center gap-3 text-textDark">
+                        Wishlist & Moodboard
+                    </h2>
+                    <p class="text-textMuted text-sm max-w-2xl mb-6">Simpan barang impian yang ingin dibeli dan
+                        kumpulkan referensi gaya favoritmu di satu tempat.</p>
+
+                    <!-- Smart Summary -->
+                    <div
+                        class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-surface border border-borderLight p-4 rounded-3xl shadow-sm mb-6 max-w-4xl">
+                        <div class="flex items-center gap-3 px-2 border-r border-borderLight/50">
+                            <div
+                                class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                                <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-textMuted uppercase tracking-wider font-semibold">Total Item
+                                </p>
+                                <p class="text-lg font-bold text-textDark leading-none mt-1" id="stat-total-item">0</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 px-2 md:border-r border-borderLight/50">
+                            <div
+                                class="w-10 h-10 rounded-full bg-green-50 text-green-600 flex items-center justify-center shrink-0">
+                                <i data-lucide="wallet" class="w-5 h-5"></i>
+                            </div>
+                            <div class="w-full min-w-0 pr-2">
+                                <p class="text-[10px] text-textMuted uppercase tracking-wider font-semibold">Estimasi
+                                    Harga</p>
+                                <p class="text-sm md:text-base font-bold text-textDark leading-none mt-1 truncate"
+                                    id="stat-total-price">Rp 0</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 px-2 border-r border-borderLight/50">
+                            <div
+                                class="w-10 h-10 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center shrink-0">
+                                <i data-lucide="layout-template" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-textMuted uppercase tracking-wider font-semibold">Moodboard
+                                </p>
+                                <p class="text-lg font-bold text-textDark leading-none mt-1" id="stat-total-mood">0 Gaya
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modern Tabs Switcher -->
+                    <div class="inline-flex bg-borderLight/40 p-1.5 rounded-full mb-6">
+                        <button id="tab-belanja" onclick="switchTab('belanja')"
+                            class="px-6 py-2.5 text-sm font-semibold rounded-full bg-white text-textDark shadow-sm transition-all flex items-center gap-2">
+                            <i data-lucide="shopping-bag" class="w-4 h-4"></i> Daftar Belanja
+                        </button>
+                        <button id="tab-moodboard" onclick="switchTab('moodboard')"
+                            class="px-6 py-2.5 text-sm font-medium text-textMuted hover:text-textDark rounded-full transition-all flex items-center gap-2">
+                            <i data-lucide="layout-template" class="w-4 h-4"></i> Moodboard
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CONTENT 1: DAFTAR BELANJA -->
+                <div id="content-belanja" class="block animate-[fadeInView_0.3s_ease-out_forwards]">
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6"
+                        id="wishlist-grid">
+                        <!-- JS Render Here -->
+                    </div>
+                </div>
+
+                <!-- CONTENT 2: MOODBOARD GAYA -->
+                <div id="content-moodboard" class="hidden">
+                    <div class="columns-2 md:columns-3 lg:columns-4 xl:columns-5 gap-4 sm:gap-6" id="moodboard-grid">
+                        <!-- JS Render Here -->
+                    </div>
+                </div>
+
+            </div>
+
+            <footer
+                class="mt-16 pt-8 border-t border-borderLight flex flex-col md:flex-row justify-between items-center text-[11px] sm:text-xs text-textMuted gap-4 pb-4 px-2">
+                <p>&copy; <span id="footer-year">2026</span> Capsule Wardrobe. Didesain dengan presisi.</p>
+                <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
+                    <a href="#" class="hover:text-textDark transition-colors">Kebijakan Privasi</a>
+                    <a href="#" class="hover:text-textDark transition-colors">Syarat Ketentuan</a>
+                    <a href="#" class="hover:text-textDark transition-colors">Bantuan</a>
+                </div>
+            </footer>
+        </div>
+    </main>
+
+    <!-- Modal Tambah / Edit Wishlist -->
+    <div id="add-wishlist-modal"
+        class="fixed inset-0 bg-dark/70 backdrop-blur-sm z-[110] hidden flex items-center justify-center opacity-0 transition-opacity duration-300 p-4 sm:p-0">
+        <div class="bg-surface w-full max-w-[420px] sm:rounded-[2rem] rounded-3xl shadow-2xl transform scale-95 transition-transform duration-300 relative overflow-hidden flex flex-col max-h-[90vh] sm:max-h-[85vh]"
+            id="add-wishlist-modal-content">
+
+            <div class="flex items-center px-6 py-5 border-b border-borderLight bg-surface sticky top-0 z-10">
+                <button onclick="closeAddWishlistModal()"
+                    class="text-textDark hover:bg-bgSoft p-2 rounded-full transition-colors -ml-2">
+                    <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                </button>
+                <h3 id="modal-wishlist-title" class="flex-1 text-center text-base font-semibold text-textDark pr-8">
+                    Tambah ke Wishlist</h3>
+            </div>
+
+            <div class="p-6 overflow-y-auto no-scrollbar flex-1 space-y-6 bg-surface">
+
+                <!-- Gambar Produk (File Upload) -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-800 uppercase tracking-wider mb-2.5">Foto
+                        Pakaian</label>
+                    <div class="border border-borderLight bg-bgSoft rounded-xl p-4 text-center hover:bg-gray-100 transition-all cursor-pointer group flex flex-col items-center justify-center relative overflow-hidden h-36"
+                        onclick="document.getElementById('wishlist-file-upload').click()">
+
+                        <div id="wishlist-upload-placeholder"
+                            class="flex flex-col items-center transition-opacity duration-300">
+                            <div
+                                class="w-10 h-10 bg-white rounded-full border border-borderLight flex items-center justify-center mb-2 shadow-sm group-hover:scale-110 transition-transform">
+                                <i data-lucide="image-plus"
+                                    class="w-5 h-5 text-textMuted group-hover:text-primary transition-colors"></i>
+                            </div>
+                            <p class="text-[11px] font-medium text-textDark">Upload / Screenshot Pakaian</p>
+                        </div>
+
+                        <img id="wishlist-upload-preview" src=""
+                            class="hidden max-h-full max-w-full object-contain mix-blend-darken z-10 absolute inset-0 m-auto p-2">
+
+                        <input type="file" id="wishlist-file-upload" class="hidden" accept="image/*"
+                            onchange="handleWishlistFileUpload(this)">
+                    </div>
+                    <p class="text-[10px] text-textMuted mt-1.5 ml-1">*Screenshot pakaian di aplikasi toko
+                        (Shopee/Tokopedia/TikTok), lalu upload ke sini.</p>
+                </div>
+
+                <!-- Link Produk -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-800 uppercase tracking-wider mb-2.5">Tautan Produk
+                        (Opsional)</label>
+                    <div class="relative">
+                        <i data-lucide="link"
+                            class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4"></i>
+                        <input type="text" id="wishlist-input-link" placeholder="Misal: Link Shopee, Tokopedia..."
+                            class="w-full pl-11 pr-4 py-3.5 rounded-xl border border-borderLight bg-bgSoft text-[13px] text-textDark placeholder:text-textMuted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all hover:border-gray-300">
+                    </div>
+                </div>
+
+                <!-- Nama -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-800 uppercase tracking-wider mb-2.5">Nama
+                        Pakaian</label>
+                    <input type="text" id="wishlist-input-name" placeholder="Misal: Blouse Biru Kotak"
+                        class="w-full px-4 py-3.5 rounded-xl border border-borderLight bg-bgSoft text-[13px] text-textDark placeholder:text-textMuted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all hover:border-gray-300">
+                </div>
+
+                <!-- Brand & Harga -->
+                <div class="flex gap-4">
+                    <div class="flex-1">
+                        <label
+                            class="block text-xs font-bold text-gray-800 uppercase tracking-wider mb-2.5">Merek</label>
+                        <input type="text" id="wishlist-input-brand" placeholder="ZARA, Neva Style..."
+                            class="w-full px-4 py-3.5 rounded-xl border border-borderLight bg-bgSoft text-[13px] text-textDark placeholder:text-textMuted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all hover:border-gray-300">
+                    </div>
+                    <div class="flex-[1.2]">
+                        <label class="block text-xs font-bold text-gray-800 uppercase tracking-wider mb-2.5">Harga
+                            (Rp)</label>
+                        <input type="text" id="wishlist-input-price" placeholder="96.000"
+                            oninput="formatPriceInput(this)"
+                            class="w-full px-4 py-3.5 rounded-xl border border-borderLight bg-bgSoft text-[13px] text-textDark placeholder:text-textMuted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all hover:border-gray-300">
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 border-t border-borderLight bg-surface sticky bottom-0 z-10 flex gap-3">
+                <button onclick="closeAddWishlistModal()"
+                    class="flex-1 py-3.5 rounded-xl border border-borderLight text-textDark font-medium hover:bg-bgSoft transition-all text-[13px]">Batal</button>
+                <button id="btn-simpan-wishlist" onclick="saveWishlistItem(this)"
+                    class="flex-[1.5] bg-primary hover:bg-primaryHover text-white py-3.5 rounded-xl text-[13px] font-medium transition-all shadow-md shadow-primary/20 active:scale-95 flex justify-center items-center gap-2">
+                    Simpan Item
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Supabase & Logic Utama -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module">
+        import { CONFIG } from './assets/js/config.js';
+        const supabase = window.supabase.createClient(CONFIG.SB_URL, CONFIG.SB_KEY);
+        let currentUser = null;
+
+        /* STATE LOKAL */
+        let wishlistData = [];
+        let moodboardData = [];
+        let currentActiveTab = 'belanja';
+
+        let currentEditId = null;
+        let currentEditImg = null;
+        let wishlistUploadFile = null;
+
+        /* FUNGSI FORMAT INPUT HARGA AUTO-TITIK */
+        window.formatPriceInput = function (element) {
+            let val = element.value.replace(/[^0-9]/g, '');
+            if (val !== '') {
+                element.value = parseInt(val, 10).toLocaleString('id-ID');
+            } else {
+                element.value = '';
+            }
+        };
+
+        /* STATE UNTUK NOTIFIKASI PERSISTEN DI LOCALSTORAGE */
+        let deletedNotifs = JSON.parse(localStorage.getItem('capsule_deleted_notifs') || '[]');
+        let readNotifs = JSON.parse(localStorage.getItem('capsule_read_notifs') || '[]');
+
+        function saveNotifState() {
+            localStorage.setItem('capsule_deleted_notifs', JSON.stringify(deletedNotifs));
+            localStorage.setItem('capsule_read_notifs', JSON.stringify(readNotifs));
+        }
+
+        /* DATA MOCKUP NOTIFIKASI */
+        const mockNotifs = [
+            { id: 'notif-wish-1', title: 'Jadwal besok!', time: '08:00', desc: 'Jangan lupa siapkan outfit "Smart Casual" untuk jadwalmu besok pagi.', timeAgo: '2 jam yang lalu', icon: 'ph-calendar-check', iconBg: 'bg-blue-50 text-blue-500 border-blue-100' },
+            { id: 'notif-wish-2', title: 'Inspirasi Baru', time: '09:15', desc: 'AI menemukan rekomendasi mix & match baru.', timeAgo: 'Baru saja', icon: 'ph-magic-wand', iconBg: 'bg-primary/10 text-primary border-primary/20' }
+        ];
+
+        /* ================= TOAST & DROPDOWNS LOGIC ================= */
+        window.showToast = function (message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bgColor = type === 'success' ? 'bg-surface text-textDark border-borderLight' : 'bg-red-50 text-red-800 border-red-200';
+            const icon = type === 'success' ? 'ph-check-circle' : 'ph-warning-circle';
+            const iconColor = type === 'success' ? 'text-primary' : 'text-red-500';
+
+            toast.className = `flex items-center gap-3 px-4 sm:px-5 py-3 sm:py-3.5 rounded-2xl border shadow-[0_10px_40px_rgba(0,0,0,0.08)] transform transition-all duration-300 translate-x-full ${bgColor}`;
+            toast.innerHTML = `<i class="ph-fill ${icon} text-xl sm:text-2xl ${iconColor}"></i><p class="text-xs sm:text-[13px] font-semibold">${message}</p>`;
+
+            container.appendChild(toast);
+
+            setTimeout(() => toast.classList.remove('translate-x-full'), 10);
+            setTimeout(() => { toast.classList.add('translate-x-full'); setTimeout(() => toast.remove(), 300); }, 3000);
+        }
+
+        /* INIT USER & FETCH METADATA */
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            const footerYear = document.getElementById('footer-year');
+            if (footerYear) footerYear.innerText = new Date().getFullYear();
+
+            renderNotifications();
+
+            const { data: { session }, error } = await supabase.auth.getSession();
+            if (!session) {
+                window.location.href = 'auth.html';
+                return;
+            }
+            currentUser = session.user;
+
+            const metadata = currentUser.user_metadata || {};
+            const fullName = metadata.full_name || "User";
+            const firstName = fullName.split(' ')[0];
+            const defaultAvatar = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80';
+            const avatarUrl = metadata.avatar_url || defaultAvatar;
+
+            document.getElementById('user-display-name').innerText = firstName;
+            document.getElementById('user-email-display').innerText = currentUser.email;
+            document.getElementById('header-avatar').src = avatarUrl;
+
+            await fetchWishlist();
+            await fetchMoodboard();
+
+            const searchInputs = document.querySelectorAll('.search-sync');
+            searchInputs.forEach(input => {
+                input.addEventListener('input', (e) => {
+                    const query = e.target.value.toLowerCase();
+                    searchInputs.forEach(inp => { if (inp !== e.target) inp.value = e.target.value; });
+
+                    if (currentActiveTab === 'belanja') {
+                        renderWishlist(query);
+                    } else {
+                        renderMoodboard(query);
+                    }
+                });
+            });
+        });
+
+        window.toggleNotifications = function (e) {
+            if (e) e.stopPropagation();
+            const drop = document.getElementById('notif-dropdown');
+            if (drop.classList.contains('hidden')) {
+                drop.classList.remove('hidden');
+                setTimeout(() => { drop.classList.remove('opacity-0', 'scale-95'); drop.classList.add('opacity-100', 'scale-100'); }, 10);
+            } else {
+                drop.classList.remove('opacity-100', 'scale-100'); drop.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => { drop.classList.add('hidden'); }, 200);
+            }
+        }
+
+        window.toggleProfileDropdown = function (e) {
+            e.stopPropagation();
+            const menu = document.getElementById('profile-menu');
+            const chevron = document.getElementById('profile-chevron');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                setTimeout(() => {
+                    menu.classList.remove('opacity-0', 'scale-95'); menu.classList.add('opacity-100', 'scale-100');
+                    if (chevron) chevron.style.transform = 'rotate(180deg)';
+                }, 10);
+            } else {
+                menu.classList.remove('opacity-100', 'scale-100'); menu.classList.add('opacity-0', 'scale-95');
+                if (chevron) chevron.style.transform = 'rotate(0deg)';
+                setTimeout(() => menu.classList.add('hidden'), 200);
+            }
+        }
+
+        window.toggleMobileMore = function () {
+            const menu = document.getElementById('mobile-more-menu');
+            const content = document.getElementById('mobile-more-content');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden'); menu.classList.add('flex');
+                setTimeout(() => { menu.classList.remove('opacity-0'); content.classList.remove('translate-y-full'); }, 10);
+            } else {
+                menu.classList.add('opacity-0'); content.classList.add('translate-y-full');
+                setTimeout(() => { menu.classList.add('hidden'); menu.classList.remove('flex'); }, 300);
+            }
+        }
+
+        window.logout = async function () {
+            await supabase.auth.signOut();
+            window.location.href = 'auth.html';
+        }
+
+        document.addEventListener('click', (e) => {
+            const notifDropdown = document.getElementById('notif-dropdown');
+            if (notifDropdown && !notifDropdown.classList.contains('hidden') && !e.target.closest('#notif-dropdown') && !e.target.closest('button[onclick*="toggleNotifications"]')) {
+                notifDropdown.classList.remove('opacity-100', 'scale-100'); notifDropdown.classList.add('opacity-0', 'scale-95'); setTimeout(() => { notifDropdown.classList.add('hidden'); }, 200);
+            }
+
+            const wrapper = document.getElementById('profile-dropdown-wrapper');
+            const menu = document.getElementById('profile-menu');
+            const chevron = document.getElementById('profile-chevron');
+            if (wrapper && !wrapper.contains(e.target) && !menu.classList.contains('hidden')) {
+                menu.classList.remove('opacity-100', 'scale-100'); menu.classList.add('opacity-0', 'scale-95');
+                if (chevron) chevron.style.transform = 'rotate(0deg)'; setTimeout(() => menu.classList.add('hidden'), 200);
+            }
+
+            const mobileMoreMenu = document.getElementById('mobile-more-menu');
+            const mobileMoreContent = document.getElementById('mobile-more-content');
+            if (mobileMoreMenu && !mobileMoreMenu.classList.contains('hidden') && !mobileMoreContent.contains(e.target) && !e.target.closest('button[onclick*="toggleMobileMore"]')) {
+                toggleMobileMore();
+            }
+
+            if (!e.target.closest('.action-dropdown-container')) {
+                document.querySelectorAll('.dropdown-menu').forEach(m => {
+                    m.classList.remove('opacity-100', 'scale-100'); m.classList.add('opacity-0', 'scale-95'); setTimeout(() => m.classList.add('hidden'), 200);
+                });
+            }
+            if (e.target.closest('.action-opts')) {
+                e.stopPropagation();
+                const container = e.target.closest('.action-dropdown-container'); const m = container.querySelector('.dropdown-menu');
+                document.querySelectorAll('.dropdown-menu').forEach(x => {
+                    if (x !== m) { x.classList.remove('opacity-100', 'scale-100'); x.classList.add('opacity-0', 'scale-95'); setTimeout(() => x.classList.add('hidden'), 200); }
+                });
+                if (m.classList.contains('hidden')) {
+                    m.classList.remove('hidden'); setTimeout(() => { m.classList.remove('opacity-0', 'scale-95'); m.classList.add('opacity-100', 'scale-100'); }, 10);
+                } else {
+                    m.classList.remove('opacity-100', 'scale-100'); m.classList.add('opacity-0', 'scale-95'); setTimeout(() => m.classList.add('hidden'), 200);
+                }
+            }
+        });
+
+        /* ================= SISTEM NOTIFIKASI ================= */
+        window.renderNotifications = function () {
+            const container = document.getElementById('notif-list-container');
+            const countBadge = document.getElementById('notif-count-badge');
+            const dot = document.getElementById('notif-badge-dot');
+
+            let html = '';
+            let unreadCount = 0;
+            let visibleCount = 0;
+
+            mockNotifs.forEach(n => {
+                if (deletedNotifs.includes(n.id)) return;
+                visibleCount++;
+
+                const isRead = readNotifs.includes(n.id);
+                if (!isRead) unreadCount++;
+
+                const readClass = isRead ? "opacity-50 bg-gray-50" : "";
+
+                html += `
+                <div class="notif-item p-4 sm:p-5 border-b border-borderLight hover:bg-bgSoft transition-colors flex gap-3 sm:gap-4 relative group ${readClass}" id="${n.id}">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full ${n.iconBg} border flex items-center justify-center shrink-0 cursor-pointer">
+                        <i class="ph-bold ${n.icon} text-lg sm:text-xl"></i>
+                    </div>
+                    <div class="flex-1 cursor-pointer pr-2">
+                        <div class="flex justify-between items-start mb-1">
+                            <p class="text-sm sm:text-[15px] font-semibold text-textDark leading-tight">${n.title}</p>
+                            <div class="flex items-center gap-1.5 sm:gap-2">
+                                <span class="text-[10px] sm:text-[11px] text-textMuted font-medium">${n.time}</span>
+                                <button onclick="removeNotif('${n.id}', event)" class="text-red-400 hover:text-red-600 transition-colors p-0.5" title="Hapus Notifikasi">
+                                    <i class="ph-bold ph-x text-sm sm:text-base"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-xs sm:text-[13px] text-textMuted leading-relaxed">${n.desc}</p>
+                        <p class="text-[10px] sm:text-[11px] text-textMuted/70 mt-1.5 sm:mt-2 font-medium">${n.timeAgo}</p>
+                    </div>
+                </div>`;
+            });
+
+            if (visibleCount === 0) {
+                container.innerHTML = '<div class="p-6 sm:p-8 text-center text-xs sm:text-sm text-textMuted">Tidak ada notifikasi baru.</div>';
+            } else {
+                container.innerHTML = html;
+            }
+
+            if (unreadCount > 0) {
+                if (dot) dot.classList.remove('hidden');
+                if (countBadge) countBadge.innerText = `${unreadCount} BARU`;
+            } else {
+                if (dot) dot.classList.add('hidden');
+                if (countBadge) countBadge.innerText = `0 BARU`;
+            }
+        }
+
+        window.removeNotif = function (id, e) {
+            e.stopPropagation();
+            if (!deletedNotifs.includes(id)) {
+                deletedNotifs.push(id);
+                saveNotifState();
+                renderNotifications();
+            }
+        };
+
+        window.markAllReadNotif = function () {
+            mockNotifs.forEach(n => {
+                if (!readNotifs.includes(n.id)) readNotifs.push(n.id);
+            });
+            saveNotifState();
+            renderNotifications();
+            showToast('Semua notifikasi ditandai dibaca');
+        };
+
+        window.deleteAllNotif = function (e) {
+            e.stopPropagation();
+            mockNotifs.forEach(n => {
+                if (!deletedNotifs.includes(n.id)) deletedNotifs.push(n.id);
+            });
+            saveNotifState();
+            renderNotifications();
+            showToast('Semua notifikasi dihapus');
+        };
+
+        /* ================= TABS SWITCHER ================= */
+        window.switchTab = function (tabName) {
+            currentActiveTab = tabName;
+
+            const tabBelanja = document.getElementById('tab-belanja');
+            const tabMoodboard = document.getElementById('tab-moodboard');
+            const contentBelanja = document.getElementById('content-belanja');
+            const contentMoodboard = document.getElementById('content-moodboard');
+
+            const searchInputs = document.querySelectorAll('.search-sync');
+            searchInputs.forEach(inp => { inp.value = ''; });
+
+            if (tabName === 'belanja') {
+                tabBelanja.className = "px-6 py-2.5 text-sm font-semibold rounded-full bg-white text-textDark shadow-sm transition-all flex items-center gap-2";
+                tabMoodboard.className = "px-6 py-2.5 text-sm font-medium text-textMuted hover:text-textDark rounded-full transition-all flex items-center gap-2";
+
+                contentBelanja.classList.remove('hidden'); contentMoodboard.classList.add('hidden');
+                contentBelanja.classList.remove('animate-[fadeInView_0.3s_ease-out_forwards]');
+                void contentBelanja.offsetWidth;
+                contentBelanja.classList.add('animate-[fadeInView_0.3s_ease-out_forwards]');
+                renderWishlist();
+            } else {
+                tabMoodboard.className = "px-6 py-2.5 text-sm font-semibold rounded-full bg-white text-textDark shadow-sm transition-all flex items-center gap-2";
+                tabBelanja.className = "px-6 py-2.5 text-sm font-medium text-textMuted hover:text-textDark rounded-full transition-all flex items-center gap-2";
+
+                contentMoodboard.classList.remove('hidden'); contentBelanja.classList.add('hidden');
+                contentMoodboard.classList.remove('animate-[fadeInView_0.3s_ease-out_forwards]');
+                void contentMoodboard.offsetWidth;
+                contentMoodboard.classList.add('animate-[fadeInView_0.3s_ease-out_forwards]');
+                renderMoodboard();
+            }
+        };
+
+
+        /* ================= TAB 1: WISHLIST (SHOPPING LIST) ================= */
+        async function fetchWishlist() {
+            const { data, error } = await supabase.from('shopping_list').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
+            if (data) wishlistData = data;
+            renderWishlist();
+        }
+
+        window.renderWishlist = function (searchQuery = '') {
+            const grid = document.getElementById('wishlist-grid');
+            if (!grid) return;
+
+            let filteredData = wishlistData;
+            if (searchQuery !== '') {
+                filteredData = wishlistData.filter(item =>
+                    item.name.toLowerCase().includes(searchQuery) ||
+                    item.brand.toLowerCase().includes(searchQuery)
+                );
+            }
+
+            const totalPrice = wishlistData.reduce((sum, item) => sum + Number(item.price), 0);
+            document.getElementById('stat-total-item').innerText = wishlistData.length;
+            document.getElementById('stat-total-price').innerText = 'Rp ' + totalPrice.toLocaleString('id-ID');
+
+            const addBtnHtml = `
+                <div class="bg-bgSoft border-2 border-dashed border-borderLight rounded-[1.5rem] p-6 flex flex-col items-center justify-center gap-3 text-center cursor-pointer hover:border-primary hover:bg-primary/5 transition-all group min-h-[260px]" onclick="openAddWishlistModal()">
+                    <div class="w-14 h-14 rounded-full bg-white shadow-sm border border-borderLight flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i data-lucide="plus" class="w-6 h-6 text-textMuted group-hover:text-primary transition-colors"></i>
+                    </div>
+                    <div>
+                        <p class="text-[13px] font-semibold text-textDark group-hover:text-primary transition-colors">Tambah Item</p>
+                        <p class="text-[10px] text-textMuted mt-1">Simpan barang yang ingin dibeli</p>
+                    </div>
+                </div>`;
+
+            if (searchQuery !== '' && filteredData.length === 0) {
+                grid.innerHTML = addBtnHtml + `<div class="col-span-full md:col-span-2 py-10 flex items-center justify-center text-sm text-textMuted">Tidak ada belanjaan yang sesuai pencarian.</div>`;
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+                return;
+            }
+
+            const itemsHtml = filteredData.map(item => {
+                const safeLink = item.link && item.link !== '#' ? item.link : '#';
+                const linkAction = safeLink !== '#' ? `window.open('${safeLink}', '_blank')` : `showToast('Tidak ada tautan toko', 'error')`;
+
+                const validImg = item.img && item.img.trim() !== '' ? item.img : 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=400&q=80';
+
+                return `
+                <div class="bg-surface border border-borderLight rounded-[1.5rem] p-3 flex flex-col hover:shadow-md hover:border-primary/40 transition-all group relative">
+                    <div class="absolute top-3 right-3 z-20 action-dropdown-container">
+                        <button class="p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-sm text-textMuted hover:text-textDark hover:bg-white transition-all action-opts">
+                            <i data-lucide="more-horizontal" class="w-4 h-4 pointer-events-none"></i>
+                        </button>
+                        <div class="dropdown-menu absolute right-0 top-10 w-36 bg-surface border border-borderLight rounded-xl shadow-xl py-2 hidden origin-top-right scale-95 opacity-0 transition-all duration-200 z-30">
+                            <button class="w-full text-left px-4 py-2 text-xs font-medium text-textDark hover:bg-bgSoft hover:text-primary flex items-center gap-2" onclick="openEditWishlistModal('${item.id}')"><i data-lucide="pencil" class="w-3.5 h-3.5"></i> Edit</button>
+                            <div class="h-px bg-borderLight/50 my-1"></div>
+                            <button class="w-full text-left px-4 py-2 text-xs font-medium text-red-500 hover:bg-red-50 flex items-center gap-2" onclick="removeWishlistItem('${item.id}')"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Hapus</button>
+                        </div>
+                    </div>
+
+                    <div class="h-44 w-full flex items-center justify-center mb-3 bg-bgSoft rounded-xl p-2 border border-borderLight/50 overflow-hidden relative cursor-pointer" onclick="${linkAction}">
+                        <img src="${validImg}" class="max-h-full max-w-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-lg mix-blend-darken">
+                    </div>
+                    <div class="px-1 flex-1 flex flex-col">
+                        <h4 class="text-[13px] font-semibold text-textDark w-full truncate leading-tight cursor-pointer hover:text-primary transition-colors" onclick="${linkAction}">${item.name}</h4>
+                        <p class="text-[10px] text-textMuted mt-1 font-medium">${item.brand}</p>
+                        <div class="flex items-center justify-between mt-auto pt-3 border-t border-borderLight/50">
+                            <div class="text-[13px] font-bold text-dark">Rp ${Number(item.price).toLocaleString('id-ID')}</div>
+                            <button class="w-7 h-7 bg-bgSoft hover:bg-primary hover:text-white border border-borderLight rounded-full flex items-center justify-center transition-colors text-textMuted" onclick="${linkAction}" title="Beli Sekarang / Kunjungi Web">
+                                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+
+            grid.innerHTML = addBtnHtml + itemsHtml;
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        };
+
+        window.handleWishlistFileUpload = function (input) {
+            if (input.files && input.files[0]) {
+                wishlistUploadFile = input.files[0];
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const imgEl = document.getElementById('wishlist-upload-preview');
+                    imgEl.src = e.target.result;
+                    imgEl.classList.remove('hidden');
+                    document.getElementById('wishlist-upload-placeholder').classList.add('opacity-0');
+                }
+                reader.readAsDataURL(wishlistUploadFile);
+            }
+        };
+
+        window.openAddWishlistModal = function () {
+            currentEditId = null;
+            currentEditImg = null;
+            wishlistUploadFile = null;
+
+            document.getElementById('modal-wishlist-title').innerText = "Tambah ke Wishlist";
+            document.getElementById('btn-simpan-wishlist').innerHTML = "Simpan Item";
+
+            const modal = document.getElementById('add-wishlist-modal');
+            const content = document.getElementById('add-wishlist-modal-content');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            setTimeout(() => { modal.classList.remove('opacity-0'); content.classList.remove('scale-95'); }, 10);
+        }
+
+        window.openEditWishlistModal = function (id) {
+            const item = wishlistData.find(i => i.id == id);
+            if (!item) return;
+
+            currentEditId = id;
+            currentEditImg = item.img;
+            wishlistUploadFile = null;
+
+            document.getElementById('wishlist-input-link').value = item.link && item.link !== '#' ? item.link : '';
+            document.getElementById('wishlist-input-name').value = item.name;
+            document.getElementById('wishlist-input-brand').value = item.brand;
+
+            document.getElementById('wishlist-input-price').value = item.price ? parseInt(item.price, 10).toLocaleString('id-ID') : '';
+
+            const preview = document.getElementById('wishlist-upload-preview');
+            const placeholder = document.getElementById('wishlist-upload-placeholder');
+
+            if (item.img) {
+                preview.src = item.img;
+                preview.classList.remove('hidden');
+                placeholder.classList.add('opacity-0');
+            } else {
+                preview.src = '';
+                preview.classList.add('hidden');
+                placeholder.classList.remove('opacity-0');
+            }
+
+            document.getElementById('modal-wishlist-title').innerText = "Edit Wishlist";
+            document.getElementById('btn-simpan-wishlist').innerHTML = "Perbarui Item";
+
+            const modal = document.getElementById('add-wishlist-modal');
+            const content = document.getElementById('add-wishlist-modal-content');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            setTimeout(() => { modal.classList.remove('opacity-0'); content.classList.remove('scale-95'); }, 10);
+        }
+
+        window.closeAddWishlistModal = function () {
+            const modal = document.getElementById('add-wishlist-modal');
+            const content = document.getElementById('add-wishlist-modal-content');
+            modal.classList.add('opacity-0'); content.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden'); modal.classList.remove('flex');
+
+                document.getElementById('wishlist-input-link').value = '';
+                document.getElementById('wishlist-input-name').value = '';
+                document.getElementById('wishlist-input-brand').value = '';
+                document.getElementById('wishlist-input-price').value = '';
+
+                document.getElementById('wishlist-file-upload').value = '';
+                document.getElementById('wishlist-upload-preview').src = '';
+                document.getElementById('wishlist-upload-preview').classList.add('hidden');
+                document.getElementById('wishlist-upload-placeholder').classList.remove('opacity-0');
+
+                currentEditId = null;
+                currentEditImg = null;
+                wishlistUploadFile = null;
+
+                document.getElementById('modal-wishlist-title').innerText = "Tambah ke Wishlist";
+                document.getElementById('btn-simpan-wishlist').innerHTML = "Simpan Item";
+            }, 300);
+        }
+
+        window.saveWishlistItem = async function (btn) {
+            let linkStr = document.getElementById('wishlist-input-link').value.trim();
+            const nameStr = document.getElementById('wishlist-input-name').value.trim();
+            const brandStr = document.getElementById('wishlist-input-brand').value.trim() || 'Tanpa Merek';
+
+            const priceRawStr = document.getElementById('wishlist-input-price').value.replace(/\./g, '').trim();
+
+            if (!nameStr || !priceRawStr) { showToast('Harap isi nama pakaian dan harga!', 'error'); return; }
+
+            if (linkStr && !/^https?:\/\//i.test(linkStr)) { linkStr = 'https://' + linkStr; }
+
+            const originalHtml = btn.innerHTML;
+            btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin text-white"></i> Menyimpan...';
+            btn.disabled = true;
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+
+            try {
+                let finalImageUrl = currentEditImg || 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=400&q=80';
+
+                if (wishlistUploadFile) {
+                    const fileName = `${Date.now()}_wishlist_${wishlistUploadFile.name.replace(/\s+/g, '_')}`;
+                    const { error: uploadError } = await supabase.storage.from('wardrobe').upload(`${currentUser.id}/${fileName}`, wishlistUploadFile, {
+                        cacheControl: '3600',
+                        upsert: false
+                    });
+
+                    if (uploadError) throw uploadError;
+
+                    const { data: publicUrlData } = supabase.storage.from('wardrobe').getPublicUrl(`${currentUser.id}/${fileName}`);
+                    finalImageUrl = publicUrlData.publicUrl;
+                }
+
+                if (currentEditId) {
+                    const { error } = await supabase.from('shopping_list').update({
+                        name: nameStr, brand: brandStr, price: Number(priceRawStr), link: linkStr, img: finalImageUrl
+                    }).eq('id', currentEditId);
+                    if (error) throw error;
+                } else {
+                    const { error } = await supabase.from('shopping_list').insert([{
+                        user_id: currentUser.id,
+                        name: nameStr, brand: brandStr, price: Number(priceRawStr), link: linkStr, img: finalImageUrl
+                    }]);
+                    if (error) throw error;
+                }
+
+                btn.innerHTML = '<i data-lucide="check" class="w-4 h-4 text-white"></i> Tersimpan!';
+                btn.classList.add('bg-green-600'); btn.classList.remove('bg-primary', 'hover:bg-primaryHover');
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+
+                await fetchWishlist(); // Refresh DB
+
+                setTimeout(() => {
+                    closeAddWishlistModal();
+                    showToast(`Item berhasil ${currentEditId ? 'diperbarui' : 'ditambahkan'}!`);
+                    setTimeout(() => {
+                        btn.innerHTML = originalHtml; btn.classList.add('bg-primary', 'hover:bg-primaryHover'); btn.classList.remove('bg-green-600');
+                        btn.disabled = false;
+                        if (typeof lucide !== 'undefined') lucide.createIcons();
+                    }, 300);
+                }, 800);
+            } catch (error) {
+                console.error("Gagal menyimpan data:", error);
+                showToast("Gagal menyimpan data.", "error");
+                btn.innerHTML = originalHtml;
+                btn.disabled = false;
+            }
+        }
+
+        window.removeWishlistItem = async function (id) {
+            try {
+                const { error } = await supabase.from('shopping_list').delete().eq('id', id);
+                if (error) throw error;
+                await fetchWishlist();
+                showToast('Item berhasil dihapus');
+            } catch (error) { showToast('Gagal menghapus item.', 'error'); }
+        }
+
+
+        /* ================= TAB 2: MOODBOARD ================= */
+        async function fetchMoodboard() {
+            const { data, error } = await supabase.from('moodboard').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
+            if (data) moodboardData = data;
+
+            document.getElementById('stat-total-mood').innerText = `${moodboardData.length} Gaya`;
+            renderMoodboard();
+        }
+
+        window.renderMoodboard = function (searchQuery = '') {
+            const container = document.getElementById('moodboard-grid');
+            if (!container) return;
+
+            let filteredData = moodboardData;
+            if (searchQuery !== '') {
+                filteredData = moodboardData.filter(item =>
+                    item.title.toLowerCase().includes(searchQuery) ||
+                    (item.category && item.category.toLowerCase().includes(searchQuery))
+                );
+            }
+
+            if (filteredData.length === 0) {
+                if (searchQuery !== '') {
+                    container.innerHTML = `<div class="col-span-full py-16 text-center text-textMuted">Tidak ada gaya yang sesuai pencarian.</div>`;
+                } else {
+                    container.innerHTML = `<div class="col-span-full py-16 text-center text-textMuted flex flex-col items-center gap-3">
+                        <i data-lucide="image-off" class="w-10 h-10 opacity-30"></i>
+                        <p>Belum ada inspirasi gaya yang disimpan.<br>Silakan tekan tombol "Simpan" di menu Inspirasi.</p>
+                        <button onclick="window.location.href='inspirasi.html'" class="mt-2 px-5 py-2.5 bg-primary/10 text-primary font-medium text-xs rounded-full hover:bg-primary/20 transition-all">Cari Inspirasi</button>
+                    </div>`;
+                    if (typeof lucide !== 'undefined') lucide.createIcons();
+                }
+                return;
+            }
+
+            const heights = [250, 300, 350, 280, 320];
+
+            container.innerHTML = filteredData.map((item, index) => {
+                const h = heights[index % heights.length];
+                return `
+                <div class="break-inside-avoid inline-block w-full mb-4 sm:mb-6 group cursor-pointer" onclick="window.location.href='inspirasi.html'">
+                    <div class="relative bg-surface rounded-[1.5rem] border border-borderLight shadow-sm group-hover:shadow-md hover:border-primary/30 transition-all overflow-hidden flex flex-col">
+                        <div class="relative w-full overflow-hidden bg-bgSoft">
+                            <img src="${item.image_url}" class="w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" style="height: ${h}px;" loading="lazy" alt="${item.title}">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            
+                            <button class="absolute top-3 right-3 p-2 bg-white/90 backdrop-blur-md rounded-full text-red-500 shadow-sm hover:scale-110 transition-all opacity-0 group-hover:opacity-100 z-20" onclick="removeFromMoodboard('${item.id}', event)">
+                                <i data-lucide="trash-2" class="w-4 h-4 text-red-500"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="p-3 sm:p-4 bg-white relative z-10">
+                            <h4 class="text-[13px] font-semibold text-textDark truncate mb-1">${item.title}</h4>
+                            <p class="text-[10px] text-primary font-medium uppercase tracking-wider">${item.category || 'Gaya'}</p>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        };
+
+        window.removeFromMoodboard = async function (id, event) {
+            event.stopPropagation();
+            try {
+                const { error } = await supabase.from('moodboard').delete().eq('id', id);
+                if (error) throw error;
+                await fetchMoodboard();
+                showToast('Dihapus dari moodboard', 'error');
+            } catch (error) { showToast('Gagal menghapus.', 'error'); }
+        }
+
+    </script>
+</body>
+
+</html>

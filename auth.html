@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masuk / Daftar - Capsule Wardrobe</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#9A7B66',
+                            hover: '#826552',
+                            light: '#F3EBE3',
+                            bg: '#FFFFFF'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        montserrat: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body class="bg-brand-bg font-sans min-h-screen flex flex-col text-gray-800 selection:bg-brand selection:text-white">
+
+    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3"></div>
+
+    <main class="flex-grow flex items-center justify-center p-4 sm:p-8">
+        <div
+            class="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] w-full max-w-6xl flex flex-col md:flex-row overflow-hidden min-h-[700px] relative">
+
+            <div class="w-full md:w-[45%] bg-brand-light relative overflow-hidden flex flex-col" id="left-section">
+                <div class="relative z-10 p-10 lg:p-14 pb-0 flex flex-col justify-start shrink-0">
+                    <div class="flex items-center gap-3 mb-10 lg:mb-12">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"
+                            class="text-gray-900">
+                            <path d="M12 7v4" />
+                            <path d="M12 7a2.5 2.5 0 0 0 2.5-2.5c0-1.38-1.12-2.5-2.5-2.5S9.5 3.12 9.5 4.5" />
+                            <path d="M12 11 3 18h18Z" />
+                        </svg>
+                        <h1 class="font-montserrat font-semibold text-xl leading-tight text-gray-900">
+                            Capsule<br>Wardrobe</h1>
+                    </div>
+
+                    <div id="login-text" class="block transition-all duration-300 transform translate-y-0">
+                        <h2 class="font-montserrat text-4xl lg:text-5xl font-bold mb-4 leading-tight text-gray-900">
+                            Selamat Datang<br>Kembali!</h2>
+                        <p class="text-gray-700 font-medium leading-relaxed text-lg">Masuk untuk melanjutkan
+                            dan<br>kelola lemari pakaianmu.</p>
+                    </div>
+
+                    <div id="register-text"
+                        class="hidden opacity-0 transition-all duration-300 transform translate-y-4">
+                        <h2 class="font-montserrat text-4xl lg:text-5xl font-bold mb-4 leading-tight text-gray-900">Buat
+                            Akun<br>Baru</h2>
+                        <p class="text-gray-700 font-medium leading-relaxed text-lg">Yuk, mulai perjalanan gaya<br>versi
+                            terbaikmu.</p>
+                    </div>
+                </div>
+
+                <div class="relative w-full flex-grow mt-4 min-h-[300px]">
+                    <img src="./assets/img/gambar1.jpeg" alt="Koleksi Pakaian Capsule"
+                        class="absolute inset-0 w-full h-full object-cover object-bottom mix-blend-darken" />
+                </div>
+            </div>
+
+            <div class="w-full md:w-[55%] p-10 lg:p-16 flex flex-col justify-center relative bg-white">
+
+                <div id="login-form-container"
+                    class="w-full max-w-md mx-auto transition-all duration-500 opacity-100 translate-x-0">
+
+                    <!-- Tombol Kembali untuk Form Login -->
+                    <a href="landingpage.html"
+                        class="inline-flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-brand transition-colors mb-6 group w-fit">
+                        <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                        Kembali
+                    </a>
+
+                    <h3 class="text-3xl font-montserrat font-semibold text-gray-900 mb-2">Masuk ke Akun</h3>
+                    <p class="text-gray-500 mb-8">Silakan masuk untuk mengakses akunmu.</p>
+
+                    <form id="login-form" class="space-y-5">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
+                            <div class="relative">
+                                <div
+                                    class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                                    <i data-lucide="mail" class="w-5 h-5"></i>
+                                </div>
+                                <input type="email" id="login-email" required
+                                    class="block w-full pl-11 pr-3 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand focus:border-brand transition-colors text-sm"
+                                    placeholder="Masukkan email">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Kata Sandi</label>
+                            <div class="relative">
+                                <div
+                                    class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                                    <i data-lucide="lock" class="w-5 h-5"></i>
+                                </div>
+                                <input type="password" id="login-password" required
+                                    class="block w-full pl-11 pr-10 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand focus:border-brand transition-colors text-sm"
+                                    placeholder="Masukkan kata sandi">
+                                <button type="button" onclick="togglePassword('login-password', 'login-eye-icon')"
+                                    class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none">
+                                    <i data-lucide="eye-off" id="login-eye-icon" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between text-sm mt-2">
+                            <label class="flex items-center gap-2 cursor-pointer group">
+                                <input type="checkbox"
+                                    class="w-4 h-4 rounded border-gray-300 text-brand focus:ring-brand cursor-pointer accent-brand">
+                                <span class="text-gray-600 group-hover:text-gray-800 transition-colors">Ingat
+                                    saya</span>
+                            </label>
+                            <a href="#" class="text-brand hover:text-brand-hover font-medium transition-colors">Lupa
+                                kata sandi?</a>
+                        </div>
+
+                        <button type="submit" id="btn-login"
+                            class="w-full bg-brand hover:bg-brand-hover text-white font-medium py-3.5 rounded-xl transition-colors shadow-sm flex justify-center items-center gap-2 mt-4">
+                            <span>Masuk</span>
+                        </button>
+                    </form>
+
+                    <p class="text-center text-sm text-gray-600 mt-8">
+                        Belum punya akun? <button onclick="switchMode('register')"
+                            class="text-brand font-semibold hover:underline">Daftar di sini</button>
+                    </p>
+                </div>
+
+                <div id="register-form-container"
+                    class="w-full max-w-md mx-auto absolute top-10 lg:top-16 left-0 right-0 px-10 lg:px-16 transition-all duration-500 opacity-0 translate-x-8 pointer-events-none invisible">
+
+                    <!-- Tombol Kembali untuk Form Register -->
+                    <button type="button" onclick="switchMode('login')"
+                        class="inline-flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-brand transition-colors mb-6 group w-fit">
+                        <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                        Kembali
+                    </button>
+
+                    <h3 class="text-3xl font-montserrat font-semibold text-gray-900 mb-2">Daftar Akun Baru</h3>
+                    <p class="text-gray-500 mb-6 text-sm">Lengkapi data di bawah ini untuk membuat akun.</p>
+
+                    <form id="register-form" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Nama Lengkap</label>
+                            <div class="relative">
+                                <div
+                                    class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                                    <i data-lucide="user" class="w-4 h-4"></i>
+                                </div>
+                                <input type="text" id="reg-name" required
+                                    class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand focus:border-brand transition-colors text-sm"
+                                    placeholder="Masukkan nama lengkap">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
+                            <div class="relative">
+                                <div
+                                    class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                                    <i data-lucide="mail" class="w-4 h-4"></i>
+                                </div>
+                                <input type="email" id="reg-email" required
+                                    class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand focus:border-brand transition-colors text-sm"
+                                    placeholder="Masukkan email">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Kata Sandi</label>
+                            <div class="relative">
+                                <div
+                                    class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                                    <i data-lucide="lock" class="w-4 h-4"></i>
+                                </div>
+                                <input type="password" id="reg-password" required
+                                    class="block w-full pl-10 pr-10 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand focus:border-brand transition-colors text-sm"
+                                    placeholder="Buat kata sandi">
+                                <button type="button" onclick="togglePassword('reg-password', 'reg-eye-icon')"
+                                    class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none">
+                                    <i data-lucide="eye-off" id="reg-eye-icon" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-2 text-sm mt-3">
+                            <input type="checkbox" id="reg-terms" required
+                                class="mt-1 w-4 h-4 rounded border-gray-300 text-brand focus:ring-brand cursor-pointer accent-brand">
+                            <label for="reg-terms" class="text-gray-600 cursor-pointer">
+                                Saya setuju dengan <a href="#" class="text-brand hover:underline">Syarat & Ketentuan</a>
+                            </label>
+                        </div>
+
+                        <button type="submit" id="btn-register"
+                            class="w-full bg-brand hover:bg-brand-hover text-white font-medium py-3 rounded-xl transition-colors shadow-sm mt-2 flex justify-center items-center gap-2">
+                            <span>Daftar</span>
+                        </button>
+                    </form>
+
+                    <p class="text-center text-sm text-gray-600 mt-6">
+                        Sudah punya akun? <button onclick="switchMode('login')"
+                            class="text-brand font-semibold hover:underline">Masuk di sini</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="w-full bg-transparent py-10 mt-auto border-t border-gray-100">
+        <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-brand/10 flex items-center justify-center text-brand shrink-0">
+                    <i data-lucide="shield-check" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-gray-900 text-sm">Aman & Terjaga</h4>
+                    <p class="text-xs text-gray-500 mt-0.5">Enkripsi standar industri.</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-brand/10 flex items-center justify-center text-brand shrink-0">
+                    <i data-lucide="mouse-pointer-click" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-gray-900 text-sm">Mudah Digunakan</h4>
+                    <p class="text-xs text-gray-500 mt-0.5">Kelola outfit jadi lebih simpel.</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-brand/10 flex items-center justify-center text-brand shrink-0">
+                    <i data-lucide="heart" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-gray-900 text-sm">100% Gratis</h4>
+                    <p class="text-xs text-gray-500 mt-0.5">Tanpa biaya berlangganan.</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-brand/10 flex items-center justify-center text-brand shrink-0">
+                    <i data-lucide="leaf" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-gray-900 text-sm">Fokus Gaya</h4>
+                    <p class="text-xs text-gray-500 mt-0.5">Gaya tetap on point.</p>
+                </div>
+            </div>
+        </div>
+        <div class="text-center text-xs text-gray-400 mt-10">
+            &copy; 2026 Capsule Wardrobe by tunnelbluu.
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        function switchMode(mode) {
+            const loginForm = document.getElementById('login-form-container');
+            const registerForm = document.getElementById('register-form-container');
+            const loginText = document.getElementById('login-text');
+            const registerText = document.getElementById('register-text');
+
+            if (mode === 'register') {
+                loginForm.classList.remove('opacity-100', 'translate-x-0');
+                loginForm.classList.add('opacity-0', '-translate-x-8', 'pointer-events-none', 'invisible');
+                loginText.classList.add('opacity-0', '-translate-y-4');
+                setTimeout(() => {
+                    loginText.classList.add('hidden');
+                    registerForm.classList.remove('opacity-0', 'translate-x-8', 'pointer-events-none', 'invisible');
+                    registerForm.classList.add('opacity-100', 'translate-x-0');
+                    registerForm.style.position = 'relative';
+                    loginForm.style.position = 'absolute';
+                    registerText.classList.remove('hidden');
+                    setTimeout(() => registerText.classList.remove('opacity-0', 'translate-y-4'), 50);
+                }, 300);
+            } else {
+                registerForm.classList.remove('opacity-100', 'translate-x-0');
+                registerForm.classList.add('opacity-0', 'translate-x-8', 'pointer-events-none', 'invisible');
+                registerText.classList.add('opacity-0', 'translate-y-4');
+                setTimeout(() => {
+                    registerText.classList.add('hidden');
+                    loginForm.classList.remove('opacity-0', '-translate-x-8', 'pointer-events-none', 'invisible');
+                    loginForm.classList.add('opacity-100', 'translate-x-0');
+                    loginForm.style.position = 'relative';
+                    registerForm.style.position = 'absolute';
+                    loginText.classList.remove('hidden');
+                    setTimeout(() => loginText.classList.remove('opacity-0', '-translate-y-4'), 50);
+                }, 300);
+            }
+        }
+
+        function togglePassword(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            input.type = input.type === 'password' ? 'text' : 'password';
+            icon.setAttribute('data-lucide', input.type === 'password' ? 'eye-off' : 'eye');
+            lucide.createIcons();
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bgColor = type === 'success' ? 'bg-green-50 text-green-800 border-green-200' : 'bg-red-50 text-red-800 border-red-200';
+            const icon = type === 'success' ? 'check-circle' : 'alert-circle';
+            toast.className = `flex items-center gap-3 px-4 py-3 rounded-lg border shadow-lg transform transition-all duration-300 translate-x-full ${bgColor}`;
+            toast.innerHTML = `<i data-lucide="${icon}" class="w-5 h-5"></i><p class="text-sm font-medium">${message}</p>`;
+            container.appendChild(toast);
+            lucide.createIcons();
+            setTimeout(() => toast.classList.remove('translate-x-full'), 10);
+            setTimeout(() => {
+                toast.classList.add('translate-x-full');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function setLoadingStatus(btnId, isLoading, originalText) {
+            const btn = document.getElementById(btnId);
+            btn.disabled = isLoading;
+            btn.classList.toggle('opacity-70', isLoading);
+            btn.innerHTML = isLoading ? `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Memproses...` : `<span>${originalText}</span>`;
+            lucide.createIcons();
+        }
+    </script>
+
+    <script type="module">
+        import { CONFIG } from './assets/js/config.js';
+
+        // Inisialisasi Supabase Client
+        const supabaseClient = supabase.createClient(CONFIG.SB_URL, CONFIG.SB_KEY);
+
+        // Simpan ke window agar bisa diakses global jika diperlukan
+        window.supabaseClient = supabaseClient;
+
+        // Login Handler
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            setLoadingStatus('btn-login', true, 'Masuk');
+
+            const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+            if (error) {
+                const msg = error.message === 'Invalid login credentials' ? 'Email atau kata sandi salah.' : error.message;
+                showToast(msg, 'error');
+                setLoadingStatus('btn-login', false, 'Masuk');
+            } else {
+                showToast('Login berhasil!', 'success');
+                setTimeout(() => window.location.href = 'dashboard.html', 1000);
+            }
+        });
+
+        // Register Handler
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-password').value;
+
+            setLoadingStatus('btn-register', true, 'Daftar');
+
+            const { data, error } = await supabaseClient.auth.signUp({
+                email, password,
+                options: { data: { full_name: name } }
+            });
+
+            if (error) {
+                showToast(error.message, 'error');
+                setLoadingStatus('btn-register', false, 'Daftar');
+            } else {
+                if (data.session) {
+                    showToast('Akun berhasil dibuat!', 'success');
+                    setTimeout(() => window.location.href = 'dashboard.html', 1500);
+                } else {
+                    showToast('Registrasi berhasil! Silakan cek email konfirmasi.', 'success');
+                    setTimeout(() => switchMode('login'), 2000);
+                    setLoadingStatus('btn-register', false, 'Daftar');
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

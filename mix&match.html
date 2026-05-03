@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mix & Match Manual - Capsule Wardrobe</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#A88C7D',
+                            dark: '#826350',
+                            light: '#C5AFA0',
+                            soft: '#F4EFEA',
+                            surface: '#FAF8F5'
+                        },
+                        primary: '#9D8371',
+                        primaryHover: '#8A7363',
+                        background: '#FAF9F7',
+                        surface: '#FFFFFF',
+                        borderLight: '#F0EBE6',
+                        bgSoft: '#FBFBFA',
+                        dark: '#1C1C1C',
+                        graytext: '#6B7280'
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px rgba(0, 0, 0, 0.03)',
+                        'card': '0 4px 15px rgba(0, 0, 0, 0.02)',
+                        'float': '0 10px 40px rgba(0, 0, 0, 0.06)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .blend-multiply {
+            mix-blend-mode: normal;
+        }
+
+        .blend-darken {
+            mix-blend-mode: normal;
+        }
+
+        .selectable-item {
+            background-color: #FAF8F5 !important;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .selectable-item:not(.active):hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        #outfit-canvas {
+            background-color: #FAF8F5 !important;
+        }
+
+        @keyframes slideUpFade {
+            from {
+                opacity: 0;
+                transform: translateY(20px) translateX(-50%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) translateX(-50%);
+            }
+        }
+
+        .toast-enter {
+            animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+    </style>
+</head>
+
+<body class="font-sans text-dark bg-[#FAFAFA] flex h-screen overflow-hidden antialiased relative">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-5 right-5 z-[200] flex flex-col gap-3 pointer-events-none w-max"></div>
+
+    <!-- Sidebar Overlay for Mobile -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden transition-opacity opacity-0">
+    </div>
+
+    <!-- Sidebar Desktop -->
+    <aside id="sidebar"
+        class="w-64 bg-surface border-r border-borderLight flex-col hidden lg:flex h-full z-20 shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.01)] transition-transform duration-300 -translate-x-full lg:translate-x-0">
+        <div class="p-8 flex items-center justify-between lg:justify-start gap-3">
+            <div class="flex items-center gap-2 group cursor-pointer" onclick="window.location.href='dashboard.html'">
+                <i class="ph ph-coat-hanger text-4xl text-primary group-hover:text-primaryHover transition-colors"></i>
+                <div class="leading-tight text-left">
+                    <h1 class="font-semibold text-xl tracking-tight text-dark">Capsule</h1>
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest font-medium">Wardrobe</p>
+                </div>
+            </div>
+            <button id="close-sidebar-btn" class="lg:hidden text-2xl text-gray-500 hover:text-dark"><i
+                    class="ph-bold ph-x text-xl"></i></button>
+        </div>
+
+        <nav class="flex-1 px-4 space-y-1 overflow-y-auto hide-scrollbar pb-8" id="sidebar-nav">
+            <a href="dashboard.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-gray-500 hover:bg-[#F8F7F4] hover:text-dark rounded-xl font-medium transition-all"><i
+                    class="ph ph-house text-xl"></i> Beranda</a>
+            <a href="lemari.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-gray-500 hover:bg-[#F8F7F4] hover:text-dark rounded-xl font-medium transition-all"><i
+                    class="ph ph-t-shirt text-xl"></i> Lemari Saya</a>
+
+            <!-- Active Menu: Mix & Match -->
+            <a href="#"
+                class="nav-link flex items-center gap-3 px-4 py-3 bg-[#EAE6E1] text-dark rounded-xl font-semibold transition-all shadow-sm"><i
+                    class="ph-fill ph-magic-wand text-xl text-primary"></i> Mix & Match</a>
+
+            <a href="kalender.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-gray-500 hover:bg-[#F8F7F4] hover:text-dark rounded-xl font-medium transition-all"><i
+                    class="ph ph-calendar text-xl"></i> Kalender Outfit</a>
+            <a href="inspirasi.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-gray-500 hover:bg-[#F8F7F4] hover:text-dark rounded-xl font-medium transition-all"><i
+                    class="ph ph-lightbulb text-xl"></i> Inspirasi</a>
+            <a href="statistik.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-gray-500 hover:bg-[#F8F7F4] hover:text-dark rounded-xl font-medium transition-all"><i
+                    class="ph ph-chart-bar text-xl"></i> Statistik</a>
+            <a href="wishlist.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-gray-500 hover:bg-[#F8F7F4] hover:text-dark rounded-xl font-medium transition-all"><i
+                    class="ph ph-heart text-xl"></i> Wishlist</a>
+            <a href="pengaturan.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-gray-500 hover:bg-[#F8F7F4] hover:text-dark rounded-xl font-medium transition-all mt-4"><i
+                    class="ph ph-gear text-xl"></i> Pengaturan</a>
+        </nav>
+
+        <div class="p-6 mt-auto">
+            <div
+                class="bg-[#F8F7F4] border border-borderLight p-5 rounded-2xl relative overflow-hidden group cursor-pointer hover:border-primary/40 transition-colors">
+                <i
+                    class="ph-fill ph-diamond text-[64px] text-primary/5 absolute -right-2 -bottom-2 group-hover:scale-110 transition-transform duration-500"></i>
+                <p class="text-[13px] font-light text-dark mb-1 relative z-10"><span
+                        class="font-bold text-dark">Minimal</span> items,</p>
+                <p class="text-[13px] font-light text-dark mb-2 relative z-10"><span
+                        class="font-bold text-primary">maximum</span> style.</p>
+                <p class="text-[10px] text-gray-500 relative z-10 leading-relaxed">Bangun gaya terbaikmu dengan koleksi
+                    yang bermakna.</p>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="lg:hidden fixed bottom-0 left-0 w-full bg-surface/90 backdrop-blur-lg border-t border-borderLight z-40 flex justify-around py-3 px-2 pb-6 md:pb-4 text-[10px] shadow-[0_-10px_40px_rgba(0,0,0,0.03)]"
+        id="mobile-nav">
+        <a href="dashboard.html"
+            class="mobile-nav-link flex flex-col items-center gap-1.5 text-gray-500 hover:text-dark transition-all relative font-medium"><i
+                class="ph ph-house text-xl md:text-2xl"></i>Beranda</a>
+        <a href="lemari.html"
+            class="mobile-nav-link flex flex-col items-center gap-1.5 text-gray-500 hover:text-dark transition-all relative font-medium"><i
+                class="ph ph-t-shirt text-xl md:text-2xl"></i>Lemari</a>
+
+        <!-- Active Menu Mobile: Mix & Match -->
+        <a href="#"
+            class="mobile-nav-link flex flex-col items-center gap-1.5 text-primary transition-all relative font-semibold"><i
+                class="ph-fill ph-magic-wand text-xl md:text-2xl text-primary"></i>Mix & Match</a>
+
+        <a href="kalender.html"
+            class="mobile-nav-link flex flex-col items-center gap-1.5 text-gray-500 hover:text-dark transition-all relative font-medium"><i
+                class="ph ph-calendar-blank text-xl md:text-2xl"></i>Kalender</a>
+        <button onclick="toggleMobileMore()"
+            class="mobile-nav-link flex flex-col items-center gap-1.5 text-gray-500 hover:text-dark transition-all relative font-medium focus:outline-none"><i
+                class="ph-fill ph-squares-four text-xl md:text-2xl"></i>Lainnya</button>
+    </nav>
+
+    <!-- Mobile Bottom Sheet Menu (Lainnya) -->
+    <div id="mobile-more-menu"
+        class="fixed inset-0 bg-dark/60 backdrop-blur-sm z-[200] hidden flex-col justify-end opacity-0 transition-opacity duration-300 lg:hidden">
+        <div id="mobile-more-content"
+            class="bg-surface w-full rounded-t-[2rem] p-6 transform translate-y-full transition-transform duration-300 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] flex flex-col">
+            <div class="w-12 h-1.5 bg-borderLight rounded-full mx-auto mb-6"></div>
+            <h3 class="text-lg font-bold text-dark mb-6 font-display">Menu Lainnya</h3>
+            <div class="grid grid-cols-4 gap-4 mb-2">
+                <a href="wishlist.html" class="flex flex-col items-center gap-2 group">
+                    <div
+                        class="w-14 h-14 rounded-[1.25rem] bg-bgSoft border border-borderLight flex items-center justify-center text-gray-500 group-hover:text-primary group-hover:border-primary/30 transition-all shadow-sm">
+                        <i class="ph ph-heart text-2xl"></i>
+                    </div>
+                    <span class="text-[10px] font-medium text-dark">Wishlist</span>
+                </a>
+                <a href="inspirasi.html" class="flex flex-col items-center gap-2 group">
+                    <div
+                        class="w-14 h-14 rounded-[1.25rem] bg-bgSoft border border-borderLight flex items-center justify-center text-gray-500 group-hover:text-primary group-hover:border-primary/30 transition-all shadow-sm">
+                        <i class="ph ph-lightbulb text-2xl"></i>
+                    </div>
+                    <span class="text-[10px] font-medium text-dark">Inspirasi</span>
+                </a>
+                <a href="statistik.html" class="flex flex-col items-center gap-2 group">
+                    <div
+                        class="w-14 h-14 rounded-[1.25rem] bg-bgSoft border border-borderLight flex items-center justify-center text-gray-500 group-hover:text-primary group-hover:border-primary/30 transition-all shadow-sm">
+                        <i class="ph ph-chart-bar text-2xl"></i>
+                    </div>
+                    <span class="text-[10px] font-medium text-dark">Statistik</span>
+                </a>
+                <a href="pengaturan.html" class="flex flex-col items-center gap-2 group">
+                    <div
+                        class="w-14 h-14 rounded-[1.25rem] bg-bgSoft border border-borderLight flex items-center justify-center text-gray-500 group-hover:text-primary group-hover:border-primary/30 transition-all shadow-sm">
+                        <i class="ph ph-gear text-2xl"></i>
+                    </div>
+                    <span class="text-[10px] font-medium text-dark">Pengaturan</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Wrapper -->
+    <div class="flex-1 flex flex-col h-full overflow-hidden w-full relative bg-[#FAFAFA]">
+
+        <!-- Header / Navbar -->
+        <header
+            class="bg-background/90 backdrop-blur-md sticky top-0 z-40 px-6 md:px-10 py-5 flex items-center justify-between border-b border-borderLight/50">
+            <div class="flex items-center gap-2 lg:hidden cursor-pointer"
+                onclick="window.location.href='dashboard.html'">
+                <i class="ph ph-coat-hanger text-3xl text-primary"></i>
+                <div class="leading-tight text-left">
+                    <h1 class="font-semibold text-lg tracking-tight text-dark">Capsule</h1>
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest font-medium">Wardrobe</p>
+                </div>
+            </div>
+
+            <!-- Search Bar (Berfungsi Live Search) -->
+            <div
+                class="hidden lg:flex flex-1 max-w-lg bg-surface border border-borderLight rounded-full px-5 py-2.5 items-center shadow-sm focus-within:border-primary/50 transition-all mr-auto ml-0 lg:mx-0">
+                <input type="text" id="search-input-desktop" placeholder="Cari kombinasi gaya atau acara..."
+                    class="bg-transparent border-none outline-none text-xs w-full text-dark placeholder:text-gray-400 font-medium search-sync">
+                <i class="ph ph-magnifying-glass text-gray-400 text-lg ml-3"></i>
+            </div>
+
+            <!-- Right Actions -->
+            <div class="flex items-center gap-4 lg:gap-6 ml-auto shrink-0">
+                <button
+                    class="hidden sm:flex px-5 py-2.5 rounded-full bg-primary text-white text-[13px] font-medium hover:bg-primaryHover transition-all shadow-md items-center gap-2 active:scale-95"
+                    onclick="openUploadModal()">
+                    <i class="ph-bold ph-plus text-base"></i> Tambah Item
+                </button>
+
+                <!-- Notifikasi -->
+                <div class="relative">
+                    <button onclick="toggleNotifications(event)"
+                        class="p-2 text-dark hover:bg-surface rounded-full transition-all relative border border-transparent hover:border-borderLight">
+                        <i class="ph ph-bell text-xl"></i>
+                        <span id="notif-badge-dot"
+                            class="hidden absolute top-1.5 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-background"></span>
+                    </button>
+                    <!-- Notif Dropdown Panel -->
+                    <div id="notif-dropdown"
+                        class="hidden absolute right-[-40px] sm:right-0 mt-3 w-[300px] sm:w-[400px] bg-surface border border-borderLight rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.08)] z-50 overflow-hidden transform opacity-0 scale-95 transition-all duration-200 origin-top-right flex flex-col">
+                        <div
+                            class="p-4 sm:p-5 border-b border-borderLight flex justify-between items-center bg-surface">
+                            <span class="font-bold text-sm sm:text-[15px] text-dark font-display">Notifikasi</span>
+                            <span id="notif-count-badge"
+                                class="text-[10px] font-bold bg-[#F4EFEA] text-[#8A7363] px-3 py-1.5 rounded-lg tracking-wide">0
+                                BARU</span>
+                        </div>
+                        <div class="max-h-[350px] overflow-y-auto hide-scrollbar" id="notif-list-container">
+                            <div class="p-6 text-center text-sm text-gray-500">Memuat notifikasi...</div>
+                        </div>
+                        <div
+                            class="p-3 sm:p-4 border-t border-borderLight bg-surface flex justify-between items-center">
+                            <button onclick="markAllReadNotif()"
+                                class="text-xs sm:text-[13px] font-semibold text-[#8A7363] hover:text-[#9D8371] transition-colors">Tandai
+                                semua dibaca</button>
+                            <button onclick="deleteAllNotif(event)"
+                                class="text-xs sm:text-[13px] font-semibold text-red-500 hover:text-red-600 transition-colors">Hapus
+                                semua</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profil Dropdown -->
+                <div class="relative" id="profile-dropdown-wrapper">
+                    <div onclick="toggleProfileDropdown(event)"
+                        class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity pl-2 sm:pl-4 border-l border-borderLight">
+                        <div
+                            class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gray-200 overflow-hidden shadow-sm shrink-0 border border-borderLight">
+                            <img src="" alt="Profile" id="header-avatar" class="w-full h-full object-cover">
+                        </div>
+                        <div class="text-sm font-medium hidden md:flex items-center gap-1 text-dark">
+                            <span id="user-display-name">User</span>
+                            <i class="ph-bold ph-caret-down text-xs text-gray-400 transition-transform duration-300"
+                                id="profile-chevron"></i>
+                        </div>
+                    </div>
+                    <!-- Profile Menu -->
+                    <div id="profile-menu"
+                        class="hidden absolute right-0 mt-3 w-52 bg-surface border border-borderLight rounded-2xl shadow-xl z-50 overflow-hidden opacity-0 transform scale-95 transition-all duration-200">
+                        <div class="p-4 border-b border-borderLight bg-bgSoft/30">
+                            <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Akun Saya</p>
+                            <p class="text-xs text-dark font-medium truncate mt-1" id="user-email-display">email</p>
+                        </div>
+                        <div class="p-2">
+                            <button onclick="window.location.href='pengaturan.html'"
+                                class="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-dark hover:bg-bgSoft rounded-xl transition-colors text-left group">
+                                <i
+                                    class="ph-bold ph-gear text-base text-gray-400 group-hover:text-primary transition-colors"></i><span>Pengaturan</span>
+                            </button>
+                            <div class="h-px bg-borderLight/50 my-1 mx-2"></div>
+                            <button onclick="logout()"
+                                class="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-red-500 hover:bg-red-50 rounded-xl transition-colors text-left group">
+                                <i
+                                    class="ph-bold ph-sign-out text-base text-red-400 group-hover:text-red-600 transition-colors"></i><span
+                                    class="font-semibold">Keluar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 overflow-y-auto px-6 md:px-8 lg:px-12 pb-12 pt-2 scroll-smooth relative no-scrollbar"
+            id="main-scroll-area">
+
+            <!-- MOBILE SEARCH BAR (Berfungsi) -->
+            <div class="lg:hidden mt-2 mb-6">
+                <div
+                    class="flex w-full bg-surface border border-borderLight rounded-full px-4 py-3 items-center shadow-sm focus-within:border-primary/50 transition-all">
+                    <input type="text" id="search-input-mobile" placeholder="Cari kombinasi gaya atau acara..."
+                        class="bg-transparent border-none outline-none text-xs w-full text-dark placeholder:text-gray-400 font-medium search-sync">
+                    <i class="ph ph-magnifying-glass text-gray-400 text-lg ml-3"></i>
+                </div>
+            </div>
+
+            <div class="mb-6 lg:mb-8">
+                <h2 class="text-2xl md:text-3xl lg:text-[28px] font-display font-bold text-dark mb-1">Mix & Match Manual
+                </h2>
+                <p class="text-sm text-gray-500 font-medium">Pilih item favoritmu dan kombinasikan untuk membuat outfit
+                    terbaik.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start relative">
+
+                <!-- COLUMN 1: Pilih Item -->
+                <div class="col-span-1 lg:col-span-3">
+                    <div class="flex justify-between items-center mb-5">
+                        <h3 class="font-semibold font-display text-[15px] text-dark">Pilih Item</h3>
+                    </div>
+
+                    <div class="relative mb-5">
+                        <div class="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1 pr-16 relative scroll-smooth cursor-grab"
+                            id="filter-scroll">
+                            <button
+                                class="filter-btn active shrink-0 px-4 py-2.5 rounded-full bg-dark text-white text-xs font-medium transition-colors border border-dark flex items-center gap-1.5 shadow-sm"
+                                data-target="semua"><i class="ph ph-squares-four text-sm"></i> Semua</button>
+                            <button
+                                class="filter-btn shrink-0 px-4 py-2.5 rounded-full border border-gray-200 text-gray-600 bg-white hover:bg-gray-50 text-xs font-medium transition-colors flex items-center gap-1.5 shadow-sm"
+                                data-target="atasan"><i class="ph ph-t-shirt text-sm"></i> Atasan</button>
+                            <button
+                                class="filter-btn shrink-0 px-4 py-2.5 rounded-full border border-gray-200 text-gray-600 bg-white hover:bg-gray-50 text-xs font-medium transition-colors flex items-center gap-1.5 shadow-sm"
+                                data-target="bawahan"><i class="ph ph-pants text-sm"></i> Bawahan</button>
+                            <button
+                                class="filter-btn shrink-0 px-4 py-2.5 rounded-full border border-gray-200 text-gray-600 bg-white hover:bg-gray-50 text-xs font-medium transition-colors flex items-center gap-1.5 shadow-sm"
+                                data-target="outer"><i class="ph ph-coat-hanger text-sm"></i> Outer</button>
+                            <button
+                                class="filter-btn shrink-0 px-4 py-2.5 rounded-full border border-gray-200 text-gray-600 bg-white hover:bg-gray-50 text-xs font-medium transition-colors flex items-center gap-1.5 shadow-sm"
+                                data-target="dresses"><i class="ph ph-dress text-sm"></i> Dresses</button>
+                            <button
+                                class="filter-btn shrink-0 px-4 py-2.5 rounded-full border border-gray-200 text-gray-600 bg-white hover:bg-gray-50 text-xs font-medium transition-colors flex items-center gap-1.5 shadow-sm"
+                                data-target="sepatu"><i class="ph ph-sneaker text-sm"></i> Sepatu</button>
+                            <button
+                                class="filter-btn shrink-0 px-4 py-2.5 rounded-full border border-gray-200 text-gray-600 bg-white hover:bg-gray-50 text-xs font-medium transition-colors flex items-center gap-1.5 shadow-sm"
+                                data-target="tas"><i class="ph ph-handbag text-sm"></i> Tas</button>
+                            <button
+                                class="filter-btn shrink-0 px-4 py-2.5 rounded-full border border-gray-200 text-gray-600 bg-white hover:bg-gray-50 text-xs font-medium transition-colors flex items-center gap-1.5 shadow-sm"
+                                data-target="aksesoris"><i class="ph ph-watch text-sm"></i> Aksesoris</button>
+                        </div>
+                        <button id="scroll-right-btn"
+                            class="absolute -right-2 top-0 bottom-1 w-14 bg-gradient-to-l from-[#FAFAFA] via-[#FAFAFA]/90 to-transparent flex items-center justify-end pr-1 cursor-pointer hover:opacity-80 transition-opacity z-10">
+                            <div
+                                class="w-8 h-8 rounded-full bg-white shadow-sm border border-gray-100 flex items-center justify-center text-[#A88C7D] translate-x-1">
+                                <i class="ph-bold ph-caret-right text-sm"></i>
+                            </div>
+                        </button>
+                    </div>
+
+                    <div class="space-y-8 pr-2 pb-10" id="category-container">
+                        <div class="category-section" data-cat="atasan">
+                            <div class="flex justify-between items-end mb-3">
+                                <h4 class="text-sm font-medium text-dark">Atasan</h4><button
+                                    class="text-[11px] text-[#A88C7D] hover:text-[#8e7467] transition-colors font-medium"
+                                    onclick="window.location.href='lemari.html'">Lihat semua</button>
+                            </div>
+                            <div class="flex gap-3 overflow-x-auto hide-scrollbar pb-2 pr-4 selection-group cursor-grab"
+                                data-category="atasan"><span class="text-xs text-gray-400 italic">Memuat item...</span>
+                            </div>
+                        </div>
+                        <div class="category-section" data-cat="bawahan">
+                            <div class="flex justify-between items-end mb-3">
+                                <h4 class="text-sm font-medium text-dark">Bawahan</h4><button
+                                    class="text-[11px] text-[#A88C7D] hover:text-[#8e7467] transition-colors font-medium"
+                                    onclick="window.location.href='lemari.html'">Lihat semua</button>
+                            </div>
+                            <div class="flex gap-3 overflow-x-auto hide-scrollbar pb-2 pr-4 selection-group cursor-grab"
+                                data-category="bawahan"><span class="text-xs text-gray-400 italic">Memuat item...</span>
+                            </div>
+                        </div>
+                        <div class="category-section" data-cat="outer">
+                            <div class="flex justify-between items-end mb-3">
+                                <h4 class="text-sm font-medium text-dark">Outer <span
+                                        class="text-xs text-gray-400 font-normal ml-1">(Opsional)</span></h4><button
+                                    class="text-[11px] text-[#A88C7D] hover:text-[#8e7467] transition-colors font-medium"
+                                    onclick="window.location.href='lemari.html'">Lihat semua</button>
+                            </div>
+                            <div class="flex gap-3 overflow-x-auto hide-scrollbar pb-2 pr-4 selection-group cursor-grab"
+                                data-category="outer"><span class="text-xs text-gray-400 italic">Memuat item...</span>
+                            </div>
+                        </div>
+                        <div class="category-section" data-cat="dresses">
+                            <div class="flex justify-between items-end mb-3">
+                                <h4 class="text-sm font-medium text-dark">Dresses <span
+                                        class="text-xs text-gray-400 font-normal ml-1">(Opsional)</span></h4><button
+                                    class="text-[11px] text-[#A88C7D] hover:text-[#8e7467] transition-colors font-medium"
+                                    onclick="window.location.href='lemari.html'">Lihat semua</button>
+                            </div>
+                            <div class="flex gap-3 overflow-x-auto hide-scrollbar pb-2 pr-4 selection-group cursor-grab"
+                                data-category="dresses"><span class="text-xs text-gray-400 italic">Memuat item...</span>
+                            </div>
+                        </div>
+                        <div class="category-section" data-cat="sepatu">
+                            <div class="flex justify-between items-end mb-3">
+                                <h4 class="text-sm font-medium text-dark">Sepatu</h4><button
+                                    class="text-[11px] text-[#A88C7D] hover:text-[#8e7467] transition-colors font-medium"
+                                    onclick="window.location.href='lemari.html'">Lihat semua</button>
+                            </div>
+                            <div class="flex gap-3 overflow-x-auto hide-scrollbar pb-2 pr-4 selection-group cursor-grab"
+                                data-category="sepatu"><span class="text-xs text-gray-400 italic">Memuat item...</span>
+                            </div>
+                        </div>
+                        <div class="category-section" data-cat="tas">
+                            <div class="flex justify-between items-end mb-3">
+                                <h4 class="text-sm font-medium text-dark">Tas <span
+                                        class="text-xs text-gray-400 font-normal ml-1">(Opsional)</span></h4><button
+                                    class="text-[11px] text-[#A88C7D] hover:text-[#8e7467] transition-colors font-medium"
+                                    onclick="window.location.href='lemari.html'">Lihat semua</button>
+                            </div>
+                            <div class="flex gap-3 overflow-x-auto hide-scrollbar pb-2 pr-4 selection-group cursor-grab"
+                                data-category="tas"><span class="text-xs text-gray-400 italic">Memuat item...</span>
+                            </div>
+                        </div>
+                        <div class="category-section" data-cat="aksesoris">
+                            <div class="flex justify-between items-end mb-3">
+                                <h4 class="text-sm font-medium text-dark">Aksesoris <span
+                                        class="text-xs text-gray-400 font-normal ml-1">(Opsional)</span></h4><button
+                                    class="text-[11px] text-[#A88C7D] hover:text-[#8e7467] transition-colors font-medium"
+                                    onclick="window.location.href='lemari.html'">Lihat semua</button>
+                            </div>
+                            <div class="flex gap-3 overflow-x-auto hide-scrollbar pb-2 pr-4 selection-group cursor-grab"
+                                data-category="aksesoris"><span class="text-xs text-gray-400 italic">Memuat
+                                    item...</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COLUMN 2: Outfit Kamu (Center Canvas) -->
+                <div
+                    class="col-span-1 lg:col-span-5 bg-white rounded-3xl p-5 lg:p-6 shadow-sm border border-gray-100 lg:sticky lg:top-4 z-10">
+                    <div class="flex justify-between items-center mb-5 px-1">
+                        <h3 class="font-semibold font-display text-[15px] text-dark">Outfit Kamu</h3>
+                        <button id="btn-reset"
+                            class="flex items-center gap-1.5 text-xs font-medium text-gray-500 hover:text-dark transition-colors bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-lg">
+                            <i class="ph ph-arrows-counter-clockwise text-sm pointer-events-none"></i> Reset
+                        </button>
+                    </div>
+
+                    <div class="bg-[#FAF8F5] rounded-2xl border border-gray-50 h-[320px] md:h-[380px] w-full relative mb-6 overflow-hidden transition-all"
+                        id="outfit-canvas">
+                        <img id="canvas-dresses" src="" alt="Dresses"
+                            class="absolute top-4 lg:top-6 left-[20%] w-[40%] object-contain drop-shadow-md blend-darken z-[15] transition-all duration-300 opacity-0 pointer-events-none hidden">
+                        <img id="canvas-atasan" src="" alt="Atasan"
+                            class="absolute top-4 lg:top-6 left-[10%] lg:left-[15%] w-[45%] object-contain drop-shadow-md blend-darken z-10 transition-all duration-300 pointer-events-none opacity-0 hidden">
+                        <img id="canvas-bawahan" src="" alt="Bawahan"
+                            class="absolute top-10 lg:top-12 right-[5%] lg:right-[10%] w-[38%] object-contain drop-shadow-md blend-darken z-0 transition-all duration-300 pointer-events-none opacity-0 hidden">
+                        <img id="canvas-outer" src="" alt="Outer"
+                            class="absolute top-2 right-[2%] w-[45%] object-contain drop-shadow-md blend-darken z-20 transition-all duration-300 opacity-0 pointer-events-none hidden">
+                        <img id="canvas-tas" src="" alt="Tas"
+                            class="absolute bottom-[5%] left-[2%] w-[25%] object-contain drop-shadow-md blend-darken z-[25] transition-all duration-300 pointer-events-none opacity-0 hidden">
+                        <img id="canvas-aksesoris" src="" alt="Aksesoris"
+                            class="absolute bottom-[2%] left-[32%] w-[20%] object-contain drop-shadow-md blend-darken z-[30] transition-all duration-300 pointer-events-none opacity-0 hidden">
+                        <img id="canvas-sepatu" src="" alt="Sepatu"
+                            class="absolute bottom-4 lg:bottom-6 right-[15%] lg:right-[22%] w-[28%] object-contain drop-shadow-md blend-darken z-10 transition-all duration-300 pointer-events-none opacity-0 hidden">
+                    </div>
+
+                    <div class="mb-6 px-1">
+                        <h5 class="text-xs text-gray-500 font-medium mb-3">Palet Warna Outfit</h5>
+                        <div class="flex gap-2.5 flex-wrap" id="color-palette">
+                            <span class="text-xs text-gray-400 italic">Pilih pakaian untuk melihat palet
+                                warnanya...</span>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center border-t border-gray-100 pt-5 mb-6 md:mb-8 px-2">
+                        <div class="flex items-center gap-3">
+                            <i class="ph ph-magic-wand text-gray-400 text-xl pointer-events-none"></i>
+                            <div>
+                                <p class="text-[10px] text-gray-400 font-medium mb-0.5">Gaya</p>
+                                <p class="text-[13px] font-semibold text-dark transition-all duration-300"
+                                    id="meta-gaya">Casual</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="ph ph-calendar-blank text-gray-400 text-xl pointer-events-none"></i>
+                            <div>
+                                <p class="text-[10px] text-gray-400 font-medium mb-0.5">Acara</p>
+                                <p class="text-[13px] font-semibold text-dark transition-all duration-300"
+                                    id="meta-acara">Sehari-hari</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 pr-2 lg:pr-4">
+                            <i class="ph ph-cloud-sun text-gray-400 text-xl pointer-events-none"></i>
+                            <div>
+                                <p class="text-[10px] text-gray-400 font-medium mb-0.5">Musim</p>
+                                <p class="text-[13px] font-semibold text-dark transition-all duration-300"
+                                    id="meta-musim">Semua Musim</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col items-center gap-3">
+                        <div class="flex w-full gap-3">
+                            <button id="btn-simpan"
+                                class="flex-1 py-3.5 rounded-2xl bg-dark text-white font-medium hover:bg-black transition-all shadow-md flex items-center justify-center gap-2 group focus:ring-4 focus:ring-dark/20">
+                                <i
+                                    class="ph-bold ph-floppy-disk text-lg group-hover:scale-110 transition-transform pointer-events-none"></i>
+                                Simpan
+                            </button>
+                            <button id="btn-rekomendasi"
+                                class="flex-[1.5] py-3.5 rounded-2xl bg-primary text-white font-medium hover:bg-primaryHover transition-all shadow-md flex items-center justify-center gap-2.5 group focus:ring-4 focus:ring-primary/30">
+                                <i
+                                    class="ph-bold ph-sparkle text-lg group-hover:scale-110 transition-transform pointer-events-none"></i>
+                                Generate Outfit
+                            </button>
+                        </div>
+                        <p class="text-[11px] text-gray-400 mt-1.5 font-medium text-center">Simpan manual atau biarkan
+                            AI meracik otomatis</p>
+                    </div>
+                </div>
+
+                <!-- COLUMN 3: Kombinasi Tersimpan (Right) -->
+                <div class="col-span-1 lg:col-span-4 pb-10 lg:pb-0 lg:sticky lg:top-4 z-10">
+                    <div class="flex justify-between items-end mb-4 px-1">
+                        <h3 class="font-semibold font-display text-[15px] text-dark">Kombinasi Tersimpan</h3>
+                        <a href="lemari.html"
+                            class="text-[11px] text-primary hover:text-primaryHover transition-colors font-medium cursor-pointer relative z-20">Lihat
+                            semua</a>
+                    </div>
+
+                    <div class="flex flex-col gap-3" id="saved-outfits-list">
+                        <div class="p-5 text-center text-gray-400 text-sm border border-dashed border-gray-200 rounded-2xl"
+                            id="empty-outfits-msg">Memuat kombinasi tersimpan...</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Simpan / Edit Outfit -->
+    <div id="save-modal"
+        class="fixed inset-0 bg-black/50 z-[110] hidden items-center justify-center opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-[2rem] p-6 md:p-8 w-[90%] max-w-md shadow-2xl transform scale-95 transition-transform duration-300"
+            id="save-modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-display font-bold text-dark" id="modal-outfit-title">Simpan Kombinasi</h3>
+                <button id="close-save-modal"
+                    class="text-gray-400 hover:text-dark transition-colors p-1 bg-gray-50 rounded-full hover:bg-gray-200"><i
+                        class="ph ph-x text-lg"></i></button>
+            </div>
+
+            <div class="mb-5">
+                <label for="outfit-name" class="block text-sm font-medium text-gray-700 mb-2">Nama Outfit</label>
+                <input type="text" id="outfit-name" placeholder="Misal: Casual Weekend, Office Look..."
+                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all text-sm font-medium placeholder:font-normal">
+            </div>
+
+            <div class="grid grid-cols-3 gap-3 mb-6">
+                <div>
+                    <label class="block text-[11px] font-medium text-gray-700 mb-1.5">Gaya</label>
+                    <select id="outfit-gaya"
+                        class="w-full bg-gray-50 border border-gray-200 rounded-lg px-2 py-2 text-xs focus:outline-none focus:border-primary transition-all text-gray-700">
+                        <option value="Casual">Casual</option>
+                        <option value="Smart Casual">Smart Casual</option>
+                        <option value="Streetwear">Streetwear</option>
+                        <option value="Minimalist">Minimalist</option>
+                        <option value="Chic">Chic</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-medium text-gray-700 mb-1.5">Acara</label>
+                    <select id="outfit-acara"
+                        class="w-full bg-gray-50 border border-gray-200 rounded-lg px-2 py-2 text-xs focus:outline-none focus:border-primary transition-all text-gray-700">
+                        <option value="Sehari-hari">Sehari-hari</option>
+                        <option value="Kerja">Kerja</option>
+                        <option value="Date Night">Date Night</option>
+                        <option value="Hangout">Hangout</option>
+                        <option value="Kampus">Kampus</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-medium text-gray-700 mb-1.5">Musim</label>
+                    <select id="outfit-musim"
+                        class="w-full bg-gray-50 border border-gray-200 rounded-lg px-2 py-2 text-xs focus:outline-none focus:border-primary transition-all text-gray-700">
+                        <option value="Semua Musim">Semua Musim</option>
+                        <option value="Panas / Kemarau">Kemarau</option>
+                        <option value="Hujan">Hujan</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex gap-3">
+                <button id="cancel-save"
+                    class="flex-1 py-3.5 rounded-xl border border-gray-200 text-gray-600 font-medium hover:bg-gray-50 transition-all text-sm">Batal</button>
+                <button id="confirm-save"
+                    class="flex-1 py-3.5 rounded-xl bg-primary text-white font-medium hover:bg-primaryHover transition-all text-sm shadow-md flex items-center justify-center gap-2">
+                    <span id="save-btn-text">Simpan Sekarang</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL TAMBAH ITEM -->
+    <div id="upload-modal"
+        class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[120] hidden flex items-center justify-center opacity-0 transition-opacity duration-300 p-4 sm:p-0">
+        <div class="bg-white w-full max-w-[400px] sm:rounded-[2rem] rounded-3xl shadow-2xl transform scale-95 transition-transform duration-300 relative overflow-hidden flex flex-col max-h-[90vh] sm:max-h-[85vh]"
+            id="upload-modal-content">
+            <div class="flex items-center px-5 py-4 border-b border-gray-100 bg-white sticky top-0 z-10">
+                <button onclick="closeUploadModal()"
+                    class="text-gray-600 hover:bg-gray-50 p-2 rounded-full transition-colors -ml-2">
+                    <i class="ph-bold ph-caret-left text-xl"></i>
+                </button>
+                <h3 class="flex-1 text-center text-base font-semibold text-dark pr-8">Tambah Item</h3>
+            </div>
+
+            <div class="p-6 overflow-y-auto hide-scrollbar flex-1 space-y-7 bg-white">
+                <div>
+                    <label class="block text-[13px] font-semibold text-dark mb-3">Kategori</label>
+                    <div class="flex gap-4 overflow-x-auto hide-scrollbar pb-2 px-1 -mx-1" id="modal-category-list">
+
+                        <div class="flex flex-col items-center gap-2 cursor-pointer group shrink-0"
+                            onclick="selectModalCategory(this, 'Atasan')">
+                            <div
+                                class="modal-cat-btn w-12 h-12 rounded-[1rem] border border-gray-200 bg-white flex items-center justify-center transition-all shadow-sm">
+                                <i class="ph ph-t-shirt text-xl text-dark"></i></div>
+                            <span class="text-[10px] text-gray-500 font-medium">Atasan</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 cursor-pointer group shrink-0"
+                            onclick="selectModalCategory(this, 'Bawahan')">
+                            <div
+                                class="modal-cat-btn w-12 h-12 rounded-[1rem] border border-gray-200 bg-white flex items-center justify-center transition-all shadow-sm">
+                                <i class="ph ph-pants text-xl text-dark"></i></div>
+                            <span class="text-[10px] text-gray-500 font-medium">Bawahan</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 cursor-pointer group shrink-0"
+                            onclick="selectModalCategory(this, 'Outer')">
+                            <div
+                                class="modal-cat-btn w-12 h-12 rounded-[1rem] border border-gray-200 bg-white flex items-center justify-center transition-all shadow-sm">
+                                <i class="ph ph-coat-hanger text-xl text-dark"></i></div>
+                            <span class="text-[10px] text-gray-500 font-medium">Outer</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 cursor-pointer group shrink-0"
+                            onclick="selectModalCategory(this, 'Dresses')">
+                            <div
+                                class="modal-cat-btn w-12 h-12 rounded-[1rem] border border-gray-200 bg-white flex items-center justify-center transition-all shadow-sm">
+                                <i class="ph ph-dress text-xl text-dark"></i></div>
+                            <span class="text-[10px] text-gray-500 font-medium">Dresses</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 cursor-pointer group shrink-0"
+                            onclick="selectModalCategory(this, 'Sepatu')">
+                            <div
+                                class="modal-cat-btn w-12 h-12 rounded-[1rem] border border-gray-200 bg-white flex items-center justify-center transition-all shadow-sm">
+                                <i class="ph ph-sneaker text-xl text-dark"></i></div>
+                            <span class="text-[10px] text-gray-500 font-medium">Sepatu</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 cursor-pointer group shrink-0"
+                            onclick="selectModalCategory(this, 'Tas')">
+                            <div
+                                class="modal-cat-btn w-12 h-12 rounded-[1rem] border border-gray-200 bg-white flex items-center justify-center transition-all shadow-sm">
+                                <i class="ph ph-handbag text-xl text-dark"></i></div>
+                            <span class="text-[10px] text-gray-500 font-medium">Tas</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 cursor-pointer group shrink-0"
+                            onclick="selectModalCategory(this, 'Aksesoris')">
+                            <div
+                                class="modal-cat-btn w-12 h-12 rounded-[1rem] border border-gray-200 bg-white flex items-center justify-center transition-all shadow-sm">
+                                <i class="ph ph-watch text-xl text-dark"></i></div>
+                            <span class="text-[10px] text-gray-500 font-medium">Aksesoris</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[13px] font-semibold text-dark mb-3">Nama Item</label>
+                    <input type="text" id="input-item-name" placeholder="Contoh: Kemeja Putih"
+                        class="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50 text-[13px] text-dark placeholder:text-gray-400 focus:outline-none focus:border-primary transition-all shadow-sm">
+                </div>
+
+                <div>
+                    <label class="block text-[13px] font-semibold text-dark mb-3">Foto Item</label>
+                    <div class="border border-gray-200 bg-gray-50 rounded-2xl p-6 text-center hover:bg-gray-100 transition-all cursor-pointer group"
+                        onclick="document.getElementById('file-upload').click()">
+                        <div
+                            class="w-12 h-12 mx-auto bg-white rounded-full border border-gray-200 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform shadow-sm">
+                            <i class="ph ph-image text-xl text-gray-400 group-hover:text-dark transition-colors"></i>
+                        </div>
+                        <p class="text-xs font-medium text-dark mb-1">Upload Foto</p>
+                        <p class="text-[10px] text-gray-400">atau ambil dari kamera</p>
+                        <input type="file" id="file-upload" class="hidden" accept="image/*"
+                            onchange="handleFileUpload(this)">
+                    </div>
+
+                    <div id="upload-preview-area"
+                        class="hidden mt-3 relative w-full h-32 bg-gray-50 rounded-2xl border border-gray-200 overflow-hidden flex flex-col items-center justify-center">
+                        <img id="upload-preview-img" src="" class="max-w-full max-h-20 object-contain blend-multiply"
+                            alt="Preview">
+                        <div id="color-detected-badge"
+                            class="absolute bottom-2 left-2 flex items-center gap-1.5 bg-white/90 backdrop-blur px-2 py-1.5 rounded-full border border-gray-200 shadow-sm hidden">
+                        </div>
+                        <button onclick="removeUploadPreview(event)"
+                            class="absolute top-2 right-2 p-1.5 bg-white/90 backdrop-blur-sm rounded-full shadow-sm text-gray-500 hover:text-red-500 transition-colors">
+                            <i class="ph-bold ph-x text-sm"></i>
+                        </button>
+                    </div>
+
+                    <div
+                        class="mt-4 flex items-center justify-between bg-white border border-gray-200 p-3.5 rounded-xl shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center"><i
+                                    class="ph-fill ph-sparkle text-sm text-primary"></i></div>
+                            <div>
+                                <p class="text-[12px] font-semibold text-dark">Hapus Background (AI)</p>
+                                <p class="text-[9px] text-gray-500 mt-0.5">Otomatis buat transparan</p>
+                            </div>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="toggle-remove-bg" class="sr-only peer">
+                            <div
+                                class="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary shadow-inner">
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="p-5 border-t border-gray-100 bg-white sticky bottom-0 z-10">
+                <button onclick="saveNewItem()" id="btn-simpan-item"
+                    class="w-full bg-primary hover:bg-primaryHover text-white py-3.5 rounded-xl text-[13px] font-medium transition-all shadow-sm active:scale-95 flex justify-center items-center gap-2">
+                    Simpan Item
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUPABASE SCRIPT & CORE LOGIC FULL -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module">
+        import { CONFIG } from './assets/js/config.js';
+        const supabase = window.supabase.createClient(CONFIG.SB_URL, CONFIG.SB_KEY);
+
+        const REMOVE_BG_API_KEY = 'B76RhFUPFkoHzZnNYLCL9YdA';
+
+        let currentUser = null;
+        let wardrobeData = [];
+        let savedOutfitsData = []; // Menyimpan data outfit untuk filtering search
+        let currentOutfitColors = [];
+        let currentOutfitImages = [];
+        let currentEditOutfitId = null;
+
+        let uploadFile = null;
+        let selectedUploadCat = '';
+        let detectedColorPalette = [];
+        const colorThief = new ColorThief();
+
+        const rgbToHex = (r, g, b) => '#' + [r, g, b].map(x => { const hex = x.toString(16); return hex.length === 1 ? '0' + hex : hex; }).join('').toUpperCase();
+
+        // Local Storage Notifikasi Persisten
+        let deletedNotifs = JSON.parse(localStorage.getItem('capsule_deleted_notifs') || '[]');
+        let readNotifs = JSON.parse(localStorage.getItem('capsule_read_notifs') || '[]');
+
+        function saveNotifState() {
+            localStorage.setItem('capsule_deleted_notifs', JSON.stringify(deletedNotifs));
+            localStorage.setItem('capsule_read_notifs', JSON.stringify(readNotifs));
+        }
+
+        const mockNotifs = [
+            { id: 'notif-kal-1', title: 'Jadwal besok!', time: '08:00', desc: 'Siapkan outfit Smart Casual besok.', timeAgo: '2 jam lalu', icon: 'ph-calendar-check', iconBg: 'bg-blue-50 text-blue-500 border-blue-100' },
+            { id: 'notif-kal-2', title: 'Inspirasi Baru', time: '09:15', desc: 'AI menemukan mix & match baru.', timeAgo: 'Baru saja', icon: 'ph-magic-wand', iconBg: 'bg-primary/10 text-primary border-primary/20' }
+        ];
+
+        window.showToast = function (message, type = 'success') {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+
+                // Background PUTIH (bg-surface), border tipis, bayangan lembut
+                const bgColor = type === 'success' ? 'bg-surface border-borderLight' : 'bg-red-50 border-red-200';
+                const icon = type === 'success' ? 'ph-check-circle' : 'ph-warning-circle';
+
+                // Ikon warna cokelat utama (text-primary)
+                const iconColor = type === 'success' ? 'text-primary' : 'text-red-500';
+
+                // Menggunakan text-textDark (hitam) agar kontras dengan bg-surface (putih)
+                toast.className = `flex items-center gap-3 px-4 sm:px-5 py-3 sm:py-3.5 rounded-2xl border shadow-[0_10px_40px_rgba(0,0,0,0.08)] transform transition-all duration-300 translate-x-full text-textDark ${bgColor}`;
+
+                toast.innerHTML = `<i class="ph-fill ${icon} text-xl sm:text-2xl ${iconColor}"></i><p class="text-xs sm:text-[13px] font-semibold">${message}</p>`;
+
+                container.appendChild(toast);
+
+                setTimeout(() => toast.classList.remove('translate-x-full'), 10);
+                setTimeout(() => { toast.classList.add('translate-x-full'); setTimeout(() => toast.remove(), 300); }, 3000);
+            }
+
+        window.renderNotifications = function () {
+            const container = document.getElementById('notif-list-container');
+            const countBadge = document.getElementById('notif-count-badge');
+            const dot = document.getElementById('notif-badge-dot');
+
+            let html = ''; let unreadCount = 0; let visibleCount = 0;
+
+            mockNotifs.forEach(n => {
+                if (deletedNotifs.includes(n.id)) return;
+                visibleCount++;
+                const isRead = readNotifs.includes(n.id);
+                if (!isRead) unreadCount++;
+
+                const readClass = isRead ? "opacity-50 bg-gray-50" : "";
+
+                html += `
+                <div class="notif-item p-4 sm:p-5 border-b border-borderLight hover:bg-bgSoft transition-colors flex gap-3 sm:gap-4 relative group ${readClass}" id="${n.id}">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full ${n.iconBg} border flex items-center justify-center shrink-0 cursor-pointer">
+                        <i class="ph-bold ${n.icon} text-lg sm:text-xl"></i>
+                    </div>
+                    <div class="flex-1 cursor-pointer pr-2">
+                        <div class="flex justify-between items-start mb-1">
+                            <p class="text-sm sm:text-[15px] font-semibold text-textDark leading-tight">${n.title}</p>
+                            <div class="flex items-center gap-1.5 sm:gap-2">
+                                <span class="text-[10px] sm:text-[11px] text-textMuted font-medium">${n.time}</span>
+                                <button onclick="removeNotif('${n.id}', event)" class="text-red-400 hover:text-red-600 transition-colors p-0.5">
+                                    <i class="ph-bold ph-x text-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-xs sm:text-[13px] text-textMuted leading-relaxed">${n.desc}</p>
+                        <p class="text-[10px] sm:text-[11px] text-textMuted/70 mt-1.5 sm:mt-2 font-medium">${n.timeAgo}</p>
+                    </div>
+                </div>`;
+            });
+
+            container.innerHTML = visibleCount === 0 ? '<div class="p-6 sm:p-8 text-center text-xs sm:text-sm text-textMuted">Tidak ada notifikasi baru.</div>' : html;
+
+            if (unreadCount > 0) {
+                if (dot) dot.classList.remove('hidden');
+                if (countBadge) countBadge.innerText = `${unreadCount} BARU`;
+            } else {
+                if (dot) dot.classList.add('hidden');
+                if (countBadge) countBadge.innerText = `0 BARU`;
+            }
+        }
+
+        window.removeNotif = function (id, e) {
+            e.stopPropagation();
+            if (!deletedNotifs.includes(id)) { deletedNotifs.push(id); saveNotifState(); renderNotifications(); }
+        };
+
+        window.markAllReadNotif = function () {
+            mockNotifs.forEach(n => { if (!readNotifs.includes(n.id)) readNotifs.push(n.id); });
+            saveNotifState(); renderNotifications(); showToast('Semua notifikasi ditandai dibaca');
+        };
+
+        window.deleteAllNotif = function (e) {
+            e.stopPropagation();
+            mockNotifs.forEach(n => { if (!deletedNotifs.includes(n.id)) deletedNotifs.push(n.id); });
+            saveNotifState(); renderNotifications(); showToast('Semua notifikasi dihapus');
+        };
+
+        /* DROPDOWNS & OVERLAYS UI LOGIC */
+        window.toggleNotifications = function (e) {
+            e.stopPropagation();
+            const notifDropdown = document.getElementById('notif-dropdown');
+            if (notifDropdown.classList.contains('hidden')) {
+                notifDropdown.classList.remove('hidden');
+                setTimeout(() => { notifDropdown.classList.remove('opacity-0', 'scale-95'); notifDropdown.classList.add('opacity-100', 'scale-100'); }, 10);
+            } else {
+                notifDropdown.classList.remove('opacity-100', 'scale-100'); notifDropdown.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => { notifDropdown.classList.add('hidden'); }, 200);
+            }
+        };
+
+        window.toggleProfileDropdown = function (event) {
+            event.stopPropagation();
+            const menu = document.getElementById('profile-menu');
+            const chevron = document.getElementById('profile-chevron');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                setTimeout(() => { menu.classList.remove('opacity-0', 'scale-95'); menu.classList.add('opacity-100', 'scale-100'); if (chevron) chevron.style.transform = 'rotate(180deg)'; }, 10);
+            } else {
+                menu.classList.remove('opacity-100', 'scale-100'); menu.classList.add('opacity-0', 'scale-95');
+                if (chevron) chevron.style.transform = 'rotate(0deg)'; setTimeout(() => menu.classList.add('hidden'), 200);
+            }
+        };
+
+        window.toggleMobileMore = function (e) {
+            if (e) e.stopPropagation();
+            const menu = document.getElementById('mobile-more-menu');
+            const content = document.getElementById('mobile-more-content');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden'); menu.classList.add('flex');
+                setTimeout(() => { menu.classList.remove('opacity-0'); content.classList.remove('translate-y-full'); }, 10);
+            } else {
+                menu.classList.add('opacity-0'); content.classList.add('translate-y-full');
+                setTimeout(() => { menu.classList.add('hidden'); menu.classList.remove('flex'); }, 300);
+            }
+        }
+
+        window.logout = async function () {
+            await supabase.auth.signOut();
+            window.location.href = 'auth.html';
+        }
+
+        document.addEventListener('click', (e) => {
+            const notifDropdown = document.getElementById('notif-dropdown');
+            if (notifDropdown && !notifDropdown.classList.contains('hidden') && !e.target.closest('#notif-dropdown') && !e.target.closest('[onclick="toggleNotifications(event)"]')) {
+                notifDropdown.classList.remove('opacity-100', 'scale-100'); notifDropdown.classList.add('opacity-0', 'scale-95'); setTimeout(() => { notifDropdown.classList.add('hidden'); }, 200);
+            }
+            const profileMenu = document.getElementById('profile-menu');
+            const profileChevron = document.getElementById('profile-chevron');
+            if (profileMenu && !profileMenu.classList.contains('hidden') && !e.target.closest('#profile-dropdown-wrapper')) {
+                profileMenu.classList.remove('opacity-100', 'scale-100'); profileMenu.classList.add('opacity-0', 'scale-95');
+                if (profileChevron) profileChevron.style.transform = 'rotate(0deg)'; setTimeout(() => profileMenu.classList.add('hidden'), 200);
+            }
+            const mobileMoreMenu = document.getElementById('mobile-more-menu');
+            const mobileMoreContent = document.getElementById('mobile-more-content');
+            if (mobileMoreMenu && !mobileMoreMenu.classList.contains('hidden') && !mobileMoreContent.contains(e.target) && !e.target.closest('[onclick*="toggleMobileMore"]')) {
+                toggleMobileMore();
+            }
+
+            if (!e.target.closest('.action-dropdown-container') && !e.target.closest('.action-opts')) { document.querySelectorAll('.dropdown-menu').forEach(menu => { menu.classList.remove('opacity-100', 'scale-100'); menu.classList.add('opacity-0', 'scale-95'); setTimeout(() => menu.classList.add('hidden'), 200); }); }
+
+            if (e.target.closest('.action-opts')) {
+                e.stopPropagation(); const container = e.target.closest('.action-dropdown-container'); const menu = container.querySelector('.dropdown-menu');
+                document.querySelectorAll('.dropdown-menu').forEach(m => { if (m !== menu) { m.classList.remove('opacity-100', 'scale-100'); m.classList.add('opacity-0', 'scale-95'); setTimeout(() => m.classList.add('hidden'), 200); } });
+                if (menu.classList.contains('hidden')) { menu.classList.remove('hidden'); setTimeout(() => { menu.classList.remove('opacity-0', 'scale-95'); menu.classList.add('opacity-100', 'scale-100'); }, 10); } else { menu.classList.remove('opacity-100', 'scale-100'); menu.classList.add('opacity-0', 'scale-95'); setTimeout(() => menu.classList.add('hidden'), 200); }
+            }
+
+            // Aksi Hapus Outfit Tersimpan
+            if (e.target.closest('.btn-delete-card')) {
+                e.stopPropagation(); const btn = e.target.closest('.btn-delete-card'); const card = btn.closest('.saved-card'); const outfitId = card.getAttribute('data-id');
+                if (confirm("Yakin ingin menghapus outfit ini?")) { try { supabase.from('outfits').delete().eq('id', outfitId).then(() => { showToast("Outfit dihapus!"); fetchSavedOutfits(); }); } catch (err) { showToast("Gagal menghapus outfit.", "error"); } }
+            }
+
+            // Aksi Edit Outfit Tersimpan
+            if (e.target.closest('.btn-edit-card')) {
+                e.stopPropagation(); const btn = e.target.closest('.btn-edit-card'); const outfitDataStr = decodeURIComponent(btn.getAttribute('data-outfit')); const outfitData = JSON.parse(outfitDataStr);
+                const card = btn.closest('.saved-card'); const menu = card.querySelector('.dropdown-menu');
+                if (menu) { menu.classList.remove('opacity-100', 'scale-100'); menu.classList.add('opacity-0', 'scale-95'); setTimeout(() => menu.classList.add('hidden'), 200); }
+                openSaveModal(true, outfitData);
+            }
+
+            // Aksi Jadwalkan Outfit (Lempar ke kalender.html dengan localStorage)
+            if (e.target.closest('.btn-schedule-card')) {
+                e.stopPropagation(); const btn = e.target.closest('.btn-schedule-card'); const outfitDataStr = btn.getAttribute('data-outfit');
+                localStorage.setItem('pendingScheduleOutfit', decodeURIComponent(outfitDataStr)); showToast('Mengalihkan ke Kalender...'); setTimeout(() => { window.location.href = 'kalender.html'; }, 600);
+            }
+        });
+
+
+        /* ================= 4. INIT & CORE LOGIC ================= */
+        async function init() {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) { window.location.href = 'auth.html'; return; }
+            currentUser = session.user;
+
+            const fullName = currentUser.user_metadata?.full_name || "User";
+            const avatarUrl = currentUser.user_metadata?.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80';
+
+            document.getElementById('user-display-name').innerText = fullName.split(' ')[0];
+            document.getElementById('user-email-display').innerText = currentUser.email;
+            document.getElementById('header-avatar').src = avatarUrl;
+
+            const { data: wardrobeItems } = await supabase.from('wardrobe').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
+            if (wardrobeItems) {
+                wardrobeData = wardrobeItems;
+                renderWardrobeToSelection();
+                initSelectionLogic();
+            }
+
+            await fetchSavedOutfits();
+            renderNotifications();
+        }
+
+        function updateOutfitPalette() {
+            const paletteContainer = document.getElementById('color-palette');
+            const activeItems = document.querySelectorAll('.selectable-item.active');
+            let allColors = []; currentOutfitImages = [];
+
+            activeItems.forEach(item => {
+                currentOutfitImages.push(item.getAttribute('data-src'));
+                const colorData = item.getAttribute('data-colors');
+                if (colorData && colorData !== 'undefined' && colorData !== 'null') {
+                    try {
+                        const parsedColors = JSON.parse(colorData);
+                        if (Array.isArray(parsedColors)) { allColors.push(...parsedColors); } else { allColors.push(parsedColors); }
+                    } catch (e) { allColors.push(colorData); }
+                }
+            });
+
+            const uniqueColors = [...new Set(allColors)].slice(0, 7);
+            currentOutfitColors = uniqueColors;
+
+            if (uniqueColors.length === 0) {
+                paletteContainer.innerHTML = '<span class="text-xs text-gray-400 italic">Pilih pakaian untuk melihat palet warnanya...</span>';
+            } else {
+                paletteContainer.innerHTML = uniqueColors.map(hex => `<div class="w-8 h-8 rounded-full shadow-sm border border-gray-200 cursor-pointer hover:scale-110 transition-transform" style="background-color: ${hex}" title="${hex}"></div>`).join('');
+            }
+        }
+
+        function getActiveLayout() {
+            const layout = {};
+            const elements = {
+                atasan: document.getElementById('canvas-atasan'),
+                bawahan: document.getElementById('canvas-bawahan'),
+                sepatu: document.getElementById('canvas-sepatu'),
+                aksesoris: document.getElementById('canvas-aksesoris'),
+                dresses: document.getElementById('canvas-dresses'),
+                outer: document.getElementById('canvas-outer'),
+                tas: document.getElementById('canvas-tas')
+            };
+
+            for (const [key, el] of Object.entries(elements)) {
+                if (el && !el.classList.contains('hidden') && el.src) { layout[key] = el.src; }
+            }
+            return layout;
+        }
+
+        function renderOutfitsList(data) {
+            const list = document.getElementById('saved-outfits-list');
+
+            if (!data || data.length === 0) {
+                list.innerHTML = `<div class="p-5 text-center text-gray-400 text-sm border border-dashed border-gray-200 rounded-2xl">Tidak ada kombinasi yang ditemukan.</div>`;
+                return;
+            }
+
+            list.innerHTML = data.map(outfit => {
+                let layout = {}; let colors = []; let isOldArrayFormat = false;
+
+                try {
+                    const parsed = JSON.parse(outfit.image_urls || '{}');
+                    if (Array.isArray(parsed)) { isOldArrayFormat = true; layout = parsed; } else { layout = parsed; }
+                } catch (e) { }
+                try { colors = JSON.parse(outfit.palette || '[]'); } catch (e) { }
+
+                const dateStr = new Date(outfit.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+                const colorsHtml = colors.slice(0, 5).map(hex => `<span class="w-2.5 h-2.5 rounded-full border border-gray-200" style="background-color: ${hex}"></span>`).join('');
+                let thumbnailHtml = '';
+
+                if (isOldArrayFormat) {
+                    const gridImgs = layout.slice(0, 4).map(src => `<img src="${src}" class="w-full h-full object-contain blend-darken">`).join('');
+                    thumbnailHtml = `<div class="w-[72px] h-[72px] rounded-xl bg-[#FAF8F5] border border-gray-100 p-1 grid grid-cols-2 grid-rows-2 gap-0.5 shrink-0 overflow-hidden pointer-events-none relative">${gridImgs}</div>`;
+                } else {
+                    const miniCollage = `
+                        ${layout.dresses ? `<img src="${layout.dresses}" class="absolute top-[6%] left-[22%] w-[55%] object-contain z-20">` : ''}
+                        ${layout.atasan ? `<img src="${layout.atasan}" class="absolute top-[6%] left-[10%] w-[55%] object-contain z-10">` : ''}
+                        ${layout.bawahan ? `<img src="${layout.bawahan}" class="absolute top-[28%] right-[8%] w-[45%] object-contain z-0">` : ''}
+                        ${layout.outer ? `<img src="${layout.outer}" class="absolute top-[2%] right-[5%] w-[55%] object-contain z-30 opacity-90">` : ''}
+                        ${layout.tas ? `<img src="${layout.tas}" class="absolute bottom-[6%] left-[4%] w-[32%] object-contain z-40">` : ''}
+                        ${layout.aksesoris ? `<img src="${layout.aksesoris}" class="absolute bottom-[4%] left-[38%] w-[25%] object-contain z-50">` : ''}
+                        ${layout.sepatu ? `<img src="${layout.sepatu}" class="absolute bottom-[6%] right-[12%] w-[38%] object-contain z-10">` : ''}
+                    `;
+                    thumbnailHtml = `<div class="w-[80px] h-[80px] rounded-xl bg-[#FAF8F5] border border-gray-100 shrink-0 overflow-hidden pointer-events-none relative">${miniCollage}</div>`;
+                }
+
+                const outfitDataStr = encodeURIComponent(JSON.stringify(outfit));
+
+                return `
+                    <div class="saved-card bg-white rounded-2xl p-3 shadow-sm border border-gray-100 flex items-center gap-4 hover:border-primary transition-colors cursor-pointer group" data-id="${outfit.id}">
+                        ${thumbnailHtml}
+                        <div class="flex-1 pointer-events-none">
+                            <h4 class="font-semibold text-[13px] text-dark mb-1.5 group-hover:text-primary transition-colors outfit-title">${outfit.name}</h4>
+                            <div class="flex gap-1.5 mb-1.5">${colorsHtml}</div>
+                            <p class="text-[10px] text-gray-400 font-medium">${dateStr} &bull; ${outfit.gaya || 'Casual'}</p>
+                        </div>
+                        <div class="relative action-dropdown-container">
+                            <button class="text-gray-400 hover:text-dark p-2 rounded-full hover:bg-gray-100 transition-colors action-opts"><i class="ph-bold ph-dots-three text-lg pointer-events-none"></i></button>
+                            <div class="dropdown-menu absolute right-0 top-10 w-40 bg-white rounded-xl shadow-float border border-gray-100 py-2 hidden z-10 origin-top-right scale-95 opacity-0 transition-all duration-200">
+                                <button class="w-full text-left px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-50 hover:text-primary flex items-center gap-2 btn-edit-card" data-outfit='${outfitDataStr}'><i class="ph-bold ph-pencil-simple text-sm"></i> Edit Outfit</button>
+                                <button class="w-full text-left px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-50 hover:text-primary flex items-center gap-2 btn-schedule-card" data-outfit='${outfitDataStr}'><i class="ph-bold ph-calendar-plus text-sm"></i> Jadwalkan</button>
+                                <div class="h-px bg-gray-100 my-1"></div>
+                                <button class="w-full text-left px-4 py-2 text-xs font-medium text-red-500 hover:bg-red-50 flex items-center gap-2 btn-delete-card"><i class="ph-bold ph-trash text-sm"></i> Hapus</button>
+                            </div>
+                        </div>
+                    </div>`;
+            }).join('');
+        }
+
+        async function fetchSavedOutfits() {
+            const list = document.getElementById('saved-outfits-list');
+            const { data, error } = await supabase.from('outfits').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
+
+            if (error) { list.innerHTML = `<div class="p-5 text-center text-gray-400 text-sm border border-dashed border-gray-200 rounded-2xl">Gagal memuat. Pastikan kolom data sudah sesuai.</div>`; return; }
+            savedOutfitsData = data || [];
+            renderOutfitsList(savedOutfitsData);
+        }
+
+        function renderWardrobeToSelection() {
+            const categoriesMap = { 'atasan': 'Atasan', 'bawahan': 'Bawahan', 'outer': 'Outer', 'dresses': 'Dresses', 'sepatu': 'Sepatu', 'tas': 'Tas', 'aksesoris': 'Aksesoris' };
+            for (const [catCode, dbName] of Object.entries(categoriesMap)) {
+                const group = document.querySelector(`.selection-group[data-category="${catCode}"]`);
+                if (!group) continue;
+                const items = wardrobeData.filter(i => i.category === dbName);
+
+                if (items.length === 0) {
+                    group.innerHTML = `<div class="shrink-0 flex w-[200px] h-[80px] md:h-[90px] lg:h-[100px] items-center justify-center border border-dashed border-gray-200 rounded-2xl text-[11px] text-gray-400">Belum ada item di kategori ini</div>`;
+                    continue;
+                }
+                group.innerHTML = items.map(item => `
+                    <div class="selectable-item shrink-0 w-[80px] h-[80px] md:w-[90px] md:h-[90px] lg:w-[100px] lg:h-[100px] border border-gray-200 rounded-2xl flex items-center justify-center cursor-pointer p-2 relative" data-src="${item.image_url}" data-colors='${item.dominant_color}'>
+                        <div class="check-badge absolute -top-1.5 -right-1.5 w-[18px] h-[18px] bg-primary rounded-full items-center justify-center text-white ring-[1.5px] ring-white hidden"><i class="ph-bold ph-check text-[10px]"></i></div>
+                        <img src="${item.image_url}" class="w-full h-full object-contain blend-darken pointer-events-none" crossorigin="anonymous">
+                    </div>
+                `).join('');
+            }
+        }
+
+        function initSelectionLogic() {
+            const selectionGroups = document.querySelectorAll('.selection-group');
+            selectionGroups.forEach(group => {
+                const category = group.getAttribute('data-category');
+                const items = group.querySelectorAll('.selectable-item');
+
+                items.forEach(item => {
+                    item.addEventListener('click', () => {
+                        const isActive = item.classList.contains('active');
+
+                        if (!isActive) {
+                            if (category === 'dresses') {
+                                const isAtasanActive = document.querySelector('.selection-group[data-category="atasan"] .selectable-item.active');
+                                const isBawahanActive = document.querySelector('.selection-group[data-category="bawahan"] .selectable-item.active');
+                                if (isAtasanActive || isBawahanActive) { showToast('Lepas Atasan / Bawahan terlebih dahulu untuk memakai Dress!', 'error'); return; }
+                            } else if (category === 'atasan' || category === 'bawahan') {
+                                const isDressActive = document.querySelector('.selection-group[data-category="dresses"] .selectable-item.active');
+                                if (isDressActive) { showToast('Lepas Dress terlebih dahulu untuk memakai Atasan / Bawahan!', 'error'); return; }
+                            }
+                        }
+
+                        if (isActive) {
+                            item.classList.remove('active', 'border-2', 'border-primary'); item.classList.add('border', 'border-gray-200');
+                            const badge = item.querySelector('.check-badge'); if (badge) { badge.classList.add('hidden'); badge.classList.remove('flex'); }
+
+                            const canvasImg = document.getElementById(`canvas-${category}`);
+                            if (canvasImg) { canvasImg.style.opacity = '0'; setTimeout(() => canvasImg.classList.add('hidden'), 300); }
+
+                            if (category === 'dresses') {
+                                const canvasAtasan = document.getElementById('canvas-atasan'); const canvasBawahan = document.getElementById('canvas-bawahan');
+                                const isAtasanSelected = document.querySelector('.selection-group[data-category="atasan"] .selectable-item.active');
+                                const isBawahanSelected = document.querySelector('.selection-group[data-category="bawahan"] .selectable-item.active');
+                                if (canvasAtasan && isAtasanSelected) { canvasAtasan.classList.remove('hidden'); canvasAtasan.style.opacity = '1'; }
+                                if (canvasBawahan && isBawahanSelected) { canvasBawahan.classList.remove('hidden'); canvasBawahan.style.opacity = '1'; }
+                            }
+                        } else {
+                            items.forEach(i => {
+                                i.classList.remove('active', 'border-2', 'border-primary'); i.classList.add('border', 'border-gray-200');
+                                const badge = i.querySelector('.check-badge'); if (badge) { badge.classList.add('hidden'); badge.classList.remove('flex'); }
+                            });
+
+                            item.classList.remove('border', 'border-gray-200'); item.classList.add('active', 'border-2', 'border-primary');
+                            const itemBadge = item.querySelector('.check-badge'); if (itemBadge) { itemBadge.classList.remove('hidden'); itemBadge.classList.add('flex'); }
+
+                            const imgSrc = item.getAttribute('data-src'); const canvasImg = document.getElementById(`canvas-${category}`);
+
+                            if (canvasImg) {
+                                if (canvasImg.classList.contains('hidden')) { canvasImg.classList.remove('hidden'); setTimeout(() => canvasImg.classList.remove('opacity-0'), 10); }
+
+                                if (category === 'dresses') {
+                                    const canvasAtasan = document.getElementById('canvas-atasan'); const canvasBawahan = document.getElementById('canvas-bawahan');
+                                    if (canvasAtasan) { canvasAtasan.style.opacity = '0'; setTimeout(() => canvasAtasan.classList.add('hidden'), 300); }
+                                    if (canvasBawahan) { canvasBawahan.style.opacity = '0'; setTimeout(() => canvasBawahan.classList.add('hidden'), 300); }
+                                } else if (category === 'atasan' || category === 'bawahan') {
+                                    const canvasAtasan = document.getElementById('canvas-atasan'); const canvasBawahan = document.getElementById('canvas-bawahan');
+                                    const isAtasanSelected = document.querySelector('.selection-group[data-category="atasan"] .selectable-item.active');
+                                    const isBawahanSelected = document.querySelector('.selection-group[data-category="bawahan"] .selectable-item.active');
+                                    if (canvasAtasan && isAtasanSelected) { canvasAtasan.classList.remove('hidden'); canvasAtasan.style.opacity = '1'; }
+                                    if (canvasBawahan && isBawahanSelected) { canvasBawahan.classList.remove('hidden'); canvasBawahan.style.opacity = '1'; }
+
+                                    const canvasDresses = document.getElementById('canvas-dresses');
+                                    if (canvasDresses) { canvasDresses.style.opacity = '0'; setTimeout(() => canvasDresses.classList.add('hidden'), 300); }
+                                    const dressGroup = document.querySelector('.selection-group[data-category="dresses"]');
+                                    if (dressGroup) {
+                                        dressGroup.querySelectorAll('.selectable-item').forEach(i => {
+                                            i.classList.remove('active', 'border-2', 'border-primary'); i.classList.add('border', 'border-gray-200');
+                                            const badge = i.querySelector('.check-badge'); if (badge) { badge.classList.add('hidden'); badge.classList.remove('flex'); }
+                                        });
+                                    }
+                                }
+
+                                canvasImg.style.transform = 'scale(0.9)'; if (category !== 'dresses' || category === 'dresses') { canvasImg.style.opacity = '0.5'; }
+                                setTimeout(() => { canvasImg.src = imgSrc; canvasImg.style.transform = 'scale(1)'; canvasImg.style.opacity = '1'; }, 150);
+                            }
+                        }
+
+                        const metaGaya = document.getElementById('meta-gaya'); const metaAcara = document.getElementById('meta-acara'); const metaMusim = document.getElementById('meta-musim');
+                        if (metaGaya) metaGaya.innerText = "Custom Mix"; if (metaAcara) metaAcara.innerText = "Bebas"; if (metaMusim) metaMusim.innerText = "Sesuai Pilihan";
+
+                        updateOutfitPalette();
+                    });
+                });
+            });
+
+            const btnReset = document.getElementById('btn-reset');
+            if (btnReset) {
+                btnReset.addEventListener('click', () => {
+                    selectionGroups.forEach(group => {
+                        const category = group.getAttribute('data-category'); const items = group.querySelectorAll('.selectable-item');
+                        items.forEach(i => {
+                            i.classList.remove('active', 'border-2', 'border-primary'); i.classList.add('border', 'border-gray-200');
+                            const badge = i.querySelector('.check-badge'); if (badge) { badge.classList.add('hidden'); badge.classList.remove('flex'); }
+                        });
+                        const canvasImg = document.getElementById(`canvas-${category}`);
+                        if (canvasImg) { canvasImg.style.opacity = '0'; setTimeout(() => { canvasImg.classList.add('hidden'); canvasImg.src = ''; }, 300); }
+                    });
+
+                    const metaGaya = document.getElementById('meta-gaya'); const metaAcara = document.getElementById('meta-acara'); const metaMusim = document.getElementById('meta-musim');
+                    if (metaGaya) metaGaya.innerText = "Casual"; if (metaAcara) metaAcara.innerText = "Sehari-hari"; if (metaMusim) metaMusim.innerText = "Semua Musim";
+
+                    updateOutfitPalette(); showToast('Canvas dikembalikan ke awal');
+                });
+            }
+        }
+
+        /* ================= 5. FUNGSI UPLOAD ITEM BARU ================= */
+        window.openUploadModal = function () {
+            const modal = document.getElementById('upload-modal'); const modalContent = document.getElementById('upload-modal-content');
+            if (!modal) return;
+            document.getElementById('file-upload').value = ""; document.getElementById('input-item-name').value = "";
+            document.getElementById('upload-preview-area').classList.add('hidden'); document.getElementById('toggle-remove-bg').checked = false;
+            document.getElementById('color-detected-badge').classList.add('hidden'); document.getElementById('color-detected-badge').innerHTML = '';
+            selectedUploadCat = '';
+            document.querySelectorAll('.modal-cat-btn').forEach(btn => { btn.classList.remove('bg-primary/10', 'border-transparent'); btn.classList.add('bg-white', 'border-gray-200'); });
+            modal.classList.remove('hidden'); setTimeout(() => { modal.classList.remove('opacity-0'); modalContent.classList.remove('scale-95'); }, 10);
+        };
+
+        window.closeUploadModal = function () {
+            const modal = document.getElementById('upload-modal'); const modalContent = document.getElementById('upload-modal-content');
+            modal.classList.add('opacity-0'); modalContent.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); uploadFile = null; detectedColorPalette = []; }, 300);
+        };
+
+        window.handleFileUpload = function (input) {
+            if (input.files && input.files[0]) {
+                uploadFile = input.files[0]; const reader = new FileReader();
+                reader.onload = function (e) {
+                    const imgEl = document.getElementById('upload-preview-img'); imgEl.src = e.target.result;
+                    document.getElementById('upload-preview-area').classList.remove('hidden');
+                    const badge = document.getElementById('color-detected-badge'); badge.innerHTML = ''; badge.classList.add('hidden');
+                    const detectColors = () => {
+                        try {
+                            const rgbPalette = colorThief.getPalette(imgEl, 3);
+                            detectedColorPalette = rgbPalette.map(rgb => rgbToHex(rgb[0], rgb[1], rgb[2]));
+                            badge.innerHTML = detectedColorPalette.map(hex => `<div class="w-3 h-3 rounded-full border border-gray-200 shadow-sm" style="background-color: ${hex}"></div>`).join('');
+                            badge.classList.remove('hidden');
+                        } catch (err) { console.warn("Gagal ekstrak warna awal"); }
+                    };
+                    if (imgEl.complete) { detectColors(); } else { imgEl.onload = detectColors; }
+                }
+                reader.readAsDataURL(uploadFile);
+            }
+        };
+
+        window.removeUploadPreview = function (event) {
+            event.stopPropagation(); document.getElementById('file-upload').value = ""; document.getElementById('upload-preview-area').classList.add('hidden');
+            document.getElementById('color-detected-badge').classList.add('hidden'); uploadFile = null; detectedColorPalette = [];
+        };
+
+        window.selectModalCategory = function (element, catName) {
+            selectedUploadCat = catName;
+            document.querySelectorAll('.modal-cat-btn').forEach(btn => { btn.classList.remove('bg-primary/10', 'border-transparent', 'ring-2', 'ring-primary/30'); btn.classList.add('bg-white', 'border-gray-200'); });
+            const activeBtn = element.querySelector('.modal-cat-btn');
+            activeBtn.classList.remove('bg-white', 'border-gray-200'); activeBtn.classList.add('bg-primary/10', 'border-transparent', 'ring-2', 'ring-primary/30');
+        };
+
+        async function processBackgroundRemoval(file) {
+            const formData = new FormData(); formData.append('image_file', file); formData.append('size', 'auto');
+            const response = await fetch('https://api.remove.bg/v1.0/removebg', { method: 'POST', headers: { 'X-Api-Key': REMOVE_BG_API_KEY }, body: formData });
+            if (!response.ok) throw new Error('Gagal hapus background.'); return await response.blob();
+        }
+
+        window.saveNewItem = async function () {
+            const btn = document.getElementById('btn-simpan-item'); const name = document.getElementById('input-item-name').value; const isRemoveBg = document.getElementById('toggle-remove-bg').checked;
+            if (!name || !selectedUploadCat || !uploadFile) { showToast('Lengkapi data & foto terlebih dahulu!', 'error'); return; }
+            btn.disabled = true; btn.classList.add('opacity-70', 'cursor-not-allowed');
+
+            try {
+                let fileToPush = uploadFile; let finalColorData = (detectedColorPalette && detectedColorPalette.length > 0) ? detectedColorPalette : ['#EAE6E1'];
+                let fileName = `${Date.now()}_${uploadFile.name.replace(/\s+/g, '_')}`; let contentType = uploadFile.type;
+
+                if (isRemoveBg) {
+                    btn.innerHTML = '<i class="ph-bold ph-spinner animate-spin text-lg"></i> Menghapus Background...';
+                    fileToPush = await processBackgroundRemoval(uploadFile);
+                    fileName = `${Date.now()}_nobg.png`; contentType = 'image/png';
+                    btn.innerHTML = '<i class="ph-bold ph-palette text-lg"></i> Mendeteksi Palet...';
+
+                    const tempImg = new Image(); const objectUrl = URL.createObjectURL(fileToPush); tempImg.crossOrigin = "Anonymous"; tempImg.src = objectUrl;
+                    await new Promise((resolve, reject) => { tempImg.onload = resolve; tempImg.onerror = reject; });
+
+                    try {
+                        const rgbPalette = colorThief.getPalette(tempImg, 3);
+                        if (rgbPalette && rgbPalette.length > 0) { finalColorData = rgbPalette.map(rgb => rgbToHex(rgb[0], rgb[1], rgb[2])); }
+                    } catch (err) { console.error("Gagal mendeteksi warna transparan."); } finally { URL.revokeObjectURL(objectUrl); }
+                }
+
+                btn.innerHTML = '<i class="ph-bold ph-spinner animate-spin text-lg"></i> Menyimpan ke Lemari...';
+
+                const { error: uploadError } = await supabase.storage.from('wardrobe').upload(`${currentUser.id}/${fileName}`, fileToPush, { contentType: contentType });
+                if (uploadError) throw uploadError;
+
+                const { data: publicUrlData } = supabase.storage.from('wardrobe').getPublicUrl(`${currentUser.id}/${fileName}`);
+                const colorString = JSON.stringify(finalColorData);
+
+                const { error: dbError } = await supabase.from('wardrobe').insert([{ user_id: currentUser.id, name: name, category: selectedUploadCat, image_url: publicUrlData.publicUrl, dominant_color: colorString }]);
+                if (dbError) throw dbError;
+
+                showToast('Item berhasil ditambahkan!'); closeUploadModal();
+
+                const { data: newWardrobe } = await supabase.from('wardrobe').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
+                if (newWardrobe) { wardrobeData = newWardrobe; renderWardrobeToSelection(); initSelectionLogic(); }
+            } catch (error) { console.error(error); showToast('Terjadi kesalahan saat menyimpan item.', 'error'); }
+            finally { btn.disabled = false; btn.classList.remove('opacity-70', 'cursor-not-allowed'); btn.innerHTML = 'Simpan Item'; }
+        };
+
+        /* ================= 6. MODAL SIMPAN OUTFIT (SAVE & EDIT) ================= */
+        window.openSaveModal = function (isEdit = false, outfitData = null) {
+            const saveModal = document.getElementById('save-modal');
+            const saveModalContent = document.getElementById('save-modal-content');
+            const outfitNameInput = document.getElementById('outfit-name');
+            const outfitGayaInput = document.getElementById('outfit-gaya');
+            const outfitAcaraInput = document.getElementById('outfit-acara');
+            const outfitMusimInput = document.getElementById('outfit-musim');
+
+            if (!isEdit) {
+                const layout = getActiveLayout();
+                if (Object.keys(layout).length === 0) { showToast('Pilih minimal 1 item untuk disimpan!', 'error'); return; }
+                currentEditOutfitId = null;
+                document.getElementById('modal-outfit-title').innerText = "Simpan Kombinasi";
+                if (outfitNameInput) outfitNameInput.value = '';
+                if (outfitGayaInput) outfitGayaInput.value = document.getElementById('meta-gaya').innerText || 'Casual';
+                if (outfitAcaraInput) outfitAcaraInput.value = document.getElementById('meta-acara').innerText || 'Sehari-hari';
+                if (outfitMusimInput) outfitMusimInput.value = document.getElementById('meta-musim').innerText || 'Semua Musim';
+            } else {
+                currentEditOutfitId = outfitData.id;
+                document.getElementById('modal-outfit-title').innerText = "Edit Kombinasi";
+                if (outfitNameInput) outfitNameInput.value = outfitData.name;
+                if (outfitGayaInput) outfitGayaInput.value = outfitData.gaya || 'Casual';
+                if (outfitAcaraInput) outfitAcaraInput.value = outfitData.acara || 'Sehari-hari';
+                if (outfitMusimInput) outfitMusimInput.value = outfitData.musim || 'Semua Musim';
+            }
+
+            if (!saveModal) return; saveModal.classList.remove('hidden'); saveModal.classList.add('flex');
+            setTimeout(() => { saveModal.classList.remove('opacity-0'); if (saveModalContent) saveModalContent.classList.remove('scale-95'); }, 10);
+            if (outfitNameInput) outfitNameInput.focus();
+        }
+
+        function closeSaveModal() {
+            const saveModal = document.getElementById('save-modal'); const saveModalContent = document.getElementById('save-modal-content');
+            if (!saveModal) return; saveModal.classList.add('opacity-0'); if (saveModalContent) saveModalContent.classList.add('scale-95');
+            setTimeout(() => { saveModal.classList.add('hidden'); saveModal.classList.remove('flex'); currentEditOutfitId = null; }, 300);
+        }
+
+        document.getElementById('btn-simpan').addEventListener('click', () => openSaveModal(false));
+        document.getElementById('close-save-modal').addEventListener('click', closeSaveModal);
+        document.getElementById('cancel-save').addEventListener('click', closeSaveModal);
+
+        document.getElementById('save-modal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('save-modal')) closeSaveModal();
+        });
+
+        document.getElementById('confirm-save').addEventListener('click', async () => {
+            const outfitNameInput = document.getElementById('outfit-name');
+            let outfitName = 'Kombinasi Baru';
+            if (outfitNameInput && outfitNameInput.value.trim() !== '') { outfitName = outfitNameInput.value.trim(); }
+
+            const gayaVal = document.getElementById('outfit-gaya').value;
+            const acaraVal = document.getElementById('outfit-acara').value;
+            const musimVal = document.getElementById('outfit-musim').value;
+
+            try {
+                const btnText = document.getElementById('save-btn-text');
+                btnText.innerText = "Menyimpan...";
+
+                if (currentEditOutfitId) {
+                    const { error } = await supabase.from('outfits').update({
+                        name: outfitName, gaya: gayaVal, acara: acaraVal, musim: musimVal
+                    }).eq('id', currentEditOutfitId);
+                    if (error) throw error;
+                    showToast(`Outfit "${outfitName}" berhasil diperbarui!`);
+                } else {
+                    const layout = getActiveLayout();
+                    const { error } = await supabase.from('outfits').insert([{
+                        user_id: currentUser.id, name: outfitName, image_urls: JSON.stringify(layout), palette: JSON.stringify(currentOutfitColors),
+                        gaya: gayaVal, acara: acaraVal, musim: musimVal
+                    }]);
+                    if (error) throw error;
+                    showToast(`Outfit "${outfitName}" berhasil disimpan!`);
+                }
+
+                closeSaveModal(); fetchSavedOutfits();
+            } catch (error) { console.error("Error saving outfit:", error); showToast('Gagal menyimpan ke database.', 'error'); }
+            finally { const btnText = document.getElementById('save-btn-text'); btnText.innerText = "Simpan Sekarang"; }
+        });
+
+        /* ================= 7. LAIN-LAIN (Drag to scroll, Search, AI) ================= */
+        document.addEventListener('DOMContentLoaded', () => {
+            const scrollableContainers = document.querySelectorAll('#filter-scroll, .selection-group');
+            scrollableContainers.forEach(container => {
+                let isDown = false; let startX; let scrollLeft; container.classList.add('cursor-grab');
+                container.addEventListener('mousedown', (e) => { isDown = true; container.classList.add('cursor-grabbing'); container.classList.remove('cursor-grab', 'scroll-smooth'); startX = e.pageX - container.offsetLeft; scrollLeft = container.scrollLeft; });
+                container.addEventListener('mouseleave', () => { isDown = false; container.classList.remove('cursor-grabbing'); container.classList.add('cursor-grab', 'scroll-smooth'); });
+                container.addEventListener('mouseup', () => { isDown = false; container.classList.remove('cursor-grabbing'); container.classList.add('cursor-grab', 'scroll-smooth'); });
+                container.addEventListener('mousemove', (e) => { if (!isDown) return; e.preventDefault(); const x = e.pageX - container.offsetLeft; const walk = (x - startX) * 2; container.scrollLeft = scrollLeft - walk; });
+            });
+
+            const filterScroll = document.getElementById('filter-scroll'); const scrollRightBtn = document.getElementById('scroll-right-btn');
+            if (filterScroll && scrollRightBtn) {
+                scrollRightBtn.addEventListener('click', () => { filterScroll.scrollBy({ left: 200, behavior: 'smooth' }); });
+                filterScroll.addEventListener('scroll', () => {
+                    const maxScrollLeft = filterScroll.scrollWidth - filterScroll.clientWidth;
+                    if (filterScroll.scrollLeft >= maxScrollLeft - 10) { scrollRightBtn.style.opacity = '0'; scrollRightBtn.style.pointerEvents = 'none'; }
+                    else { scrollRightBtn.style.opacity = '1'; scrollRightBtn.style.pointerEvents = 'auto'; }
+                });
+            }
+
+            const filterBtns = document.querySelectorAll('.filter-btn'); const categorySections = document.querySelectorAll('.category-section');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => { b.classList.remove('bg-dark', 'text-white', 'border-dark', 'active'); b.classList.add('bg-white', 'text-gray-600', 'border-gray-200'); });
+                    btn.classList.remove('bg-white', 'text-gray-600', 'border-gray-200'); btn.classList.add('bg-dark', 'text-white', 'border-dark', 'active');
+                    const target = btn.getAttribute('data-target');
+                    categorySections.forEach(section => { if (target === 'semua' || section.getAttribute('data-cat') === target) { section.style.display = 'block'; } else { section.style.display = 'none'; } });
+                });
+            });
+
+            const btnRekomendasi = document.getElementById('btn-rekomendasi');
+            if (btnRekomendasi) {
+                btnRekomendasi.addEventListener('click', () => {
+                    showToast('AI sedang meracik kombinasi dari lemari Anda...');
+                    setTimeout(() => {
+                        const categories = ['atasan', 'bawahan', 'outer', 'dresses', 'sepatu', 'tas', 'aksesoris'];
+                        categories.forEach(cat => {
+                            const canvasImg = document.getElementById(`canvas-${cat}`);
+                            if (canvasImg) { canvasImg.style.opacity = '0'; setTimeout(() => canvasImg.classList.add('hidden'), 300); }
+                            const group = document.querySelector(`.selection-group[data-category="${cat}"]`);
+                            if (group) { group.querySelectorAll('.selectable-item').forEach(i => { i.classList.remove('active', 'border-2', 'border-primary'); i.classList.add('border', 'border-gray-200'); const badge = i.querySelector('.check-badge'); if (badge) { badge.classList.add('hidden'); badge.classList.remove('flex'); } }); }
+                        });
+
+                        const getRandomItem = (cat) => {
+                            const group = document.querySelector(`.selection-group[data-category="${cat}"]`);
+                            if (!group) return null; const items = group.querySelectorAll('.selectable-item'); if (items.length === 0) return null;
+                            return items[Math.floor(Math.random() * items.length)];
+                        };
+
+                        const isDress = Math.random() > 0.7; let pickedItems = [];
+
+                        if (isDress) {
+                            const dress = getRandomItem('dresses');
+                            if (dress) pickedItems.push(dress);
+                            else {
+                                const atasan = getRandomItem('atasan'); const bawahan = getRandomItem('bawahan');
+                                if (atasan) pickedItems.push(atasan); if (bawahan) pickedItems.push(bawahan);
+                            }
+                        } else {
+                            const atasan = getRandomItem('atasan'); const bawahan = getRandomItem('bawahan');
+                            if (atasan) pickedItems.push(atasan); if (bawahan) pickedItems.push(bawahan);
+                        }
+
+                        const sepatu = getRandomItem('sepatu'); if (sepatu) pickedItems.push(sepatu);
+                        if (Math.random() > 0.4) { const tas = getRandomItem('tas'); if (tas) pickedItems.push(tas); }
+                        if (Math.random() > 0.5) { const aks = getRandomItem('aksesoris'); if (aks) pickedItems.push(aks); }
+                        if (Math.random() > 0.6) { const out = getRandomItem('outer'); if (out) pickedItems.push(out); }
+
+                        setTimeout(() => {
+                            if (pickedItems.length === 0) { showToast('Lemari Anda masih kosong, tambahkan item dulu!', 'error'); return; }
+                            pickedItems.forEach(item => item.click());
+                            const metaGaya = document.getElementById('meta-gaya'); const metaAcara = document.getElementById('meta-acara'); const metaMusim = document.getElementById('meta-musim');
+                            const styles = ["Smart Casual", "Streetwear", "Minimalist", "Chic"]; const events = ["Hangout", "Kerja", "Date Night", "Kampus"];
+                            if (metaGaya) metaGaya.innerText = styles[Math.floor(Math.random() * styles.length)];
+                            if (metaAcara) metaAcara.innerText = events[Math.floor(Math.random() * events.length)];
+                            if (metaMusim) metaMusim.innerText = "Sesuai Pilihan";
+                            updateOutfitPalette(); showToast(`AI Menerapkan Gaya: ${metaGaya.innerText}!`);
+                        }, 350);
+                    }, 500);
+                });
+            }
+
+            /* LOGIKA SEARCH BAR LIVE FILTER */
+            const searchInputs = document.querySelectorAll('.search-sync');
+            searchInputs.forEach(input => {
+                input.addEventListener('input', (e) => {
+                    const query = e.target.value.toLowerCase();
+                    // Sync desktop dan mobile input
+                    searchInputs.forEach(inp => { if (inp !== e.target) inp.value = e.target.value; });
+
+                    if (query === '') {
+                        renderOutfitsList(savedOutfitsData);
+                        return;
+                    }
+
+                    const filteredData = savedOutfitsData.filter(item =>
+                        (item.name && item.name.toLowerCase().includes(query)) ||
+                        (item.gaya && item.gaya.toLowerCase().includes(query)) ||
+                        (item.acara && item.acara.toLowerCase().includes(query))
+                    );
+
+                    renderOutfitsList(filteredData);
+                });
+            });
+
+            init();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cara Kerja - Capsule Wardrobe</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#9D7A63',
+                            dark: '#826350',
+                            light: '#C5AFA0',
+                            soft: '#F4EFEA',
+                            surface: '#FAF8F5'
+                        },
+                        dark: '#2D2D2D',
+                        graytext: '#6B7280'
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px rgba(0, 0, 0, 0.03)',
+                        'card': '0 15px 40px rgba(0, 0, 0, 0.06)',
+                        'card-hover': '0 20px 50px rgba(0, 0, 0, 0.1)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Menyembunyikan Scrollbar tapi tetap bisa di-scroll */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+
+<body class="font-sans text-dark bg-white antialiased overflow-x-hidden">
+
+    <!-- Header / Navbar Minimalist -->
+    <header
+        class="fixed w-full top-0 bg-white/90 backdrop-blur-md z-50 border-b border-gray-100 transition-all duration-300 shadow-sm"
+        id="navbar">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 flex justify-between items-center h-20">
+            <!-- Logo -->
+            <a href="landing_page.html" class="flex items-center gap-2 group">
+                <i class="ph ph-coat-hanger text-3xl text-dark group-hover:text-brand transition-colors"></i>
+                <div class="leading-tight">
+                    <h1 class="font-semibold text-lg tracking-tight">Capsule</h1>
+                    <p class="text-[10px] text-graytext uppercase tracking-widest font-medium">Wardrobe</p>
+                </div>
+            </a>
+
+            <!-- Back to Home -->
+            <a href="landingpage.html"
+                class="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-brand transition-colors">
+                <i class="ph-bold ph-arrow-left"></i> <span class="hidden sm:inline">Kembali ke Beranda</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Steps Section -->
+    <section class="pt-32 pb-20 md:pt-40 md:pb-32 bg-brand-surface relative overflow-hidden">
+        <!-- Dekorasi Background -->
+        <div class="absolute top-0 right-0 w-full h-full overflow-hidden -z-10 pointer-events-none opacity-50">
+            <div
+                class="absolute -top-[10%] -right-[10%] w-[70%] h-[70%] md:w-[40%] md:h-[50%] rounded-full bg-brand-soft blur-3xl">
+            </div>
+            <div
+                class="absolute top-[40%] -left-[10%] w-[50%] h-[50%] md:w-[30%] md:h-[40%] rounded-full bg-[#EAE6E1]/60 blur-3xl">
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+            <!-- Hero Title & Progress Bar -->
+            <div class="text-center max-w-3xl mx-auto mb-16 md:mb-24 px-2">
+                <h1
+                    class="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-display font-bold text-dark mb-4 sm:mb-6 leading-[1.2] sm:leading-[1.1]">
+                    Tiga Langkah Menuju <span class="text-brand italic pr-2 block sm:inline">Lemari Impian</span>
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed px-2 sm:px-4 mb-12">
+                    Tidak perlu lagi membuang waktu memilih baju setiap pagi. Kami menyederhanakan prosesnya dari lemari
+                    fisik ke genggaman digital Anda.
+                </p>
+
+                <!-- DYNAMIC PROGRESS BAR -->
+                <div class="w-full max-w-xl mx-auto relative mt-8">
+                    <div class="flex justify-between items-center mb-3 px-1 sm:px-2">
+                        <span
+                            class="step-indicator text-[10px] sm:text-[13px] font-bold text-brand transition-colors duration-300"
+                            data-step="0">1. Digitalisasi</span>
+                        <span
+                            class="step-indicator text-[10px] sm:text-[13px] font-medium text-gray-400 transition-colors duration-300"
+                            data-step="1">2. Mix & Match</span>
+                        <span
+                            class="step-indicator text-[10px] sm:text-[13px] font-medium text-gray-400 transition-colors duration-300"
+                            data-step="2">3. Jadwalkan</span>
+                    </div>
+                    <div class="h-1.5 w-full bg-gray-200 rounded-full overflow-hidden relative">
+                        <div class="absolute top-0 left-0 h-full bg-brand rounded-full transition-all duration-500 ease-out"
+                            id="step-progress-bar" style="width: 33.33%;"></div>
+                    </div>
+                </div>
+
+                <p
+                    class="text-gray-400 mt-6 lg:hidden text-[11px] sm:text-xs font-medium animate-pulse flex items-center justify-center gap-1.5">
+                    Geser kartu ke kanan <i class="ph-bold ph-arrow-right"></i>
+                </p>
+            </div>
+
+            <!-- Container Langkah: Swipe Horizontal di HP, Vertikal Bertumpuk di Desktop -->
+            <div class="flex flex-row lg:flex-col gap-6 lg:gap-32 overflow-x-auto lg:overflow-visible snap-x snap-mandatory pb-12 hide-scrollbar -mx-4 px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0"
+                id="steps-container">
+
+                <!-- Step 1 -->
+                <div
+                    class="step-card w-[85vw] sm:w-[75vw] lg:w-full shrink-0 snap-center flex flex-col lg:flex-row items-center gap-8 lg:gap-20 group">
+                    <div class="w-full lg:flex-1 relative order-1 md:order-1">
+                        <div
+                            class="rounded-3xl overflow-hidden shadow-card border border-gray-100 relative aspect-[4/3] md:aspect-auto">
+                            <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=800&auto=format&fit=crop"
+                                alt="Smartphone Camera"
+                                class="w-full h-full md:h-[450px] object-cover group-hover:scale-105 transition-transform duration-700 ease-out">
+                        </div>
+                    </div>
+
+                    <div class="w-full lg:flex-1 order-2 md:order-2 text-left mt-4 lg:mt-0 lg:pl-10">
+                        <span
+                            class="px-4 py-1.5 bg-brand/10 text-brand rounded-full text-[11px] sm:text-xs font-bold tracking-wider uppercase mb-4 md:mb-6 inline-flex items-center gap-2">
+                            <i class="ph-bold ph-camera"></i> Langkah 1
+                        </span>
+                        <h3 class="text-2xl md:text-3xl lg:text-4xl font-display font-bold text-dark mb-3 md:mb-4">
+                            Digitalisasi Lemarimu</h3>
+                        <p class="text-sm md:text-base text-gray-600 leading-relaxed mb-6 md:mb-8">
+                            Ketahui apa yang sebenarnya kamu miliki. Cukup foto pakaianmu, dan
+                            teknologi AI kami akan memotong latar belakang secara presisi dan mengkategorikannya dengan
+                            cerdas.
+                        </p>
+                        <ul class="space-y-3 md:space-y-4">
+                            <li class="flex items-center gap-3 text-sm md:text-base font-medium text-gray-700"><i
+                                    class="ph-fill ph-check-circle text-brand text-xl"></i> Proses upload sangat cepat
+                            </li>
+                            <li class="flex items-center gap-3 text-sm md:text-base font-medium text-gray-700"><i
+                                    class="ph-fill ph-check-circle text-brand text-xl"></i> Otomatis memisahkan atasan &
+                                bawahan</li>
+                            <li class="flex items-center gap-3 text-sm md:text-base font-medium text-gray-700"><i
+                                    class="ph-fill ph-check-circle text-brand text-xl"></i> Inventaris yang selalu rapi
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div
+                    class="step-card w-[85vw] sm:w-[75vw] lg:w-full shrink-0 snap-center flex flex-col lg:flex-row-reverse items-center gap-8 lg:gap-20 group">
+                    <div class="w-full lg:flex-1 relative order-1 md:order-2">
+                        <div
+                            class="rounded-3xl overflow-hidden shadow-card border border-gray-100 relative aspect-[4/3] md:aspect-auto">
+                            <img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?q=80&w=800&auto=format&fit=crop"
+                                alt="Mix and Match Canvas"
+                                class="w-full h-full md:h-[450px] object-cover group-hover:scale-105 transition-transform duration-700 ease-out">
+                        </div>
+                    </div>
+
+                    <div
+                        class="w-full lg:flex-1 order-2 md:order-1 text-left lg:text-right flex flex-col items-start lg:items-end mt-4 lg:mt-0 lg:pr-10">
+                        <span
+                            class="px-4 py-1.5 bg-dark/10 text-dark rounded-full text-[11px] sm:text-xs font-bold tracking-wider uppercase mb-4 md:mb-6 inline-flex items-center gap-2 lg:flex-row-reverse">
+                            <i class="ph-bold ph-magic-wand"></i> Langkah 2
+                        </span>
+                        <h3 class="text-2xl md:text-3xl lg:text-4xl font-display font-bold text-dark mb-3 md:mb-4">
+                            Eksplorasi Mix & Match</h3>
+                        <p
+                            class="text-sm md:text-base text-gray-600 leading-relaxed mb-6 md:mb-8 text-left lg:text-right">
+                            Bebaskan kreativitasmu. Gunakan <span class="italic font-medium">canvas drag-and-drop</span>
+                            untuk memadukan pakaian layaknya seorang stylist, atau biarkan rekomendasi AI bekerja
+                            untukmu.
+                        </p>
+                        <ul class="space-y-3 md:space-y-4 flex flex-col items-start lg:items-end w-full">
+                            <li
+                                class="flex items-center gap-3 text-sm md:text-base font-medium text-gray-700 flex-row lg:flex-row-reverse">
+                                <i class="ph-fill ph-check-circle text-dark text-xl"></i>
+                                <span>Kanvas visual tanpa batas</span>
+                            </li>
+                            <li
+                                class="flex items-center gap-3 text-sm md:text-base font-medium text-gray-700 flex-row lg:flex-row-reverse">
+                                <i class="ph-fill ph-check-circle text-dark text-xl"></i>
+                                <span>Temukan kecocokan warna terbaik</span>
+                            </li>
+                            <li
+                                class="flex items-center gap-3 text-sm md:text-base font-medium text-gray-700 flex-row lg:flex-row-reverse">
+                                <i class="ph-fill ph-check-circle text-dark text-xl"></i>
+                                <span>Simpan outfit favorit ke koleksi</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div
+                    class="step-card w-[85vw] sm:w-[75vw] lg:w-full shrink-0 snap-center flex flex-col lg:flex-row items-center gap-8 lg:gap-20 group">
+                    <div class="w-full lg:flex-1 relative order-1 md:order-1">
+                        <div
+                            class="rounded-3xl overflow-hidden shadow-card border border-gray-100 relative aspect-[4/3] md:aspect-auto">
+                            <img src="https://images.unsplash.com/photo-1506784365847-bbad939e9335?q=80&w=800&auto=format&fit=crop"
+                                alt="Calendar Planning"
+                                class="w-full h-full md:h-[450px] object-cover group-hover:scale-105 transition-transform duration-700 ease-out">
+                        </div>
+                    </div>
+
+                    <div class="w-full lg:flex-1 order-2 md:order-2 text-left mt-4 lg:mt-0 lg:pl-10">
+                        <span
+                            class="px-4 py-1.5 bg-[#829EBE]/10 text-[#829EBE] rounded-full text-[11px] sm:text-xs font-bold tracking-wider uppercase mb-4 md:mb-6 inline-flex items-center gap-2">
+                            <i class="ph-bold ph-calendar-check"></i> Langkah 3
+                        </span>
+                        <h3 class="text-2xl md:text-3xl lg:text-4xl font-display font-bold text-dark mb-3 md:mb-4">
+                            Rencanakan Kalendermu</h3>
+                        <p class="text-sm md:text-base text-gray-600 leading-relaxed mb-6 md:mb-8">
+                            Pilih outfit dari koleksi yang telah dibuat, lalu jadwalkan di kalender interaktif kami.
+                            Hindari kepanikan di pagi hari dan jadilah lebih efisien.
+                        </p>
+                        <ul class="space-y-3 md:space-y-4">
+                            <li class="flex items-center gap-3 text-sm md:text-base font-medium text-gray-700"><i
+                                    class="ph-fill ph-check-circle text-[#829EBE] text-xl"></i> Bangun tidur langsung
+                                gaya</li>
+                            <li class="flex items-center gap-3 text-sm md:text-base font-medium text-gray-700"><i
+                                    class="ph-fill ph-check-circle text-[#829EBE] text-xl"></i> Rencanakan packing
+                                traveling</li>
+                            <li class="flex items-center gap-3 text-sm md:text-base font-medium text-gray-700"><i
+                                    class="ph-fill ph-check-circle text-[#829EBE] text-xl"></i> Lacak statistik
+                                pemakaian baju</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Spacer untuk mempermudah scroll di mobile -->
+                <div class="w-[2vw] shrink-0 lg:hidden block pointer-events-none"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom CTA -->
+    <section class="py-16 md:py-24 px-6 max-w-5xl mx-auto text-center border-t border-gray-100">
+        <h2 class="text-3xl md:text-4xl font-display font-bold text-dark mb-5 md:mb-6">Mulai Transformasi Lemarimu</h2>
+        <p class="text-gray-600 text-sm md:text-base mb-10 md:mb-12 max-w-2xl mx-auto">Prosesnya mudah, sangat visual,
+            dan dijamin akan mengubah caramu berpakaian selamanya.</p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <a href="auth.html"
+                class="px-8 py-3.5 md:py-4 rounded-full bg-brand text-white font-semibold hover:bg-brand-dark transition-all shadow-xl shadow-brand/20 text-center">
+                Buat Akun Gratis
+            </a>
+            <a href="landingpage.html"
+                class="px-8 py-3.5 md:py-4 rounded-full border border-gray-200 text-dark font-semibold hover:border-brand hover:text-brand bg-white transition-all text-center">
+                Eksplor Fitur Lain
+            </a>
+        </div>
+    </section>
+
+    <!-- Simple Footer -->
+    <footer class="bg-white py-10 text-center border-t border-gray-100">
+        <p class="text-xs font-medium text-gray-400">© <span id="footer-year">2026</span> Capsule Wardrobe. All rights
+            reserved.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const footerYear = document.getElementById('footer-year');
+            if (footerYear) footerYear.innerText = new Date().getFullYear();
+
+            // Dynamic Progress Bar Logic using Intersection Observer
+            const steps = document.querySelectorAll('.step-card');
+            const indicators = document.querySelectorAll('.step-indicator');
+            const progressBar = document.getElementById('step-progress-bar');
+            const stepsContainer = document.getElementById('steps-container');
+
+            // Set up Observer to detect which card is currently in view
+            const observerOptions = {
+                root: null, // use viewport for desktop
+                rootMargin: '0px',
+                threshold: 0.6 // Trigger when 60% of card is visible
+            };
+
+            // For mobile, root should be the scrollable container
+            if (window.innerWidth < 1024) {
+                observerOptions.root = stepsContainer;
+            }
+
+            const stepObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const activeIndex = Array.from(steps).indexOf(entry.target);
+
+                        // Update Progress Line Width (33.3%, 66.6%, 100%)
+                        const percentage = ((activeIndex + 1) / steps.length) * 100;
+                        progressBar.style.width = `${percentage}%`;
+
+                        // Update Text Colors
+                        indicators.forEach((indicator, idx) => {
+                            if (idx === activeIndex) {
+                                indicator.className = 'step-indicator text-[10px] sm:text-[13px] font-bold text-brand transition-colors duration-300';
+                            } else if (idx < activeIndex) {
+                                indicator.className = 'step-indicator text-[10px] sm:text-[13px] font-bold text-brand transition-colors duration-300';
+                            } else {
+                                indicator.className = 'step-indicator text-[10px] sm:text-[13px] font-medium text-gray-400 transition-colors duration-300';
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            steps.forEach(step => stepObserver.observe(step));
+
+            // Drag to Scroll functionality for Mobile Container
+            if (stepsContainer) {
+                let isDown = false;
+                let startX;
+                let scrollLeft;
+
+                stepsContainer.addEventListener('mousedown', (e) => {
+                    isDown = true;
+                    stepsContainer.classList.add('cursor-grabbing');
+                    stepsContainer.classList.remove('snap-mandatory'); // Nonaktifkan snap saat didrag agar mulus
+                    startX = e.pageX - stepsContainer.offsetLeft;
+                    scrollLeft = stepsContainer.scrollLeft;
+                });
+                stepsContainer.addEventListener('mouseleave', () => {
+                    isDown = false;
+                    stepsContainer.classList.remove('cursor-grabbing');
+                    stepsContainer.classList.add('snap-mandatory');
+                });
+                stepsContainer.addEventListener('mouseup', () => {
+                    isDown = false;
+                    stepsContainer.classList.remove('cursor-grabbing');
+                    stepsContainer.classList.add('snap-mandatory');
+                });
+                stepsContainer.addEventListener('mousemove', (e) => {
+                    if (!isDown) return;
+                    e.preventDefault();
+                    const x = e.pageX - stepsContainer.offsetLeft;
+                    const walk = (x - startX) * 2; // Scroll speed
+                    stepsContainer.scrollLeft = scrollLeft - walk;
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

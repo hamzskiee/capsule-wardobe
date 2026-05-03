@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kalender Outfit - Capsule Wardrobe</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        background: '#FAF9F7',
+                        surface: '#FFFFFF',
+                        primary: '#9D8371',
+                        primaryHover: '#8A7363',
+                        textDark: '#1C1C1C',
+                        textMuted: '#7A7A7A',
+                        borderLight: '#F0EBE6',
+                        bgSoft: '#FBFBFA'
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .snap-x-mandatory {
+            scroll-snap-type: x mandatory;
+        }
+
+        .snap-center-item {
+            scroll-snap-align: center;
+        }
+
+        .transition-all {
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 300ms;
+        }
+
+        .page-transition {
+            animation: fadeInView 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeInView {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-rounded {
+            border-radius: 1.5rem;
+        }
+
+        .blend-darken {
+            mix-blend-mode: darken;
+        }
+
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            top: 24px;
+            bottom: -24px;
+            left: 11px;
+            width: 2px;
+            background: #F0EBE6;
+            z-index: 0;
+        }
+
+        .timeline-item:last-child .timeline-line::before {
+            display: none;
+        }
+
+        /* Toast Animation */
+        @keyframes slideUpFade {
+            from {
+                opacity: 0;
+                transform: translateY(20px) translateX(-50%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) translateX(-50%);
+            }
+        }
+
+        .toast-enter {
+            animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+    </style>
+</head>
+
+<body class="bg-background text-textDark font-sans h-[100dvh] flex overflow-hidden">
+
+    <div id="toast-container" class="fixed top-5 right-5 z-[100] flex flex-col gap-3 pointer-events-none"></div>
+
+    <!-- Sidebar Overlay for Mobile -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden transition-opacity opacity-0">
+    </div>
+
+    <!-- Sidebar Desktop -->
+    <aside id="sidebar"
+        class="w-64 bg-surface border-r border-borderLight flex-col hidden lg:flex h-full z-20 shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.01)] transition-transform duration-300 -translate-x-full lg:translate-x-0">
+        <div class="p-8 flex items-center justify-between lg:justify-start gap-3">
+            <div class="flex items-center gap-2 group cursor-pointer" onclick="window.location.href='dashboard.html'">
+                <i class="ph ph-coat-hanger text-4xl text-primary group-hover:text-primaryHover transition-colors"></i>
+                <div class="leading-tight text-left">
+                    <h1 class="font-semibold text-xl tracking-tight text-textDark">Capsule</h1>
+                    <p class="text-[10px] text-textMuted uppercase tracking-widest font-medium">Wardrobe</p>
+                </div>
+            </div>
+            <button id="close-sidebar-btn" class="lg:hidden text-2xl text-textMuted hover:text-textDark">
+                <i class="ph-bold ph-x text-xl"></i>
+            </button>
+        </div>
+
+        <nav class="flex-1 px-4 space-y-1 overflow-y-auto no-scrollbar pb-8" id="sidebar-nav">
+            <a href="dashboard.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-[#F8F7F4] hover:text-textDark rounded-xl font-medium transition-all"><i
+                    class="ph ph-house text-xl"></i> Beranda</a>
+            <a href="lemari.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-[#F8F7F4] hover:text-textDark rounded-xl font-medium transition-all"><i
+                    class="ph ph-t-shirt text-xl"></i> Lemari Saya</a>
+            <a href="mix&match.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-[#F8F7F4] hover:text-textDark rounded-xl font-medium transition-all"><i
+                    class="ph ph-magic-wand text-xl"></i> Mix & Match</a>
+
+            <a href="#"
+                class="nav-link flex items-center gap-3 px-4 py-3 bg-[#EAE6E1] text-textDark rounded-xl font-semibold transition-all shadow-sm"><i
+                    class="ph-fill ph-calendar text-xl text-primary"></i> Kalender Outfit</a>
+
+            <a href="inspirasi.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-[#F8F7F4] hover:text-textDark rounded-xl font-medium transition-all"><i
+                    class="ph ph-lightbulb text-xl"></i> Inspirasi</a>
+            <a href="statistik.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-[#F8F7F4] hover:text-textDark rounded-xl font-medium transition-all"><i
+                    class="ph ph-chart-bar text-xl"></i> Statistik</a>
+            <a href="wishlist.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-[#F8F7F4] hover:text-textDark rounded-xl font-medium transition-all"><i
+                    class="ph ph-heart text-xl"></i> Wishlist</a>
+            <a href="pengaturan.html"
+                class="nav-link flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-[#F8F7F4] hover:text-textDark rounded-xl font-medium transition-all mt-4"><i
+                    class="ph ph-gear text-xl"></i> Pengaturan</a>
+        </nav>
+
+        <div class="p-6 mt-auto">
+            <div
+                class="bg-[#F8F7F4] border border-borderLight p-5 rounded-2xl relative overflow-hidden group cursor-pointer hover:border-primary/40 transition-colors">
+                <i
+                    class="ph-fill ph-diamond text-[64px] text-primary/5 absolute -right-2 -bottom-2 group-hover:scale-110 transition-transform duration-500"></i>
+                <p class="text-[13px] font-light text-textDark mb-1 relative z-10"><span
+                        class="font-bold text-textDark">Minimal</span> items,</p>
+                <p class="text-[13px] font-light text-textDark mb-2 relative z-10"><span
+                        class="font-bold text-primary">maximum</span> style.</p>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="lg:hidden fixed bottom-0 left-0 w-full bg-surface/90 backdrop-blur-lg border-t border-borderLight z-40 flex justify-around py-3 px-2 pb-6 md:pb-4 text-[10px] shadow-[0_-10px_40px_rgba(0,0,0,0.03)]"
+        id="mobile-nav">
+        <a href="dashboard.html"
+            class="mobile-nav-link flex flex-col items-center gap-1.5 text-textMuted hover:text-textDark transition-all relative font-medium"><i
+                class="ph ph-house text-xl md:text-2xl"></i>Beranda</a>
+        <a href="lemari.html"
+            class="mobile-nav-link flex flex-col items-center gap-1.5 text-textMuted hover:text-textDark transition-all relative font-medium"><i
+                class="ph ph-t-shirt text-xl md:text-2xl"></i>Lemari</a>
+        <a href="mix&match.html"
+            class="mobile-nav-link flex flex-col items-center gap-1.5 text-textMuted hover:text-textDark transition-all relative font-medium"><i
+                class="ph ph-magic-wand text-xl md:text-2xl"></i>Outfit</a>
+
+        <a href="#"
+            class="mobile-nav-link flex flex-col items-center gap-1.5 text-primary transition-all relative font-semibold"><i
+                class="ph-fill ph-calendar-blank text-xl md:text-2xl text-primary"></i>Kalender</a>
+
+        <button onclick="toggleMobileMore()"
+            class="mobile-nav-link flex flex-col items-center gap-1.5 text-textMuted hover:text-textDark transition-all relative font-medium focus:outline-none"><i
+                class="ph-fill ph-squares-four text-xl md:text-2xl"></i>Lainnya</button>
+    </nav>
+
+    <!-- Mobile Bottom Sheet Menu (Lainnya) -->
+    <div id="mobile-more-menu"
+        class="fixed inset-0 bg-dark/60 backdrop-blur-sm z-[200] hidden flex-col justify-end opacity-0 transition-opacity duration-300 lg:hidden">
+        <div id="mobile-more-content"
+            class="bg-surface w-full rounded-t-[2rem] p-6 transform translate-y-full transition-transform duration-300 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] flex flex-col">
+            <div class="w-12 h-1.5 bg-borderLight rounded-full mx-auto mb-6"></div>
+            <h3 class="text-lg font-bold text-textDark mb-6 font-display">Menu Lainnya</h3>
+
+            <div class="grid grid-cols-4 gap-4 mb-2">
+                <a href="wishlist.html" class="flex flex-col items-center gap-2 group">
+                    <div
+                        class="w-14 h-14 rounded-[1.25rem] bg-bgSoft border border-borderLight flex items-center justify-center text-textMuted group-hover:text-primary group-hover:border-primary/30 transition-all shadow-sm">
+                        <i class="ph ph-heart text-2xl"></i>
+                    </div>
+                    <span class="text-[10px] font-medium text-textDark">Wishlist</span>
+                </a>
+                <a href="inspirasi.html" class="flex flex-col items-center gap-2 group">
+                    <div
+                        class="w-14 h-14 rounded-[1.25rem] bg-bgSoft border border-borderLight flex items-center justify-center text-textMuted group-hover:text-primary group-hover:border-primary/30 transition-all shadow-sm">
+                        <i class="ph ph-lightbulb text-2xl"></i>
+                    </div>
+                    <span class="text-[10px] font-medium text-textDark">Inspirasi</span>
+                </a>
+                <a href="statistik.html" class="flex flex-col items-center gap-2 group">
+                    <div
+                        class="w-14 h-14 rounded-[1.25rem] bg-bgSoft border border-borderLight flex items-center justify-center text-textMuted group-hover:text-primary group-hover:border-primary/30 transition-all shadow-sm">
+                        <i class="ph ph-chart-bar text-2xl"></i>
+                    </div>
+                    <span class="text-[10px] font-medium text-textDark">Statistik</span>
+                </a>
+                <a href="pengaturan.html" class="flex flex-col items-center gap-2 group">
+                    <div
+                        class="w-14 h-14 rounded-[1.25rem] bg-bgSoft border border-borderLight flex items-center justify-center text-textMuted group-hover:text-primary group-hover:border-primary/30 transition-all shadow-sm">
+                        <i class="ph ph-gear text-2xl"></i>
+                    </div>
+                    <span class="text-[10px] font-medium text-textDark">Pengaturan</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full relative overflow-hidden bg-background">
+
+        <!-- Header -->
+        <header
+            class="bg-background/90 backdrop-blur-md sticky top-0 z-40 px-6 md:px-10 py-5 flex items-center justify-between border-b border-borderLight/50">
+
+            <div class="flex items-center gap-2 lg:hidden cursor-pointer"
+                onclick="window.location.href='dashboard.html'">
+                <i class="ph ph-coat-hanger text-3xl text-primary"></i>
+                <div class="leading-tight text-left">
+                    <h1 class="font-semibold text-lg tracking-tight text-textDark">Capsule</h1>
+                    <p class="text-[10px] text-textMuted uppercase tracking-widest font-medium">Wardrobe</p>
+                </div>
+            </div>
+
+            <!-- SEARCH BAR DIHAPUS, Flex Spacing Filler -->
+            <div class="hidden lg:flex flex-1"></div>
+
+            <div class="flex items-center gap-4 md:gap-6 ml-auto shrink-0">
+                <div class="relative">
+                    <button onclick="toggleNotifications(event)"
+                        class="p-2 text-textDark hover:bg-surface rounded-full transition-all relative border border-transparent hover:border-borderLight">
+                        <i class="ph ph-bell text-xl"></i>
+                        <span id="notif-badge-dot"
+                            class="hidden absolute top-1.5 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-background"></span>
+                    </button>
+                    <!-- Notif Dropdown Panel -->
+                    <div id="notif-dropdown"
+                        class="hidden absolute right-[-40px] sm:right-0 mt-3 w-[300px] sm:w-[400px] bg-surface border border-borderLight rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.08)] z-50 overflow-hidden transform opacity-0 scale-95 transition-all duration-200 origin-top-right flex flex-col">
+                        <div
+                            class="p-4 sm:p-5 border-b border-borderLight flex justify-between items-center bg-surface">
+                            <span class="font-bold text-sm sm:text-[15px] text-textDark font-display">Notifikasi</span>
+                            <span id="notif-count-badge"
+                                class="text-[10px] font-bold bg-[#F4EFEA] text-[#8A7363] px-3 py-1.5 rounded-lg tracking-wide">0
+                                BARU</span>
+                        </div>
+                        <div class="max-h-[350px] overflow-y-auto hide-scrollbar" id="notif-list-container">
+                            <div class="p-6 text-center text-sm text-textMuted">Memuat notifikasi...</div>
+                        </div>
+                        <div
+                            class="p-3 sm:p-4 border-t border-borderLight bg-surface flex justify-between items-center">
+                            <button onclick="markAllReadNotif()"
+                                class="text-xs sm:text-[13px] font-semibold text-[#8A7363] hover:text-[#9D8371] transition-colors">Tandai
+                                semua dibaca</button>
+                            <button onclick="deleteAllNotif(event)"
+                                class="text-xs sm:text-[13px] font-semibold text-red-500 hover:text-red-600 transition-colors">Hapus
+                                semua</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative" id="profile-dropdown-wrapper">
+                    <div onclick="toggleProfileDropdown(event)"
+                        class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity pl-2 sm:pl-4 border-l border-borderLight">
+                        <div
+                            class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gray-200 overflow-hidden shadow-sm shrink-0 border border-borderLight">
+                            <img src="" alt="Profile" id="header-avatar" class="w-full h-full object-cover">
+                        </div>
+                        <div class="text-sm font-medium hidden md:flex items-center gap-1 text-textDark">
+                            <span id="user-display-name">User</span>
+                            <i class="ph-bold ph-caret-down text-xs text-textMuted transition-transform duration-300"
+                                id="profile-chevron"></i>
+                        </div>
+                    </div>
+
+                    <!-- Profile Menu -->
+                    <div id="profile-menu"
+                        class="hidden absolute right-0 mt-3 w-52 bg-surface border border-borderLight rounded-2xl shadow-xl z-50 overflow-hidden opacity-0 transform scale-95 transition-all duration-200">
+                        <div class="p-4 border-b border-borderLight bg-bgSoft/30">
+                            <p class="text-[10px] text-textMuted uppercase tracking-widest font-bold">Akun Saya</p>
+                            <p class="text-xs text-textDark font-medium truncate mt-1" id="user-email-display">email</p>
+                        </div>
+                        <div class="p-2">
+                            <button onclick="window.location.href='pengaturan.html'"
+                                class="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-textDark hover:bg-bgSoft rounded-xl transition-colors text-left group">
+                                <i
+                                    class="ph-bold ph-gear text-base text-textMuted group-hover:text-primary transition-colors"></i><span>Pengaturan</span>
+                            </button>
+                            <div class="h-px bg-borderLight/50 my-1 mx-2"></div>
+                            <button onclick="logout()"
+                                class="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-red-500 hover:bg-red-50 rounded-xl transition-colors text-left group">
+                                <i
+                                    class="ph-bold ph-sign-out text-base text-red-400 group-hover:text-red-600 transition-colors"></i><span
+                                    class="font-semibold">Keluar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto no-scrollbar px-5 md:px-10 pb-28 md:pb-12 scroll-smooth"
+            id="main-scroll-area">
+            <div class="page-transition">
+
+                <div class="mt-6 mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl md:text-3xl font-semibold mb-2 flex items-center gap-3 text-textDark">
+                            Kalender Outfit <i class="ph-fill ph-calendar-blank text-2xl text-primary"></i>
+                        </h2>
+                        <p class="text-textMuted text-sm">Rencanakan gaya untuk aktivitas minggu ini agar selalu tampil
+                            maksimal.</p>
+                    </div>
+                    <button onclick="openScheduleModal()"
+                        class="sm:hidden w-full py-3 bg-[#A28876] hover:bg-[#8e7464] text-white text-sm rounded-xl font-medium transition-all shadow-sm flex justify-center items-center gap-2 active:scale-95">
+                        <i class="ph-bold ph-plus text-base"></i> Tambah Jadwal
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+
+                    <div
+                        class="lg:col-span-7 xl:col-span-8 bg-surface card-rounded p-4 sm:p-6 md:p-8 shadow-sm border border-borderLight relative overflow-hidden">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-lg font-semibold text-textDark capitalize" id="full-calendar-month-year">...
+                            </h3>
+                            <div class="flex gap-2">
+                                <button
+                                    class="p-2 rounded-full bg-bgSoft border border-borderLight hover:bg-borderLight transition-colors text-textDark"
+                                    onclick="changeMonth(-1)"><i class="ph-bold ph-caret-left text-base"></i></button>
+                                <button
+                                    class="p-2 rounded-full bg-bgSoft border border-borderLight hover:bg-borderLight transition-colors text-textDark"
+                                    onclick="changeMonth(1)"><i class="ph-bold ph-caret-right text-base"></i></button>
+                            </div>
+                        </div>
+
+                        <div
+                            class="grid grid-cols-7 gap-1 sm:gap-2 text-center text-[10px] sm:text-xs md:text-sm mb-3 font-bold uppercase tracking-wider border-b border-borderLight pb-3">
+                            <div class="text-red-500">Min</div>
+                            <div class="text-textMuted">Sen</div>
+                            <div class="text-textMuted">Sel</div>
+                            <div class="text-textMuted">Rab</div>
+                            <div class="text-textMuted">Kam</div>
+                            <div class="text-textMuted">Jum</div>
+                            <div class="text-primary">Sab</div>
+                        </div>
+
+                        <div class="grid grid-cols-7 gap-1 sm:gap-2 md:gap-3 text-center" id="full-calendar-grid">
+                        </div>
+
+                        <div
+                            class="mt-8 pt-5 border-t border-borderLight flex items-center gap-6 justify-center sm:justify-start">
+                            <div class="flex items-center gap-2">
+                                <div class="w-3.5 h-3.5 rounded-full bg-[#A28876] shadow-sm"></div>
+                                <span class="text-xs font-medium text-textMuted">Hari Ini</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-3.5 h-3.5 rounded-full bg-gray-200 border border-gray-300 shadow-inner">
+                                </div>
+                                <span class="text-xs font-medium text-textMuted">Ada Jadwal Outfit</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-5 xl:col-span-4 space-y-6">
+
+                        <div
+                            class="bg-gradient-to-br from-[#A28876] to-[#8A7363] card-rounded p-6 shadow-sm text-white relative overflow-hidden flex items-center gap-4 border border-[#8A7363]">
+                            <i
+                                class="ph-duotone ph-coat-hanger absolute -right-4 -bottom-4 text-8xl text-white/10 rotate-[15deg]"></i>
+                            <div
+                                class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center shrink-0 backdrop-blur-sm border border-white/20">
+                                <i class="ph-fill ph-calendar-check text-2xl text-white"></i>
+                            </div>
+                            <div class="relative z-10" id="summary-widget-container">
+                                <p class="text-3xl font-bold leading-tight">0 <span
+                                        class="text-base font-medium opacity-80">Outfit</span></p>
+                                <p class="text-xs text-white/80 mt-0.5">Telah dijadwalkan</p>
+                            </div>
+                        </div>
+
+                        <div
+                            class="bg-surface card-rounded p-6 md:p-8 shadow-sm border border-borderLight relative min-h-[400px]">
+                            <div class="flex justify-between items-center mb-5">
+                                <h3 class="text-base font-semibold text-textDark flex items-center gap-2">
+                                    <i class="ph-fill ph-calendar-star text-lg text-primary"></i> Jadwal Mendatang
+                                </h3>
+                                <button onclick="openScheduleModal()"
+                                    class="hidden sm:flex text-primary hover:text-primaryHover text-xs font-medium items-center gap-1 transition-colors">
+                                    <i class="ph-bold ph-plus"></i> Tambah
+                                </button>
+                            </div>
+
+                            <div class="space-y-0 relative mt-2" id="full-calendar-schedules">
+                            </div>
+
+                            <div id="empty-schedule-state"
+                                class="hidden flex-col items-center justify-center text-center py-12 opacity-60">
+                                <i class="ph-fill ph-calendar-x text-4xl text-textMuted mb-3"></i>
+                                <p class="text-sm font-medium text-textMuted">Belum ada outfit terjadwal.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer
+                class="mt-16 pt-8 border-t border-borderLight flex flex-col md:flex-row justify-between items-center text-[11px] sm:text-xs text-textMuted gap-4 pb-4 px-2">
+                <p>&copy; <span id="footer-year">2026</span> Capsule Wardrobe. Didesain dengan presisi.</p>
+                <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
+                    <a href="#" class="hover:text-textDark transition-colors">Kebijakan Privasi</a>
+                    <a href="#" class="hover:text-textDark transition-colors">Syarat Ketentuan</a>
+                    <a href="#" class="hover:text-textDark transition-colors">Bantuan</a>
+                </div>
+            </footer>
+        </div>
+    </main>
+
+    <!-- Modal Tambah/Edit Jadwal -->
+    <div id="schedule-modal"
+        class="fixed inset-0 bg-dark/70 backdrop-blur-sm z-[60] hidden flex items-center justify-center opacity-0 transition-opacity duration-300 p-4 sm:p-0">
+        <div class="bg-surface w-full max-w-[420px] sm:rounded-[2rem] rounded-3xl shadow-2xl transform scale-95 transition-transform duration-300 relative overflow-hidden flex flex-col max-h-[90vh]"
+            id="schedule-modal-content">
+
+            <div class="flex items-center px-6 py-5 border-b border-borderLight bg-surface sticky top-0 z-10">
+                <button onclick="closeScheduleModal()"
+                    class="text-textDark hover:bg-bgSoft p-2 rounded-full transition-colors -ml-2">
+                    <i class="ph-bold ph-caret-left text-xl"></i>
+                </button>
+                <h3 class="flex-1 text-center text-base font-semibold text-textDark pr-8" id="modal-title">Tambah Jadwal
+                </h3>
+            </div>
+
+            <div class="p-6 overflow-y-auto no-scrollbar flex-1 space-y-7 bg-surface">
+                <div>
+                    <label class="block text-xs font-bold text-gray-800 uppercase tracking-wider mb-2.5">Pilih
+                        Tanggal</label>
+                    <input type="date" id="schedule-date"
+                        class="w-full px-4 py-3.5 rounded-xl border border-borderLight bg-[#FBFBFA] text-[13px] text-textDark focus:outline-none focus:border-[#A28876] focus:ring-2 focus:ring-[#A28876]/20 transition-all shadow-sm">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-800 uppercase tracking-wider mb-2.5">Nama Acara /
+                        Keterangan</label>
+                    <input type="text" id="schedule-event" placeholder="Contoh: Meeting Klien, Dinner, dll"
+                        class="w-full px-4 py-3.5 rounded-xl border border-borderLight bg-[#FBFBFA] text-[13px] text-textDark placeholder:text-textMuted focus:outline-none focus:border-[#A28876] focus:ring-2 focus:ring-[#A28876]/20 transition-all shadow-sm">
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-end mb-3">
+                        <label class="block text-xs font-bold text-gray-800 uppercase tracking-wider">Pilih
+                            Outfit</label>
+                        <a href="mix_and_match.html"
+                            class="text-[11px] text-primary hover:text-primaryHover font-medium flex items-center gap-1">Buat
+                            Baru</a>
+                    </div>
+                    <div class="flex gap-4 overflow-x-auto no-scrollbar pb-2" id="schedule-outfit-selector">
+                        <p class="text-xs text-textMuted italic">Memuat outfit dari lemari...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-5 border-t border-borderLight bg-surface sticky bottom-0 z-10">
+                <button onclick="saveNewSchedule()" id="btn-simpan-jadwal"
+                    class="w-full bg-[#A28876] hover:bg-[#8e7464] text-white py-3.5 rounded-xl text-[13px] font-medium transition-all shadow-sm active:scale-95 flex justify-center items-center gap-2">
+                    Simpan Jadwal
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT SUPABASE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script type="module">
+        import { CONFIG } from './assets/js/config.js';
+        const supabase = window.supabase.createClient(CONFIG.SB_URL, CONFIG.SB_KEY);
+
+        let currentUser = null;
+        let savedOutfitsData = [];
+        let schedulesData = [];
+        let currentCalDate = new Date();
+        let selectedOutfitForSchedule = null;
+        let currentEditId = null;
+
+        const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+        let deletedNotifs = JSON.parse(localStorage.getItem('capsule_deleted_notifs') || '[]');
+        let readNotifs = JSON.parse(localStorage.getItem('capsule_read_notifs') || '[]');
+
+        function saveNotifState() {
+            localStorage.setItem('capsule_deleted_notifs', JSON.stringify(deletedNotifs));
+            localStorage.setItem('capsule_read_notifs', JSON.stringify(readNotifs));
+        }
+
+        /* ================= 1. TOAST & UI LOGIC ================= */
+        window.showToast = function (message, type = 'success') {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+
+                // Background PUTIH (bg-surface), border tipis, bayangan lembut
+                const bgColor = type === 'success' ? 'bg-surface border-borderLight' : 'bg-red-50 border-red-200';
+                const icon = type === 'success' ? 'ph-check-circle' : 'ph-warning-circle';
+
+                // Ikon warna cokelat utama (text-primary)
+                const iconColor = type === 'success' ? 'text-primary' : 'text-red-500';
+
+                // Menggunakan text-textDark (hitam) agar kontras dengan bg-surface (putih)
+                toast.className = `flex items-center gap-3 px-4 sm:px-5 py-3 sm:py-3.5 rounded-2xl border shadow-[0_10px_40px_rgba(0,0,0,0.08)] transform transition-all duration-300 translate-x-full text-textDark ${bgColor}`;
+
+                toast.innerHTML = `<i class="ph-fill ${icon} text-xl sm:text-2xl ${iconColor}"></i><p class="text-xs sm:text-[13px] font-semibold">${message}</p>`;
+
+                container.appendChild(toast);
+
+                setTimeout(() => toast.classList.remove('translate-x-full'), 10);
+                setTimeout(() => { toast.classList.add('translate-x-full'); setTimeout(() => toast.remove(), 300); }, 3000);
+            }
+
+        window.toggleNotifications = function (e) {
+            e.stopPropagation();
+            const notifDropdown = document.getElementById('notif-dropdown');
+            if (notifDropdown.classList.contains('hidden')) {
+                notifDropdown.classList.remove('hidden');
+                setTimeout(() => {
+                    notifDropdown.classList.remove('opacity-0', 'scale-95');
+                    notifDropdown.classList.add('opacity-100', 'scale-100');
+                }, 10);
+            } else {
+                notifDropdown.classList.remove('opacity-100', 'scale-100');
+                notifDropdown.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => { notifDropdown.classList.add('hidden'); }, 200);
+            }
+        };
+
+        window.toggleProfileDropdown = function (event) {
+            event.stopPropagation();
+            const menu = document.getElementById('profile-menu');
+            const chevron = document.getElementById('profile-chevron');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                setTimeout(() => {
+                    menu.classList.remove('opacity-0', 'scale-95'); menu.classList.add('opacity-100', 'scale-100');
+                    if (chevron) chevron.style.transform = 'rotate(180deg)';
+                }, 10);
+            } else {
+                menu.classList.remove('opacity-100', 'scale-100'); menu.classList.add('opacity-0', 'scale-95');
+                if (chevron) chevron.style.transform = 'rotate(0deg)';
+                setTimeout(() => menu.classList.add('hidden'), 200);
+            }
+        };
+
+        window.toggleMobileMore = function (e) {
+            if (e) e.stopPropagation();
+            const menu = document.getElementById('mobile-more-menu');
+            const content = document.getElementById('mobile-more-content');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden'); menu.classList.add('flex');
+                setTimeout(() => { menu.classList.remove('opacity-0'); content.classList.remove('translate-y-full'); }, 10);
+            } else {
+                menu.classList.add('opacity-0'); content.classList.add('translate-y-full');
+                setTimeout(() => { menu.classList.add('hidden'); menu.classList.remove('flex'); }, 300);
+            }
+        }
+
+        window.logout = async function () {
+            await supabase.auth.signOut();
+            window.location.href = 'auth.html';
+        }
+
+        document.addEventListener('click', (e) => {
+            const notifDropdown = document.getElementById('notif-dropdown');
+            if (notifDropdown && !notifDropdown.classList.contains('hidden') && !e.target.closest('#notif-dropdown') && !e.target.closest('[onclick="toggleNotifications(event)"]')) {
+                notifDropdown.classList.remove('opacity-100', 'scale-100'); notifDropdown.classList.add('opacity-0', 'scale-95'); setTimeout(() => { notifDropdown.classList.add('hidden'); }, 200);
+            }
+            const profileMenu = document.getElementById('profile-menu');
+            const profileChevron = document.getElementById('profile-chevron');
+            if (profileMenu && !profileMenu.classList.contains('hidden') && !e.target.closest('#profile-dropdown-wrapper')) {
+                profileMenu.classList.remove('opacity-100', 'scale-100'); profileMenu.classList.add('opacity-0', 'scale-95');
+                if (profileChevron) profileChevron.style.transform = 'rotate(0deg)'; setTimeout(() => profileMenu.classList.add('hidden'), 200);
+            }
+            const mobileMoreMenu = document.getElementById('mobile-more-menu');
+            const mobileMoreContent = document.getElementById('mobile-more-content');
+            if (mobileMoreMenu && !mobileMoreMenu.classList.contains('hidden') && !mobileMoreContent.contains(e.target) && !e.target.closest('[onclick*="toggleMobileMore"]')) {
+                toggleMobileMore();
+            }
+            const scheduleModal = document.getElementById('schedule-modal');
+            const scheduleContent = document.getElementById('schedule-modal-content');
+            if (scheduleModal && !scheduleModal.classList.contains('hidden') && !scheduleContent.contains(e.target) && !e.target.closest('[onclick*="openScheduleModal"]')) {
+                closeScheduleModal();
+            }
+        });
+
+        /* ================= 2. TEMPLATE KORDINAT OUTFIT ================= */
+        function generateMiniCollage(layout) {
+            return `
+                ${layout.dresses ? `<img src="${layout.dresses}" class="absolute top-[6%] left-[22%] w-[55%] object-contain z-20 blend-darken pointer-events-none">` : ''}
+                ${layout.atasan ? `<img src="${layout.atasan}" class="absolute top-[6%] left-[10%] w-[55%] object-contain z-20 blend-darken pointer-events-none">` : ''}
+                ${layout.outer ? `<img src="${layout.outer}" class="absolute top-[2%] right-[5%] w-[55%] object-contain z-30 opacity-90 blend-darken pointer-events-none">` : ''}
+                ${layout.bawahan ? `<img src="${layout.bawahan}" class="absolute top-[6%] right-[4%] w-[45%] object-contain z-5 blend-darken pointer-events-none">` : ''}
+                ${layout.sepatu ? `<img src="${layout.sepatu}" class="absolute bottom-[6%] right-[12%] w-[38%] object-contain z-10 blend-darken pointer-events-none">` : ''}
+                ${layout.tas ? `<img src="${layout.tas}" class="absolute bottom-[0%] left-[4%] w-[32%] object-contain z-80 blend-darken pointer-events-none">` : ''}
+                ${layout.aksesoris ? `<img src="${layout.aksesoris}" class="absolute bottom-[4%] left-[38%] w-[25%] object-contain z-40 blend-darken pointer-events-none">` : ''}
+            `;
+        }
+
+        /* ================= 3. INIT & FETCH ================= */
+        document.addEventListener('DOMContentLoaded', async () => {
+            const footerYear = document.getElementById('footer-year');
+            if (footerYear) footerYear.innerText = new Date().getFullYear();
+
+            const { data: { session }, error } = await supabase.auth.getSession();
+            if (!session) { window.location.href = 'auth.html'; return; }
+            currentUser = session.user;
+
+            const metadata = currentUser.user_metadata || {};
+            const fullName = metadata.full_name || "User";
+            const firstName = fullName.split(' ')[0];
+            const defaultAvatar = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80';
+            const avatarUrl = metadata.avatar_url || defaultAvatar;
+
+            document.getElementById('user-display-name').innerText = firstName;
+            document.getElementById('user-email-display').innerText = currentUser.email;
+            document.getElementById('header-avatar').src = avatarUrl;
+
+            await fetchOutfits();
+            await fetchSchedules();
+            checkPendingSchedule();
+            renderNotifications();
+
+            const outfitSelector = document.getElementById('schedule-outfit-selector');
+            if (outfitSelector) {
+                let isDown = false; let startX; let scrollLeft;
+                outfitSelector.addEventListener('mousedown', (e) => { isDown = true; outfitSelector.classList.add('cursor-grabbing'); outfitSelector.classList.remove('snap-mandatory'); startX = e.pageX - outfitSelector.offsetLeft; scrollLeft = outfitSelector.scrollLeft; });
+                outfitSelector.addEventListener('mouseleave', () => { isDown = false; outfitSelector.classList.remove('cursor-grabbing'); outfitSelector.classList.add('snap-mandatory'); });
+                outfitSelector.addEventListener('mouseup', () => { isDown = false; outfitSelector.classList.remove('cursor-grabbing'); outfitSelector.classList.add('snap-mandatory'); });
+                outfitSelector.addEventListener('mousemove', (e) => { if (!isDown) return; e.preventDefault(); const x = e.pageX - outfitSelector.offsetLeft; const walk = (x - startX) * 2; outfitSelector.scrollLeft = scrollLeft - walk; });
+            }
+        });
+
+        async function fetchOutfits() {
+            const { data, error } = await supabase.from('outfits').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
+            if (data) {
+                savedOutfitsData = data.map(o => {
+                    let layoutObj = {};
+                    try {
+                        let parsed = JSON.parse(o.image_urls);
+                        if (Array.isArray(parsed)) { layoutObj = { atasan: parsed[0], bawahan: parsed[1] }; }
+                        else { layoutObj = parsed; }
+                    } catch (e) { }
+                    return { id: o.id, title: o.name, layout: layoutObj };
+                });
+                renderOutfitSelector();
+            }
+        }
+
+        async function fetchSchedules() {
+            const { data, error } = await supabase
+                .from('schedules')
+                .select(`id, date_str, event_name, outfit_id, outfits ( id, name, image_urls )`)
+                .eq('user_id', currentUser.id)
+                .order('date_str', { ascending: true });
+
+            if (data) {
+                schedulesData = data.map(s => {
+                    let layoutObj = {};
+                    if (s.outfits) {
+                        try {
+                            let parsed = JSON.parse(s.outfits.image_urls);
+                            if (Array.isArray(parsed)) layoutObj = { atasan: parsed[0], bawahan: parsed[1] };
+                            else layoutObj = parsed;
+                        } catch (e) { }
+                    }
+                    return {
+                        id: s.id, dateStr: s.date_str, desc: s.event_name, outfitId: s.outfit_id,
+                        outfit: { title: s.outfits ? s.outfits.name : 'Outfit Terhapus', layout: layoutObj }
+                    };
+                });
+                renderFullCalendar();
+                renderFullSchedules();
+                updateSummaryWidget();
+            }
+        }
+
+        /* ================= 4. RENDER KALENDER & JADWAL ================= */
+        window.renderFullCalendar = function () {
+            const year = currentCalDate.getFullYear();
+            const month = currentCalDate.getMonth();
+            const today = new Date();
+            const isCurrentMonth = (year === today.getFullYear() && month === today.getMonth());
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+            const monthYearEl = document.getElementById('full-calendar-month-year');
+            if (monthYearEl) monthYearEl.innerText = `${monthNames[month]} ${year}`;
+
+            const grid = document.getElementById('full-calendar-grid');
+            if (!grid) return;
+
+            let html = '';
+            const currentMonthSchedules = schedulesData.filter(s => {
+                const d = new Date(s.dateStr); return d.getFullYear() === year && d.getMonth() === month;
+            });
+
+            for (let i = 0; i < firstDay; i++) {
+                html += `<div class="aspect-square flex flex-col items-center justify-start rounded-[1rem] sm:rounded-[1.2rem] text-textMuted/40 bg-bgSoft/50 cursor-not-allowed pt-2 md:pt-3 text-xs sm:text-sm border border-transparent">${daysInPrevMonth - firstDay + i + 1}</div>`;
+            }
+
+            for (let i = 1; i <= daysInMonth; i++) {
+                const isToday = (isCurrentMonth && i === today.getDate());
+                const scheduleForDay = currentMonthSchedules.find(s => new Date(s.dateStr).getDate() === i);
+
+                let bgClass = "bg-surface border border-borderLight/40 hover:border-gray-300 shadow-sm";
+                let textClass = "text-textDark";
+                let contentHtml = "";
+
+                if (isToday) {
+                    bgClass = "bg-[#A28876] border-[#A28876] shadow-md shadow-[#A28876]/20";
+                    textClass = "text-white font-semibold";
+                } else if (scheduleForDay) {
+                    bgClass = "bg-[#F8F7F4] border-gray-300 shadow-sm";
+                }
+
+                if (scheduleForDay) {
+                    contentHtml = `
+                    <div class="mt-1 w-10 h-10 sm:w-14 sm:h-14 relative bg-[#FAF8F5] rounded-lg border border-borderLight shadow-sm overflow-hidden group-hover:scale-110 transition-transform">
+                        ${generateMiniCollage(scheduleForDay.outfit.layout)}
+                    </div>`;
+                }
+
+                html += `
+                <div class="aspect-square flex flex-col items-center justify-start rounded-[1rem] sm:rounded-[1.2rem] ${bgClass} cursor-pointer transition-all hover:-translate-y-0.5 group pt-1.5 sm:pt-2 pb-1 relative" onclick="window.showToast('Tanggal ${i} ${monthNames[month]}')">
+                    <span class="${textClass} text-xs sm:text-sm">${i}</span>
+                    ${contentHtml}
+                </div>`;
+            }
+
+            const total = firstDay + daysInMonth;
+            for (let i = 1; i <= 42 - total; i++) {
+                html += `<div class="aspect-square flex flex-col items-center justify-start rounded-[1rem] sm:rounded-[1.2rem] text-textMuted/40 bg-bgSoft/50 cursor-not-allowed pt-2 md:pt-3 text-xs sm:text-sm border border-transparent">${i}</div>`;
+            }
+            grid.innerHTML = html;
+        }
+
+        window.renderFullSchedules = function () {
+            const container = document.getElementById('full-calendar-schedules');
+            if (!container) return;
+
+            const today = new Date(); today.setHours(0, 0, 0, 0);
+            const upcomingSchedules = schedulesData.filter(s => new Date(s.dateStr) >= today);
+
+            if (upcomingSchedules.length === 0) {
+                document.getElementById('empty-schedule-state').classList.remove('hidden');
+                container.innerHTML = ''; return;
+            }
+
+            document.getElementById('empty-schedule-state').classList.add('hidden');
+            let timelineHtml = '';
+
+            upcomingSchedules.forEach((item) => {
+                const d = new Date(item.dateStr);
+                const dayName = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"][d.getDay()];
+
+                timelineHtml += `
+                <div class="timeline-item relative pl-8 py-3 w-full group">
+                    <div class="timeline-line"></div>
+                    <div class="absolute left-[9px] top-7 w-1.5 h-1.5 rounded-full bg-borderLight group-hover:bg-primary group-hover:scale-150 transition-all z-10 shadow-sm border border-white"></div>
+                    
+                    <div class="flex items-center gap-3 md:gap-4 p-3.5 bg-surface rounded-[1.25rem] border border-borderLight shadow-sm hover:border-primary/30 transition-all">
+                        <div class="flex flex-col items-center justify-center shrink-0 w-12 border-r border-borderLight pr-3 md:pr-4 py-1">
+                            <span class="text-[10px] text-textMuted font-medium uppercase tracking-wider">${dayName}</span>
+                            <span class="text-base font-semibold text-textDark leading-none mt-0.5">${d.getDate()}</span>
+                        </div>
+
+                        <div class="flex-1 min-w-0 py-1">
+                            <div class="text-xs md:text-sm font-semibold text-textDark truncate flex items-center">${item.desc}</div>
+                            <div class="flex items-center gap-1.5 text-[10px] text-textMuted mt-1 font-medium truncate">
+                                <i class="ph-fill ph-t-shirt text-primary text-sm"></i> ${item.outfit.title}
+                            </div>
+                            <div class="flex gap-3 mt-2">
+                                <button onclick="editSchedule('${item.id}', event)" class="text-[10px] sm:text-xs font-semibold text-primary flex items-center gap-1 hover:underline"><i class="ph-bold ph-pencil-simple"></i> Edit</button>
+                                <button onclick="deleteSchedule('${item.id}', event)" class="text-[10px] sm:text-xs font-semibold text-red-500 flex items-center gap-1 hover:underline"><i class="ph-bold ph-trash"></i> Hapus</button>
+                            </div>
+                        </div>
+                        
+                        <div class="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-[#FAF8F5] border border-borderLight relative shrink-0 overflow-hidden pointer-events-none group-hover:scale-105 transition-transform">
+                            ${generateMiniCollage(item.outfit.layout)}
+                        </div>
+                    </div>
+                </div>`;
+            });
+
+            container.innerHTML = timelineHtml;
+        }
+
+        window.changeMonth = function (dir) {
+            currentCalDate.setMonth(currentCalDate.getMonth() + dir);
+            renderFullCalendar();
+        };
+
+        function updateSummaryWidget() {
+            const countEl = document.querySelector('#summary-widget-container p.text-3xl');
+            if (countEl) { countEl.innerHTML = `${schedulesData.length} <span class="text-base font-medium opacity-80">Outfit</span>`; }
+        }
+
+        /* ================= 5. NOTIFIKASI ================= */
+        const mockNotifs = [
+            { id: 'notif-kal-1', title: 'Jadwal besok!', time: '08:00', desc: 'Siapkan outfit Smart Casual besok.', timeAgo: '2 jam lalu', icon: 'ph-calendar-check', iconBg: 'bg-blue-50 text-blue-500 border-blue-100' },
+            { id: 'notif-kal-2', title: 'Inspirasi Baru', time: '09:15', desc: 'AI menemukan mix & match baru.', timeAgo: 'Baru saja', icon: 'ph-magic-wand', iconBg: 'bg-primary/10 text-primary border-primary/20' }
+        ];
+
+        window.renderNotifications = function () {
+            const container = document.getElementById('notif-list-container');
+            const countBadge = document.getElementById('notif-count-badge');
+            const dot = document.getElementById('notif-badge-dot');
+
+            let html = ''; let unreadCount = 0; let visibleCount = 0;
+
+            mockNotifs.forEach(n => {
+                if (deletedNotifs.includes(n.id)) return;
+                visibleCount++;
+                const isRead = readNotifs.includes(n.id);
+                if (!isRead) unreadCount++;
+
+                const readClass = isRead ? "opacity-50 bg-gray-50" : "";
+
+                html += `
+                <div class="notif-item p-4 sm:p-5 border-b border-borderLight hover:bg-bgSoft transition-colors flex gap-3 sm:gap-4 relative group ${readClass}" id="${n.id}">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full ${n.iconBg} border flex items-center justify-center shrink-0 cursor-pointer">
+                        <i class="ph-bold ${n.icon} text-lg sm:text-xl"></i>
+                    </div>
+                    <div class="flex-1 cursor-pointer pr-2">
+                        <div class="flex justify-between items-start mb-1">
+                            <p class="text-sm sm:text-[15px] font-semibold text-textDark leading-tight">${n.title}</p>
+                            <div class="flex items-center gap-1.5 sm:gap-2">
+                                <span class="text-[10px] sm:text-[11px] text-textMuted font-medium">${n.time}</span>
+                                <button onclick="removeNotif('${n.id}', event)" class="text-red-400 hover:text-red-600 transition-colors p-0.5">
+                                    <i class="ph-bold ph-x text-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-xs sm:text-[13px] text-textMuted leading-relaxed">${n.desc}</p>
+                        <p class="text-[10px] sm:text-[11px] text-textMuted/70 mt-1.5 sm:mt-2 font-medium">${n.timeAgo}</p>
+                    </div>
+                </div>`;
+            });
+
+            container.innerHTML = visibleCount === 0 ? '<div class="p-6 sm:p-8 text-center text-xs sm:text-sm text-textMuted">Tidak ada notifikasi baru.</div>' : html;
+
+            if (unreadCount > 0) {
+                if (dot) dot.classList.remove('hidden');
+                if (countBadge) countBadge.innerText = `${unreadCount} BARU`;
+            } else {
+                if (dot) dot.classList.add('hidden');
+                if (countBadge) countBadge.innerText = `0 BARU`;
+            }
+        }
+
+        window.removeNotif = function (id, e) {
+            e.stopPropagation();
+            if (!deletedNotifs.includes(id)) { deletedNotifs.push(id); saveNotifState(); renderNotifications(); }
+        };
+
+        window.markAllReadNotif = function () {
+            mockNotifs.forEach(n => { if (!readNotifs.includes(n.id)) readNotifs.push(n.id); });
+            saveNotifState(); renderNotifications(); showToast('Semua notifikasi ditandai dibaca');
+        };
+
+        window.deleteAllNotif = function (e) {
+            e.stopPropagation();
+            mockNotifs.forEach(n => { if (!deletedNotifs.includes(n.id)) deletedNotifs.push(n.id); });
+            saveNotifState(); renderNotifications(); showToast('Semua notifikasi dihapus');
+        };
+
+        /* ================= 6. MODAL & LOGIKA EDIT JADWAL ================= */
+        function renderOutfitSelector() {
+            const selectorContainer = document.getElementById('schedule-outfit-selector');
+            if (selectorContainer) {
+                if (savedOutfitsData.length === 0) {
+                    selectorContainer.innerHTML = '<p class="text-xs text-textMuted italic">Belum ada outfit. Silakan buat di menu Mix & Match.</p>';
+                    return;
+                }
+                selectorContainer.innerHTML = savedOutfitsData.map((item, idx) =>
+                    `<div class="w-24 shrink-0 flex flex-col items-center gap-2 cursor-pointer group snap-start" onclick="selectScheduleOutfit(this, ${idx})">
+                        <div class="schedule-outfit-card w-full aspect-square bg-[#FAF8F5] rounded-xl border-2 border-transparent group-hover:border-primary/50 transition-all relative overflow-hidden shadow-sm pointer-events-none">
+                            ${generateMiniCollage(item.layout)}
+                        </div>
+                        <span class="text-[10px] text-textMuted font-medium text-center leading-tight w-full truncate px-1">${item.title}</span>
+                    </div>`
+                ).join('');
+            }
+        }
+
+        window.openScheduleModal = function () {
+            const modal = document.getElementById('schedule-modal');
+            const modalContent = document.getElementById('schedule-modal-content');
+            const dateInput = document.getElementById('schedule-date');
+
+            if (!currentEditId) {
+                document.getElementById('modal-title').innerText = "Tambah Jadwal";
+                document.getElementById('schedule-event').value = "";
+                if (dateInput && !dateInput.value) {
+                    const today = new Date();
+                    dateInput.value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+                }
+                document.querySelectorAll('.schedule-outfit-card').forEach(card => {
+                    card.classList.remove('border-primary', 'bg-primary/5'); card.classList.add('border-transparent', 'bg-[#FBFBFA]');
+                });
+                selectedOutfitForSchedule = null;
+            }
+
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            setTimeout(() => { modal.classList.remove('opacity-0'); modalContent.classList.remove('scale-95'); }, 10);
+        };
+
+        window.closeScheduleModal = function () {
+            const modal = document.getElementById('schedule-modal'); const modalContent = document.getElementById('schedule-modal-content');
+            modal.classList.add('opacity-0'); modalContent.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden'); modal.classList.remove('flex');
+                document.getElementById('schedule-event').value = "";
+                selectedOutfitForSchedule = null;
+                currentEditId = null;
+                document.querySelectorAll('.schedule-outfit-card').forEach(card => {
+                    card.classList.remove('border-primary', 'bg-primary/5'); card.classList.add('border-transparent', 'bg-[#FBFBFA]');
+                });
+            }, 300);
+        };
+
+        window.selectScheduleOutfit = function (element, idx) {
+            document.querySelectorAll('.schedule-outfit-card').forEach(card => {
+                card.classList.remove('border-primary', 'bg-primary/5'); card.classList.add('border-transparent', 'bg-[#FBFBFA]');
+            });
+            const activeCard = element.querySelector('.schedule-outfit-card');
+            activeCard.classList.remove('border-transparent', 'bg-[#FBFBFA]'); activeCard.classList.add('border-primary', 'bg-primary/5');
+            selectedOutfitForSchedule = savedOutfitsData[idx];
+        };
+
+        window.editSchedule = function (id, e) {
+            if (e) e.stopPropagation();
+            const s = schedulesData.find(x => x.id == id);
+            if (!s) return;
+            currentEditId = id;
+            document.getElementById('modal-title').innerText = "Edit Jadwal";
+            document.getElementById('schedule-date').value = s.dateStr;
+            document.getElementById('schedule-event').value = s.desc;
+
+            const idx = savedOutfitsData.findIndex(o => o.id === s.outfitId);
+
+            openScheduleModal();
+
+            setTimeout(() => {
+                if (idx !== -1) {
+                    const selectorContainer = document.getElementById('schedule-outfit-selector');
+                    const items = selectorContainer.querySelectorAll('.group.snap-start');
+                    if (items[idx]) {
+                        items[idx].click();
+                        items[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                    }
+                }
+            }, 100);
+        };
+
+        window.deleteSchedule = async function (id, e) {
+            if (e) e.stopPropagation();
+            if (!confirm("Apakah Anda yakin ingin membatalkan/menghapus jadwal ini?")) return;
+            try {
+                const { error } = await supabase.from('schedules').delete().eq('id', id);
+                if (error) throw error;
+                showToast("Jadwal berhasil dibatalkan", "success");
+                await fetchSchedules();
+            } catch (error) {
+                showToast("Gagal menghapus jadwal", "error");
+            }
+        };
+
+        window.saveNewSchedule = async function () {
+            const btn = document.getElementById('btn-simpan-jadwal');
+            const eventName = document.getElementById('schedule-event').value || "Jadwal Baru";
+            const eventDate = document.getElementById('schedule-date').value;
+
+            if (!selectedOutfitForSchedule) { showToast('Harap pilih outfit yang akan dipakai!', 'error'); return; }
+            if (!eventDate) { showToast('Harap tentukan tanggalnya!', 'error'); return; }
+
+            btn.innerHTML = '<i class="ph-bold ph-spinner animate-spin text-white"></i> <span>Menyimpan...</span>';
+
+            try {
+                let error;
+                if (currentEditId) {
+                    const res = await supabase.from('schedules').update({
+                        outfit_id: selectedOutfitForSchedule.id,
+                        date_str: eventDate,
+                        event_name: eventName
+                    }).eq('id', currentEditId);
+                    error = res.error;
+                } else {
+                    const res = await supabase.from('schedules').insert([{
+                        user_id: currentUser.id,
+                        outfit_id: selectedOutfitForSchedule.id,
+                        date_str: eventDate,
+                        event_name: eventName
+                    }]);
+                    error = res.error;
+                }
+
+                if (error) throw error;
+
+                btn.innerHTML = '<i class="ph-bold ph-check text-white"></i> <span>Tersimpan!</span>';
+                btn.classList.add('bg-green-600'); btn.classList.remove('bg-[#A28876]', 'hover:bg-[#8e7464]');
+
+                await fetchSchedules();
+
+                setTimeout(() => {
+                    closeScheduleModal();
+                    showToast(currentEditId ? 'Jadwal diperbarui!' : `Jadwal "${eventName}" ditambahkan!`);
+                    setTimeout(() => {
+                        btn.innerHTML = 'Simpan Jadwal'; btn.classList.add('bg-[#A28876]', 'hover:bg-[#8e7464]'); btn.classList.remove('bg-green-600');
+                    }, 300);
+                }, 800);
+            } catch (err) {
+                console.error("Gagal menyimpan jadwal:", err);
+                showToast("Gagal menyimpan jadwal.", "error");
+                btn.innerHTML = 'Simpan Jadwal';
+            }
+        };
+
+        /* ================= 7. PENDING SCHEDULE CHECK ================= */
+        function checkPendingSchedule() {
+            const pendingData = localStorage.getItem('pendingScheduleOutfit');
+            if (pendingData) {
+                try {
+                    const outfit = JSON.parse(pendingData);
+                    setTimeout(() => {
+                        openScheduleModal();
+                        const index = savedOutfitsData.findIndex(o => o.id === outfit.id);
+                        if (index !== -1) {
+                            const selectorContainer = document.getElementById('schedule-outfit-selector');
+                            const items = selectorContainer.querySelectorAll('.group.snap-start');
+                            if (items[index]) items[index].click();
+                        }
+                        localStorage.removeItem('pendingScheduleOutfit');
+                    }, 500);
+                } catch (e) { }
+            }
+        }
+    </script>
+</body>
+
+</html>
