@@ -44,11 +44,12 @@
 
     <main class="flex-grow flex items-center justify-center p-4 sm:p-8">
         <div
-            class="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] w-full max-w-6xl flex flex-col md:flex-row overflow-hidden min-h-[700px] relative">
+            class="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] w-full max-w-6xl flex flex-col md:flex-row overflow-hidden min-h-[850px] md:min-h-[750px] relative">
 
-            <div class="w-full md:w-[45%] bg-brand-light relative overflow-hidden flex flex-col" id="left-section">
-                <div class="relative z-10 p-10 lg:p-14 pb-0 flex flex-col justify-start shrink-0">
-                    <div class="flex items-center gap-3 mb-10 lg:mb-12">
+            <div class="w-full md:w-[45%] bg-brand-light relative overflow-hidden flex flex-col min-h-[350px] md:min-h-full"
+                id="left-section">
+                <div class="relative z-10 p-8 lg:p-14 pb-0 flex flex-col justify-start shrink-0">
+                    <div class="flex items-center gap-3 mb-8 lg:mb-12">
                         <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"
                             class="text-gray-900">
@@ -61,31 +62,36 @@
                     </div>
 
                     <div id="login-text" class="block transition-all duration-300 transform translate-y-0">
-                        <h2 class="font-montserrat text-4xl lg:text-5xl font-bold mb-4 leading-tight text-gray-900">
+                        <h2
+                            class="font-montserrat text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 leading-tight text-gray-900">
                             Selamat Datang<br>Kembali!</h2>
-                        <p class="text-gray-700 font-medium leading-relaxed text-lg">Masuk untuk melanjutkan
+                        <p class="text-gray-700 font-medium leading-relaxed text-sm sm:text-lg">Masuk untuk melanjutkan
                             dan<br>kelola lemari pakaianmu.</p>
                     </div>
 
                     <div id="register-text"
                         class="hidden opacity-0 transition-all duration-300 transform translate-y-4">
-                        <h2 class="font-montserrat text-4xl lg:text-5xl font-bold mb-4 leading-tight text-gray-900">Buat
+                        <h2
+                            class="font-montserrat text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 leading-tight text-gray-900">
+                            Buat
                             Akun<br>Baru</h2>
-                        <p class="text-gray-700 font-medium leading-relaxed text-lg">Yuk, mulai perjalanan gaya<br>versi
+                        <p class="text-gray-700 font-medium leading-relaxed text-sm sm:text-lg">Yuk, mulai perjalanan
+                            gaya<br>versi
                             terbaikmu.</p>
                     </div>
                 </div>
 
-                <div class="relative w-full flex-grow mt-4 min-h-[300px]">
+                <div class="relative w-full flex-grow mt-4 min-h-[250px] sm:min-h-[300px]">
                     <img src="./assets/img/gambar1.jpeg" alt="Koleksi Pakaian Capsule"
                         class="absolute inset-0 w-full h-full object-cover object-bottom mix-blend-darken" />
                 </div>
             </div>
 
-            <div class="w-full md:w-[55%] p-10 lg:p-16 flex flex-col justify-center relative bg-white">
+            <div
+                class="w-full md:w-[55%] p-6 sm:p-10 lg:p-16 flex flex-col justify-start md:justify-center relative bg-white min-h-[500px]">
 
                 <div id="login-form-container"
-                    class="w-full max-w-md mx-auto transition-all duration-500 opacity-100 translate-x-0">
+                    class="w-full max-w-md mx-auto transition-all duration-500 opacity-100 translate-x-0 pt-4 md:pt-0">
 
                     <!-- Tombol Kembali untuk Form Login -->
                     <a href="index.html"
@@ -94,8 +100,8 @@
                         Kembali
                     </a>
 
-                    <h3 class="text-3xl font-montserrat font-semibold text-gray-900 mb-2">Masuk ke Akun</h3>
-                    <p class="text-gray-500 mb-8">Silakan masuk untuk mengakses akunmu.</p>
+                    <h3 class="text-2xl sm:text-3xl font-montserrat font-semibold text-gray-900 mb-2">Masuk ke Akun</h3>
+                    <p class="text-gray-500 mb-8 text-sm sm:text-base">Silakan masuk untuk mengakses akunmu.</p>
 
                     <form id="login-form" class="space-y-5">
                         <div>
@@ -152,16 +158,17 @@
                 </div>
 
                 <div id="register-form-container"
-                    class="w-full max-w-md mx-auto absolute top-10 lg:top-16 left-0 right-0 px-10 lg:px-16 transition-all duration-500 opacity-0 translate-x-8 pointer-events-none invisible">
+                    class="w-full max-w-md mx-auto absolute top-4 sm:top-10 lg:top-16 left-0 right-0 px-6 sm:px-10 lg:px-16 transition-all duration-500 opacity-0 translate-x-8 pointer-events-none invisible">
 
                     <!-- Tombol Kembali untuk Form Register -->
                     <button type="button" onclick="switchMode('login')"
-                        class="inline-flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-brand transition-colors mb-6 group w-fit">
+                        class="inline-flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-brand transition-colors mb-6 group w-fit mt-2 md:mt-0">
                         <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
                         Kembali
                     </button>
 
-                    <h3 class="text-3xl font-montserrat font-semibold text-gray-900 mb-2">Daftar Akun Baru</h3>
+                    <h3 class="text-2xl sm:text-3xl font-montserrat font-semibold text-gray-900 mb-2">Daftar Akun Baru
+                    </h3>
                     <p class="text-gray-500 mb-6 text-sm">Lengkapi data di bawah ini untuk membuat akun.</p>
 
                     <form id="register-form" class="space-y-4">
@@ -208,6 +215,25 @@
                             </div>
                         </div>
 
+                        <!-- TAMBAHAN: Konfirmasi Kata Sandi -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Konfirmasi Kata Sandi</label>
+                            <div class="relative">
+                                <div
+                                    class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                                    <i data-lucide="lock" class="w-4 h-4"></i>
+                                </div>
+                                <input type="password" id="reg-confirm-password" required
+                                    class="block w-full pl-10 pr-10 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand focus:border-brand transition-colors text-sm"
+                                    placeholder="Ulangi kata sandi">
+                                <button type="button"
+                                    onclick="togglePassword('reg-confirm-password', 'reg-confirm-eye-icon')"
+                                    class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none">
+                                    <i data-lucide="eye-off" id="reg-confirm-eye-icon" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+
                         <div class="flex items-start gap-2 text-sm mt-3">
                             <input type="checkbox" id="reg-terms" required
                                 class="mt-1 w-4 h-4 rounded border-gray-300 text-brand focus:ring-brand cursor-pointer accent-brand">
@@ -222,7 +248,7 @@
                         </button>
                     </form>
 
-                    <p class="text-center text-sm text-gray-600 mt-6">
+                    <p class="text-center text-sm text-gray-600 mt-6 pb-6 md:pb-0">
                         Sudah punya akun? <button onclick="switchMode('login')"
                             class="text-brand font-semibold hover:underline">Masuk di sini</button>
                     </p>
@@ -381,6 +407,13 @@
             const name = document.getElementById('reg-name').value;
             const email = document.getElementById('reg-email').value;
             const password = document.getElementById('reg-password').value;
+            const confirmPassword = document.getElementById('reg-confirm-password').value;
+
+            // Logika Tambahan: Pengecekan Konfirmasi Password
+            if (password !== confirmPassword) {
+                showToast('Kata sandi tidak cocok!', 'error');
+                return;
+            }
 
             setLoadingStatus('btn-register', true, 'Daftar');
 
