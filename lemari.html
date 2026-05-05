@@ -712,6 +712,25 @@
                     else renderOutfitsGrid(query);
                 });
             });
+            // 1. Tangkap parameter 'cat' dari URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const categoryFromUrl = urlParams.get('cat');
+
+            // 2. Jika parameter ditemukan (berarti user datang dari klik Dashboard)
+            if (categoryFromUrl) {
+                // Cari semua tombol filter kategori di lemari.html
+                // CATATAN: Sesuaikan querySelector ini dengan class tombol filter kamu!
+                // Misalnya tombol kamu punya class "filter-btn"
+                const filterButtons = document.querySelectorAll('button');
+
+                // Loop untuk mencari tombol mana yang teksnya sama dengan kategori di URL
+                filterButtons.forEach(btn => {
+                    if (btn.innerText.trim() === categoryFromUrl) {
+                        // Klik tombol tersebut secara otomatis
+                        btn.click();
+                    }
+                });
+            }
         });
 
         /* ================= 3. NOTIFIKASI REMINDER ================= */

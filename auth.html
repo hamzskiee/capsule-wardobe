@@ -44,60 +44,106 @@
 
     <main class="flex-grow flex items-center justify-center p-4 sm:p-8">
         <div
-            class="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] w-full max-w-6xl flex flex-col md:flex-row overflow-hidden min-h-[850px] md:min-h-[750px] relative">
+            class="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] w-full max-w-6xl flex flex-col md:flex-row overflow-hidden min-h-auto md:min-h-[750px] relative">
 
-            <div class="w-full md:w-[45%] bg-brand-light relative overflow-hidden flex flex-col min-h-[350px] md:min-h-full"
+            <!-- BAGIAN KIRI (GAMBAR & TEKS) -->
+            <div class="w-full md:w-[45%] bg-brand-light relative overflow-hidden flex flex-col min-h-[280px] sm:min-h-[350px] md:min-h-full"
                 id="left-section">
-                <div class="relative z-10 p-8 lg:p-14 pb-0 flex flex-col justify-start shrink-0">
-                    <div class="flex items-center gap-3 mb-8 lg:mb-12">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+
+                <div class="relative z-10 p-6 sm:p-10 lg:p-14 pb-0 flex flex-col justify-start shrink-0">
+                    <div class="flex items-center gap-3 mb-6 sm:mb-8 lg:mb-12">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"
-                            class="text-gray-900">
+                            class="text-gray-900 md:w-9 md:h-9">
                             <path d="M12 7v4" />
                             <path d="M12 7a2.5 2.5 0 0 0 2.5-2.5c0-1.38-1.12-2.5-2.5-2.5S9.5 3.12 9.5 4.5" />
                             <path d="M12 11 3 18h18Z" />
                         </svg>
-                        <h1 class="font-montserrat font-semibold text-xl leading-tight text-gray-900">
+                        <h1 class="font-montserrat font-semibold text-lg md:text-xl leading-tight text-gray-900">
                             Capsule<br>Wardrobe</h1>
                     </div>
 
-                    <div id="login-text" class="block transition-all duration-300 transform translate-y-0">
-                        <h2
-                            class="font-montserrat text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 leading-tight text-gray-900">
-                            Selamat Datang<br>Kembali!</h2>
-                        <p class="text-gray-700 font-medium leading-relaxed text-sm sm:text-lg">Masuk untuk melanjutkan
-                            dan<br>kelola lemari pakaianmu.</p>
-                    </div>
+                    <!-- WRAPPER TEKS RESPONSIVE -->
+                    <div class="relative w-full h-[100px] sm:h-[120px] lg:h-[180px]">
 
-                    <div id="register-text"
-                        class="hidden opacity-0 transition-all duration-300 transform translate-y-4">
-                        <h2
-                            class="font-montserrat text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 leading-tight text-gray-900">
-                            Buat
-                            Akun<br>Baru</h2>
-                        <p class="text-gray-700 font-medium leading-relaxed text-sm sm:text-lg">Yuk, mulai perjalanan
-                            gaya<br>versi
-                            terbaikmu.</p>
+                        <!-- Teks Login -->
+                        <div id="login-text"
+                            class="absolute inset-0 transition-all duration-500 transform translate-y-0 opacity-100">
+                            <h2
+                                class="font-montserrat text-2xl sm:text-4xl lg:text-5xl font-bold mb-2 lg:mb-4 leading-tight text-gray-900">
+                                Selamat Datang<br>Kembali!</h2>
+                            <p class="text-gray-700 font-medium leading-relaxed text-xs sm:text-sm lg:text-lg">Masuk
+                                untuk melanjutkan dan<br class="hidden sm:block">kelola lemari pakaianmu.</p>
+                        </div>
+
+                        <!-- Teks Register -->
+                        <div id="register-text"
+                            class="absolute inset-0 transition-all duration-500 transform translate-y-4 opacity-0 pointer-events-none invisible">
+                            <h2
+                                class="font-montserrat text-2xl sm:text-4xl lg:text-5xl font-bold mb-2 lg:mb-4 leading-tight text-gray-900">
+                                Buat<br>Akun Baru</h2>
+                            <p class="text-gray-700 font-medium leading-relaxed text-xs sm:text-sm lg:text-lg">Yuk,
+                                mulai perjalanan gaya<br class="hidden sm:block">versi terbaikmu.</p>
+                        </div>
+
+                        <!-- Teks Lupa Password -->
+                        <div id="forgot-text"
+                            class="absolute inset-0 transition-all duration-500 transform translate-y-4 opacity-0 pointer-events-none invisible">
+                            <h2
+                                class="font-montserrat text-2xl sm:text-4xl lg:text-5xl font-bold mb-2 lg:mb-4 leading-tight text-gray-900">
+                                Lupa<br>Kata Sandi?</h2>
+                            <p class="text-gray-700 font-medium leading-relaxed text-xs sm:text-sm lg:text-lg">Jangan
+                                khawatir, kami akan<br class="hidden sm:block">mengirimkan kode pemulihan OTP.</p>
+                        </div>
+
+                        <!-- Teks OTP -->
+                        <div id="otp-text"
+                            class="absolute inset-0 transition-all duration-500 transform translate-y-4 opacity-0 pointer-events-none invisible">
+                            <h2
+                                class="font-montserrat text-2xl sm:text-4xl lg:text-5xl font-bold mb-2 lg:mb-4 leading-tight text-gray-900">
+                                Masukkan<br>Kode OTP</h2>
+                            <p class="text-gray-700 font-medium leading-relaxed text-xs sm:text-sm lg:text-lg">Cek email
+                                kamu dan masukkan<br class="hidden sm:block">6 digit kode verifikasi.</p>
+                        </div>
+
+                        <!-- Teks Sandi Baru -->
+                        <div id="new-password-text"
+                            class="absolute inset-0 transition-all duration-500 transform translate-y-4 opacity-0 pointer-events-none invisible">
+                            <h2
+                                class="font-montserrat text-2xl sm:text-4xl lg:text-5xl font-bold mb-2 lg:mb-4 leading-tight text-gray-900">
+                                Buat<br>Sandi Baru</h2>
+                            <p class="text-gray-700 font-medium leading-relaxed text-xs sm:text-sm lg:text-lg">Silakan
+                                atur ulang kata sandi<br class="hidden sm:block">baru untuk akun kamu.</p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="relative w-full flex-grow mt-4 min-h-[250px] sm:min-h-[300px]">
-                    <img src="./assets/img/gambar1.jpeg" alt="Koleksi Pakaian Capsule"
-                        class="absolute inset-0 w-full h-full object-cover object-bottom mix-blend-darken" />
+                <!-- WRAPPER GAMBAR BERGANTI -->
+                <div class="relative w-full flex-grow mt-2 min-h-[160px] sm:min-h-[250px] md:min-h-[300px]">
+                    <!-- Gambar 1 (Login, OTP, Forgot Password) -->
+                    <img id="img-login" src="/assets/img/gambar1.jpeg" alt="Koleksi Pakaian"
+                        class="absolute inset-0 w-full h-full object-cover object-bottom mix-blend-darken transition-opacity duration-700 ease-in-out opacity-100" />
+
+                    <!-- Gambar 2 (Khusus Register) -->
+                    <!-- Catatan: Dibuat pintar, jika gambar2.jpeg tidak ada, otomatis mencoba gambar2.png -->
+                    <img id="img-register" src="/assets/img/gambar3.png"
+                        alt="Register Pakaian"
+                        class="absolute inset-0 w-full h-full object-cover object-bottom mix-blend-darken transition-opacity duration-700 ease-in-out opacity-0" />
                 </div>
             </div>
 
+            <!-- BAGIAN KANAN (FORM) -->
             <div
                 class="w-full md:w-[55%] p-6 sm:p-10 lg:p-16 flex flex-col justify-start md:justify-center relative bg-white min-h-[500px]">
 
+                <!-- 1. FORM LOGIN -->
                 <div id="login-form-container"
                     class="w-full max-w-md mx-auto transition-all duration-500 opacity-100 translate-x-0 pt-4 md:pt-0">
 
-                    <!-- Tombol Kembali untuk Form Login -->
                     <a href="index.html"
                         class="inline-flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-brand transition-colors mb-6 group w-fit">
                         <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
-                        Kembali
+                        Kembali ke Beranda
                     </a>
 
                     <h3 class="text-2xl sm:text-3xl font-montserrat font-semibold text-gray-900 mb-2">Masuk ke Akun</h3>
@@ -141,8 +187,9 @@
                                 <span class="text-gray-600 group-hover:text-gray-800 transition-colors">Ingat
                                     saya</span>
                             </label>
-                            <a href="#" class="text-brand hover:text-brand-hover font-medium transition-colors">Lupa
-                                kata sandi?</a>
+                            <button type="button" onclick="switchMode('forgot')"
+                                class="text-brand hover:text-brand-hover font-medium transition-colors">Lupa
+                                kata sandi?</button>
                         </div>
 
                         <button type="submit" id="btn-login"
@@ -157,10 +204,10 @@
                     </p>
                 </div>
 
+                <!-- 2. FORM REGISTER -->
                 <div id="register-form-container"
                     class="w-full max-w-md mx-auto absolute top-4 sm:top-10 lg:top-16 left-0 right-0 px-6 sm:px-10 lg:px-16 transition-all duration-500 opacity-0 translate-x-8 pointer-events-none invisible">
 
-                    <!-- Tombol Kembali untuk Form Register -->
                     <button type="button" onclick="switchMode('login')"
                         class="inline-flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-brand transition-colors mb-6 group w-fit mt-2 md:mt-0">
                         <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
@@ -215,7 +262,6 @@
                             </div>
                         </div>
 
-                        <!-- TAMBAHAN: Konfirmasi Kata Sandi -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1.5">Konfirmasi Kata Sandi</label>
                             <div class="relative">
@@ -253,6 +299,106 @@
                             class="text-brand font-semibold hover:underline">Masuk di sini</button>
                     </p>
                 </div>
+
+                <!-- 3. FORM MINTA OTP (LUPA PASSWORD) -->
+                <div id="forgot-form-container"
+                    class="w-full max-w-md mx-auto absolute top-4 sm:top-10 lg:top-16 left-0 right-0 px-6 sm:px-10 lg:px-16 transition-all duration-500 opacity-0 translate-x-8 pointer-events-none invisible">
+
+                    <button type="button" onclick="switchMode('login')"
+                        class="inline-flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-brand transition-colors mb-6 group w-fit mt-2 md:mt-0">
+                        <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                        Batal
+                    </button>
+
+                    <h3 class="text-2xl sm:text-3xl font-montserrat font-semibold text-gray-900 mb-2">Pulihkan Akun</h3>
+                    <p class="text-gray-500 mb-8 text-sm sm:text-base">Masukkan email akunmu. Kami akan mengirimkan kode
+                        OTP untuk mengatur ulang kata sandi.</p>
+
+                    <form id="forgot-form" class="space-y-5">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Email Terdaftar</label>
+                            <div class="relative">
+                                <div
+                                    class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                                    <i data-lucide="mail" class="w-5 h-5"></i>
+                                </div>
+                                <input type="email" id="forgot-email" required
+                                    class="block w-full pl-11 pr-3 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand focus:border-brand transition-colors text-sm"
+                                    placeholder="Masukkan email">
+                            </div>
+                        </div>
+
+                        <button type="submit" id="btn-forgot"
+                            class="w-full bg-brand hover:bg-brand-hover text-white font-medium py-3.5 rounded-xl transition-colors shadow-sm flex justify-center items-center gap-2 mt-4">
+                            <span>Kirim Kode OTP</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- 4. FORM INPUT OTP -->
+                <div id="otp-form-container"
+                    class="w-full max-w-md mx-auto absolute top-4 sm:top-10 lg:top-16 left-0 right-0 px-6 sm:px-10 lg:px-16 transition-all duration-500 opacity-0 translate-x-8 pointer-events-none invisible">
+
+                    <h3 class="text-2xl sm:text-3xl font-montserrat font-semibold text-gray-900 mb-2 mt-8">Verifikasi
+                        OTP</h3>
+                    <p class="text-gray-500 mb-8 text-sm sm:text-base">Kode 6 digit telah dikirim ke email kamu.
+                        Masukkan kode di bawah ini.</p>
+
+                    <form id="otp-form" class="space-y-5">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Kode OTP (6 Digit)</label>
+                            <div class="relative">
+                                <div
+                                    class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                                    <i data-lucide="key" class="w-5 h-5"></i>
+                                </div>
+                                <input type="text" id="otp-code" required maxlength="6"
+                                    class="block w-full pl-11 pr-3 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand focus:border-brand transition-colors text-sm tracking-[0.5em] font-semibold text-center"
+                                    placeholder="------">
+                            </div>
+                        </div>
+
+                        <button type="submit" id="btn-otp"
+                            class="w-full bg-brand hover:bg-brand-hover text-white font-medium py-3.5 rounded-xl transition-colors shadow-sm flex justify-center items-center gap-2 mt-4">
+                            <span>Verifikasi Kode</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- 5. FORM SANDI BARU -->
+                <div id="new-password-form-container"
+                    class="w-full max-w-md mx-auto absolute top-4 sm:top-10 lg:top-16 left-0 right-0 px-6 sm:px-10 lg:px-16 transition-all duration-500 opacity-0 translate-x-8 pointer-events-none invisible">
+
+                    <h3 class="text-2xl sm:text-3xl font-montserrat font-semibold text-gray-900 mb-2 mt-8">Buat Sandi
+                        Baru</h3>
+                    <p class="text-gray-500 mb-8 text-sm sm:text-base">Pastikan kata sandi baru kamu kuat dan mudah
+                        diingat.</p>
+
+                    <form id="new-password-form" class="space-y-5">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Kata Sandi Baru</label>
+                            <div class="relative">
+                                <div
+                                    class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                                    <i data-lucide="lock" class="w-5 h-5"></i>
+                                </div>
+                                <input type="password" id="new-password" required
+                                    class="block w-full pl-11 pr-10 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand focus:border-brand transition-colors text-sm"
+                                    placeholder="Masukkan sandi baru">
+                                <button type="button" onclick="togglePassword('new-password', 'new-pwd-eye-icon')"
+                                    class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none">
+                                    <i data-lucide="eye-off" id="new-pwd-eye-icon" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="submit" id="btn-new-password"
+                            class="w-full bg-brand hover:bg-brand-hover text-white font-medium py-3.5 rounded-xl transition-colors shadow-sm flex justify-center items-center gap-2 mt-4">
+                            <span>Simpan Sandi Baru</span>
+                        </button>
+                    </form>
+                </div>
+
             </div>
         </div>
     </main>
@@ -297,46 +443,59 @@
             </div>
         </div>
         <div class="text-center text-xs text-gray-400 mt-10">
-            &copy; 2026 Capsule Wardrobe by tunnelbluu.
+            &copy; 2026 Capsule Wardrobe. All rights reserved.
         </div>
     </footer>
 
     <script>
         lucide.createIcons();
 
+        let tempResetEmail = '';
+
         function switchMode(mode) {
-            const loginForm = document.getElementById('login-form-container');
-            const registerForm = document.getElementById('register-form-container');
-            const loginText = document.getElementById('login-text');
-            const registerText = document.getElementById('register-text');
+            const modes = ['login', 'register', 'forgot', 'otp', 'new-password'];
+
+            // Logika ganti gambar: Jika mode register, tampilkan gambar2. Selain itu gambar1.
+            const imgLogin = document.getElementById('img-login');
+            const imgRegister = document.getElementById('img-register');
 
             if (mode === 'register') {
-                loginForm.classList.remove('opacity-100', 'translate-x-0');
-                loginForm.classList.add('opacity-0', '-translate-x-8', 'pointer-events-none', 'invisible');
-                loginText.classList.add('opacity-0', '-translate-y-4');
-                setTimeout(() => {
-                    loginText.classList.add('hidden');
-                    registerForm.classList.remove('opacity-0', 'translate-x-8', 'pointer-events-none', 'invisible');
-                    registerForm.classList.add('opacity-100', 'translate-x-0');
-                    registerForm.style.position = 'relative';
-                    loginForm.style.position = 'absolute';
-                    registerText.classList.remove('hidden');
-                    setTimeout(() => registerText.classList.remove('opacity-0', 'translate-y-4'), 50);
-                }, 300);
+                imgLogin.classList.replace('opacity-100', 'opacity-0');
+                imgRegister.classList.replace('opacity-0', 'opacity-100');
             } else {
-                registerForm.classList.remove('opacity-100', 'translate-x-0');
-                registerForm.classList.add('opacity-0', 'translate-x-8', 'pointer-events-none', 'invisible');
-                registerText.classList.add('opacity-0', 'translate-y-4');
-                setTimeout(() => {
-                    registerText.classList.add('hidden');
-                    loginForm.classList.remove('opacity-0', '-translate-x-8', 'pointer-events-none', 'invisible');
-                    loginForm.classList.add('opacity-100', 'translate-x-0');
-                    loginForm.style.position = 'relative';
-                    registerForm.style.position = 'absolute';
-                    loginText.classList.remove('hidden');
-                    setTimeout(() => loginText.classList.remove('opacity-0', '-translate-y-4'), 50);
-                }, 300);
+                imgLogin.classList.replace('opacity-0', 'opacity-100');
+                imgRegister.classList.replace('opacity-100', 'opacity-0');
             }
+
+            modes.forEach(m => {
+                const form = document.getElementById(`${m}-form-container`);
+                const text = document.getElementById(`${m}-text`);
+
+                if (m === mode) {
+                    setTimeout(() => {
+                        if (text) {
+                            text.classList.remove('invisible', 'opacity-0', 'translate-y-4', '-translate-y-4');
+                            text.classList.add('opacity-100', 'translate-y-0');
+                        }
+                        if (form) {
+                            form.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'translate-x-8', '-translate-x-8');
+                            form.classList.add('opacity-100', 'translate-x-0');
+                            form.style.position = 'relative';
+                        }
+                    }, 300);
+                } else {
+                    if (form) {
+                        form.classList.remove('opacity-100', 'translate-x-0');
+                        form.classList.add('opacity-0', 'pointer-events-none', 'invisible', 'translate-x-8');
+                        form.style.position = 'absolute';
+                    }
+                    if (text) {
+                        text.classList.remove('opacity-100', 'translate-y-0');
+                        text.classList.add('opacity-0', '-translate-y-4');
+                        setTimeout(() => text.classList.add('invisible'), 300);
+                    }
+                }
+            });
         }
 
         function togglePassword(inputId, iconId) {
@@ -375,10 +534,7 @@
     <script type="module">
         import { CONFIG } from './assets/js/config.js';
 
-        // Inisialisasi Supabase Client
         const supabaseClient = supabase.createClient(CONFIG.SB_URL, CONFIG.SB_KEY);
-
-        // Simpan ke window agar bisa diakses global jika diperlukan
         window.supabaseClient = supabaseClient;
 
         // Login Handler
@@ -388,7 +544,6 @@
             const password = document.getElementById('login-password').value;
 
             setLoadingStatus('btn-login', true, 'Masuk');
-
             const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
             if (error) {
@@ -409,14 +564,12 @@
             const password = document.getElementById('reg-password').value;
             const confirmPassword = document.getElementById('reg-confirm-password').value;
 
-            // Logika Tambahan: Pengecekan Konfirmasi Password
             if (password !== confirmPassword) {
                 showToast('Kata sandi tidak cocok!', 'error');
                 return;
             }
 
             setLoadingStatus('btn-register', true, 'Daftar');
-
             const { data, error } = await supabaseClient.auth.signUp({
                 email, password,
                 options: { data: { full_name: name } }
@@ -434,6 +587,75 @@
                     setTimeout(() => switchMode('login'), 2000);
                     setLoadingStatus('btn-register', false, 'Daftar');
                 }
+            }
+        });
+
+        // Lupa Kata Sandi - Kirim Email OTP
+        document.getElementById('forgot-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('forgot-email').value;
+            tempResetEmail = email;
+
+            setLoadingStatus('btn-forgot', true, 'Kirim Kode OTP');
+            const { data, error } = await supabaseClient.auth.resetPasswordForEmail(email);
+
+            if (error) {
+                showToast(error.message, 'error');
+                setLoadingStatus('btn-forgot', false, 'Kirim Kode OTP');
+            } else {
+                showToast('Kode OTP berhasil dikirim ke email kamu.', 'success');
+                switchMode('otp');
+                setLoadingStatus('btn-forgot', false, 'Kirim Kode OTP');
+            }
+        });
+
+        // Verifikasi Kode OTP
+        document.getElementById('otp-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const otpCode = document.getElementById('otp-code').value;
+
+            setLoadingStatus('btn-otp', true, 'Verifikasi Kode');
+
+            const { data, error } = await supabaseClient.auth.verifyOtp({
+                email: tempResetEmail,
+                token: otpCode,
+                type: 'recovery'
+            });
+
+            if (error) {
+                showToast('Kode OTP salah atau kedaluwarsa.', 'error');
+                setLoadingStatus('btn-otp', false, 'Verifikasi Kode');
+            } else {
+                showToast('Kode terverifikasi! Silakan buat sandi baru.', 'success');
+                switchMode('new-password');
+                setLoadingStatus('btn-otp', false, 'Verifikasi Kode');
+            }
+        });
+
+        // Simpan Sandi Baru
+        document.getElementById('new-password-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const newPassword = document.getElementById('new-password').value;
+
+            setLoadingStatus('btn-new-password', true, 'Simpan Sandi Baru');
+
+            const { data, error } = await supabaseClient.auth.updateUser({ password: newPassword });
+
+            if (error) {
+                showToast(error.message, 'error');
+                setLoadingStatus('btn-new-password', false, 'Simpan Sandi Baru');
+            } else {
+                showToast('Kata sandi berhasil diubah! Silakan login kembali.', 'success');
+
+                await supabaseClient.auth.signOut();
+
+                setTimeout(() => {
+                    document.getElementById('login-email').value = tempResetEmail;
+                    document.getElementById('login-password').value = '';
+                    switchMode('login');
+                }, 2000);
+
+                setLoadingStatus('btn-new-password', false, 'Simpan Sandi Baru');
             }
         });
     </script>
