@@ -98,14 +98,11 @@
 
 <body class="bg-background text-textDark font-sans h-[100dvh] flex overflow-hidden">
 
-    <!-- Toast Notification -->
     <div id="toast-container" class="fixed top-5 right-5 z-[300] flex flex-col gap-3 pointer-events-none w-max"></div>
 
-    <!-- Sidebar Overlay -->
     <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden transition-opacity opacity-0">
     </div>
 
-    <!-- Sidebar Desktop -->
     <aside id="sidebar"
         class="w-64 bg-surface border-r border-borderLight flex-col hidden lg:flex h-full z-50 shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.01)] transition-transform duration-300 -translate-x-full lg:translate-x-0">
         <div class="p-8 flex items-center justify-between lg:justify-start gap-3">
@@ -164,7 +161,6 @@
         </div>
     </aside>
 
-    <!-- Mobile Bottom Navigation -->
     <nav class="lg:hidden fixed bottom-0 left-0 w-full bg-surface/90 backdrop-blur-lg border-t border-borderLight z-40 flex justify-around py-3 px-2 pb-6 md:pb-4 text-[10px] shadow-[0_-10px_40px_rgba(0,0,0,0.03)]"
         id="mobile-nav">
         <a href="dashboard.html"
@@ -184,7 +180,6 @@
                 class="ph-fill ph-squares-four text-xl md:text-2xl"></i>Lainnya</button>
     </nav>
 
-    <!-- Mobile Bottom Sheet Menu -->
     <div id="mobile-more-menu"
         class="fixed inset-0 bg-dark/60 backdrop-blur-sm z-[200] hidden flex-col justify-end opacity-0 transition-opacity duration-300 lg:hidden">
         <div id="mobile-more-content"
@@ -224,7 +219,6 @@
         </div>
     </div>
 
-    <!-- Main Content -->
     <main class="flex-1 flex flex-col h-full relative overflow-hidden bg-background">
         <header
             class="bg-background/90 backdrop-blur-md sticky top-0 z-40 px-6 md:px-10 py-5 flex items-center justify-between border-b border-borderLight/50">
@@ -237,7 +231,6 @@
                 </div>
             </div>
 
-            <!-- Live Search Bar -->
             <div
                 class="hidden lg:flex flex-1 max-w-lg bg-surface border border-borderLight rounded-full px-5 py-2.5 items-center shadow-sm focus-within:border-primary/50 transition-all mr-auto ml-0 lg:mx-0">
                 <input type="text" id="search-input-desktop" placeholder="Cari pakaian atau outfit..."
@@ -253,7 +246,6 @@
                         <span id="notif-badge-dot"
                             class="hidden absolute top-1.5 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-background"></span>
                     </button>
-                    <!-- Notif Dropdown -->
                     <div id="notif-dropdown"
                         class="hidden absolute right-[-40px] sm:right-0 mt-3 w-[300px] sm:w-[400px] bg-surface border border-borderLight rounded-2xl shadow-xl z-50 overflow-hidden transform opacity-0 scale-95 transition-all duration-200 origin-top-right flex flex-col">
                         <div
@@ -278,7 +270,6 @@
                     </div>
                 </div>
 
-                <!-- User Profile Dropdown -->
                 <div class="relative" id="profile-dropdown-wrapper">
                     <div onclick="toggleProfileDropdown(event)"
                         class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity pl-2 sm:pl-4 border-l border-borderLight">
@@ -321,7 +312,6 @@
             id="main-scroll-area">
             <div class="page-transition">
 
-                <!-- Mobile Search Bar -->
                 <div class="lg:hidden mt-4 mb-6">
                     <div
                         class="flex w-full bg-surface border border-borderLight rounded-full px-4 py-3 items-center shadow-sm focus-within:border-primary/50 transition-all">
@@ -356,7 +346,6 @@
                     </div>
                 </div>
 
-                <!-- CONTENT 1: KOLEKSI ITEM -->
                 <div id="content-item" class="block animate-[fadeInView_0.3s_ease-out_forwards]">
                     <div class="mb-6 flex gap-2 overflow-x-auto no-scrollbar pb-2" id="lemari-filter-container">
                         <button onclick="filterLemari('Semua')"
@@ -387,15 +376,12 @@
 
                     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6"
                         id="lemari-grid-container">
-                        <!-- JS Render Pakaian Satuan -->
                     </div>
                 </div>
 
-                <!-- CONTENT 2: KOMBINASI OUTFIT -->
                 <div id="content-outfit" class="hidden">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
                         id="outfit-grid-container">
-                        <!-- JS Render Outfit -->
                     </div>
                 </div>
 
@@ -413,7 +399,28 @@
         </div>
     </main>
 
-    <!-- Modal Upload / Edit Item -->
+    <div id="delete-modal"
+        class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[150] hidden items-center justify-center opacity-0 transition-opacity duration-300 p-4 sm:p-0">
+        <div id="delete-modal-content"
+            class="bg-surface w-full max-w-[340px] rounded-[2rem] p-6 sm:p-8 shadow-2xl transform scale-95 transition-transform duration-300 text-center relative">
+            <div
+                class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-5 border border-red-100 shadow-sm">
+                <i class="ph-fill ph-trash text-3xl text-red-500"></i>
+            </div>
+            <h3 class="text-xl font-bold text-textDark mb-2 font-display" id="delete-modal-title">Hapus Item?</h3>
+            <p class="text-sm text-textMuted mb-8 leading-relaxed" id="delete-modal-desc">Item ini akan dihapus permanen
+                dari lemarimu. Tindakan ini tidak dapat dibatalkan.</p>
+            <div class="flex gap-3">
+                <button onclick="closeDeleteModal()"
+                    class="flex-1 py-3.5 rounded-xl border border-borderLight text-textMuted font-semibold hover:bg-bgSoft transition-all text-sm">Batal</button>
+                <button id="confirm-delete-btn" onclick="confirmDeleteItem()"
+                    class="flex-1 py-3.5 rounded-xl bg-red-500 hover:bg-red-600 text-white font-semibold transition-all text-sm shadow-md flex items-center justify-center gap-2">
+                    Hapus
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div id="upload-modal"
         class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[120] hidden items-center justify-center opacity-0 transition-opacity duration-300 p-4 sm:p-0">
         <div class="bg-surface w-full max-w-[420px] sm:rounded-[2rem] rounded-3xl shadow-2xl transform scale-95 transition-transform duration-300 relative overflow-hidden flex flex-col max-h-[90vh]"
@@ -501,34 +508,50 @@
                 <div>
                     <label class="block text-xs font-bold text-gray-800 uppercase tracking-wider mb-2.5">Foto
                         Item</label>
-                    <div class="border border-borderLight bg-[#FBFBFA] rounded-2xl p-6 text-center hover:bg-[#F8F7F4] hover:border-primary/30 transition-all cursor-pointer group"
+
+                    <input type="file" id="file-upload" class="hidden" accept="image/*"
+                        onchange="handleFileUpload(this)">
+
+                    <div id="upload-prompt-area"
+                        class="border-2 border-dashed border-borderLight bg-[#FBFBFA] rounded-2xl p-8 text-center hover:bg-[#F8F7F4] hover:border-primary/50 transition-all cursor-pointer group flex flex-col items-center justify-center min-h-[160px]"
                         onclick="document.getElementById('file-upload').click()">
                         <div
-                            class="w-12 h-12 mx-auto bg-surface rounded-full border border-borderLight flex items-center justify-center mb-3 group-hover:scale-110 transition-transform shadow-sm">
+                            class="w-12 h-12 bg-surface rounded-full border border-borderLight flex items-center justify-center mb-3 group-hover:scale-110 group-hover:shadow-md transition-all shadow-sm">
                             <i
-                                class="ph ph-image text-xl text-textMuted group-hover:text-textDark transition-colors"></i>
+                                class="ph ph-upload-simple text-xl text-textMuted group-hover:text-primary transition-colors"></i>
                         </div>
-                        <p class="text-xs font-medium text-textDark mb-1">Upload Foto</p>
-                        <p class="text-[10px] text-textMuted">atau ambil dari galeri</p>
-                        <input type="file" id="file-upload" class="hidden" accept="image/*"
-                            onchange="handleFileUpload(this)">
+                        <p class="text-[13px] font-semibold text-textDark mb-1">Klik untuk Upload Foto</p>
+                        <p class="text-[10px] text-textMuted">Format didukung: JPG, PNG, WEBP</p>
                     </div>
 
                     <div id="upload-preview-area"
-                        class="hidden mt-3 relative w-full h-32 bg-[#FBFBFA] rounded-2xl border border-borderLight overflow-hidden flex flex-col items-center justify-center">
-                        <img id="upload-preview-img" src=""
-                            class="max-w-full max-h-20 object-contain mix-blend-multiply" alt="Preview"
-                            crossorigin="anonymous">
-                        <div id="color-detected-badge"
-                            class="absolute bottom-2 left-2 flex items-center gap-1.5 bg-surface/90 backdrop-blur px-2 py-1.5 rounded-full border border-borderLight shadow-sm hidden">
+                        class="hidden relative w-full h-[180px] bg-[#FBFBFA] rounded-2xl border border-borderLight overflow-hidden group">
+
+                        <div
+                            class="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-40">
                         </div>
-                        <button onclick="removeUploadPreview(event)"
-                            class="absolute top-2 right-2 p-1.5 bg-surface/90 backdrop-blur-sm rounded-full shadow-sm text-textMuted hover:text-red-500 transition-colors">
-                            <i class="ph-bold ph-x text-sm"></i>
-                        </button>
+
+                        <img id="upload-preview-img" src=""
+                            class="absolute inset-0 w-full h-full object-contain mix-blend-multiply p-4 drop-shadow-sm transition-transform duration-300 group-hover:scale-105"
+                            alt="Preview" crossorigin="anonymous">
+
+                        <div id="color-detected-badge"
+                            class="absolute bottom-3 left-3 flex items-center gap-1.5 bg-surface/95 backdrop-blur px-2.5 py-1.5 rounded-full border border-borderLight shadow-sm hidden z-10">
+                        </div>
+
+                        <div
+                            class="absolute top-3 right-3 flex flex-col gap-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <button onclick="document.getElementById('file-upload').click()" title="Ganti Foto"
+                                class="w-8 h-8 flex items-center justify-center bg-surface/90 backdrop-blur-sm rounded-full shadow-sm text-textDark hover:text-primary hover:bg-surface transition-all border border-borderLight">
+                                <i class="ph-bold ph-arrows-clockwise text-sm"></i>
+                            </button>
+                            <button onclick="removeUploadPreview(event)" title="Hapus Foto"
+                                class="w-8 h-8 flex items-center justify-center bg-red-50/90 backdrop-blur-sm rounded-full shadow-sm text-red-500 hover:text-white hover:bg-red-500 transition-all border border-red-100 hover:border-red-500">
+                                <i class="ph-bold ph-trash text-sm"></i>
+                            </button>
+                        </div>
                     </div>
 
-                    <!-- AI Hapus BG -->
                     <div
                         class="mt-4 flex items-center justify-between bg-surface border border-borderLight p-3.5 rounded-xl shadow-sm">
                         <div class="flex items-center gap-3">
@@ -558,7 +581,6 @@
         </div>
     </div>
 
-    <!-- Modal Edit/Jadwalkan Outfit (Untuk Tab 2) -->
     <div id="save-modal"
         class="fixed inset-0 bg-black/50 z-[110] hidden items-center justify-center opacity-0 transition-opacity duration-300 p-4 sm:p-0">
         <div class="bg-surface rounded-[2rem] p-6 md:p-8 w-full max-w-md shadow-2xl transform scale-95 transition-transform duration-300 relative"
@@ -618,7 +640,6 @@
         </div>
     </div>
 
-    <!-- SCRIPT SUPABASE & LOGIKA UI -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script type="module">
         import { CONFIG } from './assets/js/config.js';
@@ -650,29 +671,24 @@
             localStorage.setItem('capsule_read_notifs', JSON.stringify(readNotifs));
         }
 
-        /* ================= 1. TOAST UI (PUTIH DENGAN TEKS HITAM) ================= */
+        /* ================= 1. TOAST UI ================= */
         window.showToast = function (message, type = 'success') {
-                const container = document.getElementById('toast-container');
-                const toast = document.createElement('div');
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
 
-                // Background PUTIH (bg-surface), border tipis, bayangan lembut
-                const bgColor = type === 'success' ? 'bg-surface border-borderLight' : 'bg-red-50 border-red-200';
-                const icon = type === 'success' ? 'ph-check-circle' : 'ph-warning-circle';
+            const bgColor = type === 'success' ? 'bg-surface border-borderLight' : 'bg-red-50 border-red-200';
+            const icon = type === 'success' ? 'ph-check-circle' : 'ph-warning-circle';
+            const iconColor = type === 'success' ? 'text-primary' : 'text-red-500';
 
-                // Ikon warna cokelat utama (text-primary)
-                const iconColor = type === 'success' ? 'text-primary' : 'text-red-500';
+            toast.className = `flex items-center gap-3 px-4 sm:px-5 py-3 sm:py-3.5 rounded-2xl border shadow-[0_10px_40px_rgba(0,0,0,0.08)] transform transition-all duration-300 translate-x-full text-textDark ${bgColor}`;
 
-                // Menggunakan text-textDark (hitam) agar kontras dengan bg-surface (putih)
-                toast.className = `flex items-center gap-3 px-4 sm:px-5 py-3 sm:py-3.5 rounded-2xl border shadow-[0_10px_40px_rgba(0,0,0,0.08)] transform transition-all duration-300 translate-x-full text-textDark ${bgColor}`;
+            toast.innerHTML = `<i class="ph-fill ${icon} text-xl sm:text-2xl ${iconColor}"></i><p class="text-xs sm:text-[13px] font-semibold">${message}</p>`;
 
-                toast.innerHTML = `<i class="ph-fill ${icon} text-xl sm:text-2xl ${iconColor}"></i><p class="text-xs sm:text-[13px] font-semibold">${message}</p>`;
+            container.appendChild(toast);
 
-                container.appendChild(toast);
-
-                setTimeout(() => toast.classList.remove('translate-x-full'), 10);
-                setTimeout(() => { toast.classList.add('translate-x-full'); setTimeout(() => toast.remove(), 300); }, 3000);
-            }
-
+            setTimeout(() => toast.classList.remove('translate-x-full'), 10);
+            setTimeout(() => { toast.classList.add('translate-x-full'); setTimeout(() => toast.remove(), 300); }, 3000);
+        }
 
         /* ================= 2. AUTH & INIT ================= */
         document.addEventListener('DOMContentLoaded', async () => {
@@ -688,12 +704,10 @@
             const firstName = fullName.split(' ')[0];
             const avatarUrl = metadata.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80';
 
-            // Universal Sync Profile
             document.getElementById('user-display-name').innerText = firstName;
             document.getElementById('user-email-display').innerText = currentUser.email;
             document.getElementById('header-avatar').src = avatarUrl;
 
-            // Navigasi URL Tab
             const params = new URLSearchParams(window.location.search);
             if (params.get('tab') === 'outfit') { switchTab('outfit'); }
 
@@ -702,7 +716,6 @@
             await fetchSchedulesForNotif();
             renderNotifications();
 
-            // Init Search Bar
             const searchInputs = document.querySelectorAll('.search-sync');
             searchInputs.forEach(input => {
                 input.addEventListener('input', (e) => {
@@ -712,21 +725,13 @@
                     else renderOutfitsGrid(query);
                 });
             });
-            // 1. Tangkap parameter 'cat' dari URL
+
             const urlParams = new URLSearchParams(window.location.search);
             const categoryFromUrl = urlParams.get('cat');
-
-            // 2. Jika parameter ditemukan (berarti user datang dari klik Dashboard)
             if (categoryFromUrl) {
-                // Cari semua tombol filter kategori di lemari.html
-                // CATATAN: Sesuaikan querySelector ini dengan class tombol filter kamu!
-                // Misalnya tombol kamu punya class "filter-btn"
                 const filterButtons = document.querySelectorAll('button');
-
-                // Loop untuk mencari tombol mana yang teksnya sama dengan kategori di URL
                 filterButtons.forEach(btn => {
                     if (btn.innerText.trim() === categoryFromUrl) {
-                        // Klik tombol tersebut secara otomatis
                         btn.click();
                     }
                 });
@@ -865,15 +870,16 @@
             } catch (e) { return ''; }
         }
 
+        // BAGIAN YANG DIPERBARUI: TATA LETAK OUTFIT (MENYAMAI MIX & MATCH)
         function generateMiniCollage(l) {
             return `
-                ${l.dresses ? `<img src="${l.dresses}" class="absolute top-[6%] left-[22%] w-[55%] object-contain z-20 blend-multiply">` : ''}
-                ${l.atasan ? `<img src="${l.atasan}" class="absolute top-[6%] left-[10%] w-[55%] object-contain z-10 blend-multiply">` : ''}
-                ${l.bawahan ? `<img src="${l.bawahan}" class="absolute top-[28%] right-[8%] w-[45%] object-contain z-0 blend-multiply">` : ''}
-                ${l.outer ? `<img src="${l.outer}" class="absolute top-[2%] right-[5%] w-[55%] object-contain z-30 opacity-90 blend-multiply">` : ''}
-                ${l.tas ? `<img src="${l.tas}" class="absolute bottom-[6%] left-[4%] w-[32%] object-contain z-40 blend-multiply">` : ''}
-                ${l.aksesoris ? `<img src="${l.aksesoris}" class="absolute bottom-[4%] left-[38%] w-[25%] object-contain z-50 blend-multiply">` : ''}
-                ${l.sepatu ? `<img src="${l.sepatu}" class="absolute bottom-[6%] right-[12%] w-[38%] object-contain z-10 blend-multiply">` : ''}
+                ${l.dresses ? `<img src="${l.dresses}" class="absolute top-[6%] left-[22%] w-[55%] object-contain z-20 drop-shadow-md">` : ''}
+                ${l.atasan ? `<img src="${l.atasan}" class="absolute top-[6%] left-[10%] w-[55%] object-contain z-10 drop-shadow-md">` : ''}
+                ${l.bawahan ? `<img src="${l.bawahan}" class="absolute top-[28%] right-[8%] w-[45%] object-contain z-0 drop-shadow-md">` : ''}
+                ${l.outer ? `<img src="${l.outer}" class="absolute top-[2%] right-[5%] w-[55%] object-contain z-30 opacity-90 drop-shadow-md">` : ''}
+                ${l.tas ? `<img src="${l.tas}" class="absolute bottom-[6%] left-[4%] w-[32%] object-contain z-40 drop-shadow-md">` : ''}
+                ${l.aksesoris ? `<img src="${l.aksesoris}" class="absolute bottom-[4%] left-[38%] w-[25%] object-contain z-50 drop-shadow-md">` : ''}
+                ${l.sepatu ? `<img src="${l.sepatu}" class="absolute bottom-[6%] right-[12%] w-[38%] object-contain z-[60] drop-shadow-md">` : ''}
             `;
         }
 
@@ -934,27 +940,82 @@
             }
         }
 
-        /* ================= 6. HAPUS DATA ================= */
-        window.hapusItem = async function (id, imageUrl) {
-            if (!confirm("Yakin ingin menghapus item ini dari lemari?")) return;
-            try {
-                const fileName = imageUrl.split('/').pop();
-                await supabase.from('wardrobe').delete().eq('id', id);
-                await supabase.storage.from('wardrobe').remove([`${currentUser.id}/${fileName}`]);
-                showToast('Item berhasil dihapus', 'success');
-                document.querySelectorAll('.search-sync').forEach(inp => inp.value = ''); // Reset Search
-                await fetchWardrobe();
-            } catch (e) { showToast('Gagal menghapus item.', 'error'); }
+        /* ================= 6. HAPUS DATA (MENGGUNAKAN POPUP CUSTOM) ================= */
+        let itemToDeleteId = null;
+        let itemToDeleteUrl = null;
+        let deleteType = 'item';
+
+        window.openDeleteModal = function (id, url = null, type = 'item') {
+            itemToDeleteId = id;
+            itemToDeleteUrl = url;
+            deleteType = type;
+
+            const modal = document.getElementById('delete-modal');
+            const modalContent = document.getElementById('delete-modal-content');
+
+            // Ubah teks judul & deskripsi sesuai dengan yang dihapus (Item vs Outfit)
+            document.getElementById('delete-modal-title').innerText = type === 'item' ? 'Hapus Item?' : 'Hapus Outfit?';
+            document.getElementById('delete-modal-desc').innerText = type === 'item'
+                ? 'Item ini akan dihapus permanen dari lemarimu. Tindakan ini tidak dapat dibatalkan.'
+                : 'Kombinasi outfit ini akan dihapus. Tenang saja, item pakaian aslinya tetap aman.';
+
+            if (!modal) return;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+            }, 10);
         };
 
-        window.hapusOutfit = async function (id) {
-            if (!confirm('Hapus kombinasi outfit ini?')) return;
+        window.closeDeleteModal = function () {
+            const modal = document.getElementById('delete-modal');
+            const modalContent = document.getElementById('delete-modal-content');
+            if (!modal) return;
+            modal.classList.add('opacity-0');
+            modalContent.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                itemToDeleteId = null;
+                itemToDeleteUrl = null;
+            }, 300);
+        };
+
+        window.confirmDeleteItem = async function () {
+            if (!itemToDeleteId) return;
+
+            const btn = document.getElementById('confirm-delete-btn');
+            btn.innerHTML = '<i class="ph-bold ph-spinner animate-spin"></i> Menghapus...';
+            btn.disabled = true;
+
             try {
-                await supabase.from('outfits').delete().eq('id', id);
-                showToast('Kombinasi dihapus', 'success');
-                document.querySelectorAll('.search-sync').forEach(inp => inp.value = ''); // Reset Search
-                await fetchSavedOutfits();
-            } catch (e) { showToast('Gagal menghapus.', 'error'); }
+                if (deleteType === 'item') {
+                    // Logika hapus Item & Gambarnya di Storage
+                    const fileName = itemToDeleteUrl.split('/').pop();
+                    await supabase.from('wardrobe').delete().eq('id', itemToDeleteId);
+                    await supabase.storage.from('wardrobe').remove([`${currentUser.id}/${fileName}`]);
+
+                    showToast('Item berhasil dihapus', 'success');
+                    document.querySelectorAll('.search-sync').forEach(inp => inp.value = '');
+                    await fetchWardrobe();
+                } else {
+                    // Logika hapus Outfit
+                    await supabase.from('outfits').delete().eq('id', itemToDeleteId);
+
+                    showToast('Kombinasi outfit dihapus', 'success');
+                    document.querySelectorAll('.search-sync').forEach(inp => inp.value = '');
+                    await fetchSavedOutfits();
+                }
+            } catch (e) {
+                showToast(`Gagal menghapus ${deleteType}.`, 'error');
+            } finally {
+                closeDeleteModal();
+                setTimeout(() => {
+                    btn.innerHTML = 'Hapus';
+                    btn.disabled = false;
+                }, 300);
+            }
         };
 
         /* ================= 7. UPLOAD / EDIT ITEM LOGIC ================= */
@@ -981,7 +1042,10 @@
                     btn.classList.remove('bg-surface', 'border-borderLight'); btn.classList.add('bg-primary/10', 'border-transparent', 'ring-2', 'ring-primary/30');
                 }
 
+                // Sembunyikan prompt, tampilkan preview
+                document.getElementById('upload-prompt-area').classList.add('hidden');
                 document.getElementById('upload-preview-area').classList.remove('hidden');
+
                 document.getElementById('upload-preview-img').src = itemData.image_url;
                 const badge = document.getElementById('color-detected-badge');
                 if (detectedColorPalette.length > 0) {
@@ -992,7 +1056,11 @@
                 currentEditItemId = null; currentEditItemImg = null;
                 document.getElementById('modal-item-title').innerText = "Tambah Item";
                 document.getElementById('input-item-name').value = "";
+
+                // Tampilkan prompt, sembunyikan preview
+                document.getElementById('upload-prompt-area').classList.remove('hidden');
                 document.getElementById('upload-preview-area').classList.add('hidden');
+
                 document.getElementById('color-detected-badge').classList.add('hidden');
                 selectedUploadCat = '';
                 document.querySelectorAll('.modal-cat-btn').forEach(btn => { btn.classList.remove('bg-primary/10', 'border-transparent', 'ring-2', 'ring-primary/30'); btn.classList.add('bg-surface', 'border-borderLight'); });
@@ -1019,8 +1087,11 @@
                 uploadFile = input.files[0];
                 const reader = new FileReader();
                 reader.onload = function (e) {
-                    const imgEl = document.getElementById('upload-preview-img'); imgEl.src = e.target.result;
+                    document.getElementById('upload-prompt-area').classList.add('hidden');
                     document.getElementById('upload-preview-area').classList.remove('hidden');
+
+                    const imgEl = document.getElementById('upload-preview-img'); imgEl.src = e.target.result;
+
                     const badge = document.getElementById('color-detected-badge'); badge.innerHTML = ''; badge.classList.add('hidden');
                     const detectColors = () => {
                         try {
@@ -1037,8 +1108,14 @@
         };
 
         window.removeUploadPreview = function (event) {
-            event.stopPropagation(); document.getElementById('file-upload').value = ""; document.getElementById('upload-preview-area').classList.add('hidden');
-            document.getElementById('color-detected-badge').classList.add('hidden'); uploadFile = null; detectedColorPalette = [];
+            event.stopPropagation();
+            document.getElementById('file-upload').value = "";
+
+            document.getElementById('upload-preview-area').classList.add('hidden');
+            document.getElementById('upload-prompt-area').classList.remove('hidden');
+
+            document.getElementById('color-detected-badge').classList.add('hidden');
+            uploadFile = null; detectedColorPalette = [];
             if (currentEditItemId) { currentEditItemImg = null; }
         };
 
@@ -1097,7 +1174,7 @@
                 }
 
                 closeUploadModal();
-                document.querySelectorAll('.search-sync').forEach(inp => inp.value = ''); // Reset Search
+                document.querySelectorAll('.search-sync').forEach(inp => inp.value = '');
                 await fetchWardrobe();
             } catch (error) {
                 showToast(error.message || 'Terjadi kesalahan sistem.', 'error');
@@ -1167,7 +1244,7 @@
                 }
 
                 closeSaveModal();
-                document.querySelectorAll('.search-sync').forEach(inp => inp.value = ''); // Reset Search
+                document.querySelectorAll('.search-sync').forEach(inp => inp.value = '');
                 await fetchSavedOutfits();
             } catch (error) { showToast('Gagal menyimpan ke database.', 'error'); }
             finally { const btnText = document.getElementById('save-btn-text'); btnText.innerText = "Perbarui"; }
@@ -1185,6 +1262,7 @@
             const mobM = document.getElementById('mobile-more-menu'); const mobC = document.getElementById('mobile-more-content'); if (mobM && !mobM.classList.contains('hidden') && !mobC.contains(e.target) && !e.target.closest('[onclick*="toggleMobileMore"]')) { toggleMobileMore(); }
             const upM = document.getElementById('upload-modal'); const upC = document.getElementById('upload-modal-content'); if (upM && !upM.classList.contains('hidden') && !upC.contains(e.target) && !e.target.closest('[onclick*="openUploadModal"]')) { closeUploadModal(); }
             const savM = document.getElementById('save-modal'); const savC = document.getElementById('save-modal-content'); if (savM && !savM.classList.contains('hidden') && !savC.contains(e.target)) { closeSaveModal(); }
+            const delM = document.getElementById('delete-modal'); const delC = document.getElementById('delete-modal-content'); if (delM && !delM.classList.contains('hidden') && !delC.contains(e.target)) { closeDeleteModal(); }
 
             if (!e.target.closest('.action-dropdown-container') && !e.target.closest('.action-opts')) {
                 document.querySelectorAll('.dropdown-menu').forEach(menu => { menu.classList.remove('opacity-100', 'scale-100'); menu.classList.add('opacity-0', 'scale-95'); setTimeout(() => menu.classList.add('hidden'), 200); });
@@ -1198,8 +1276,21 @@
 
             // Aksi Koleksi Item
             if (e.target.closest('.btn-delete-item')) {
-                e.stopPropagation(); const btn = e.target.closest('.btn-delete-item'); const id = btn.getAttribute('data-id'); const url = btn.getAttribute('data-url');
-                hapusItem(id, url);
+                e.stopPropagation();
+                const btn = e.target.closest('.btn-delete-item');
+                const id = btn.getAttribute('data-id');
+                const url = btn.getAttribute('data-url');
+
+                // Menutup menu dropdown
+                const card = btn.closest('.group');
+                const menu = card.querySelector('.dropdown-menu');
+                if (menu) {
+                    menu.classList.remove('opacity-100', 'scale-100');
+                    menu.classList.add('opacity-0', 'scale-95');
+                    setTimeout(() => menu.classList.add('hidden'), 200);
+                }
+
+                openDeleteModal(id, url, 'item');
             }
             if (e.target.closest('.btn-edit-item')) {
                 e.stopPropagation(); const btn = e.target.closest('.btn-edit-item'); const itemData = JSON.parse(decodeURIComponent(btn.getAttribute('data-item')));
@@ -1210,8 +1301,20 @@
 
             // Aksi Kombinasi Outfit
             if (e.target.closest('.btn-delete-outfit')) {
-                e.stopPropagation(); const btn = e.target.closest('.btn-delete-outfit'); const outfitId = btn.getAttribute('data-id');
-                hapusOutfit(outfitId);
+                e.stopPropagation();
+                const btn = e.target.closest('.btn-delete-outfit');
+                const outfitId = btn.getAttribute('data-id');
+
+                // Menutup menu dropdown
+                const card = btn.closest('.group');
+                const menu = card.querySelector('.dropdown-menu');
+                if (menu) {
+                    menu.classList.remove('opacity-100', 'scale-100');
+                    menu.classList.add('opacity-0', 'scale-95');
+                    setTimeout(() => menu.classList.add('hidden'), 200);
+                }
+
+                openDeleteModal(outfitId, null, 'outfit');
             }
             if (e.target.closest('.btn-edit-outfit')) {
                 e.stopPropagation(); const btn = e.target.closest('.btn-edit-outfit'); const outfitData = JSON.parse(decodeURIComponent(btn.getAttribute('data-outfit')));
